@@ -31,10 +31,10 @@ namespace SETTINGS_NS {
 	const LONG	WND_INIT_Y			= 64;
 
 	// initial window width
-	const LONG	WND_INIT_WIDTH		= 1280;
+	const LONG	WND_INIT_WIDTH		= 640;
 
 	// initial window height
-	const LONG	WND_INIT_HEIGHT		= 720;
+	const LONG	WND_INIT_HEIGHT		= 480;
 
 
 	// behavioural settings

@@ -27,6 +27,19 @@ InputExtension::InputExtension(
 {}
 
 // ===========================================================================
+// destructor
+// ===========================================================================
+InputExtension::~InputExtension()
+{
+	// if mouse state was registered, and mouse is currently captured
+	if (mouseState && mouseState->getCaptureState())
+	{
+		// release mouse capture
+		ReleaseCapture();
+	}
+}
+
+// ===========================================================================
 // initializer - will be called only when window extension has been bound
 // to a window. hwndPtr and commandBroker are only guaranteed to exist 
 // when this method is invoked.
@@ -41,7 +54,7 @@ void InputExtension::initialize()
 	}
 	catch (...)
 	{
-		// notify developer of any errors
+		// catch any initialization errors
 		throw(Error("Error! Failed to initialize input extension!"));
 	}
 }
@@ -54,6 +67,9 @@ void InputExtension::initialize()
 // ===========================================================================
 void InputExtension::initializeMouseHandler()
 {
+	// only initialize mouse handler if mouse state container was specified
+	if (!mouseState) return;
+
 	// initialize high-definition mouse device
 	rawInputDevices[0].usUsagePage	= HID_USAGE_PAGE_GENERIC;
 	rawInputDevices[0].usUsage		= HID_USAGE_GENERIC_MOUSE;
@@ -77,28 +93,42 @@ void InputExtension::initializeMouseHandler()
 void InputExtension::handleKeyboardInput(
 	const UINT&		msg,
 	const WPARAM&	wParam,
+	const LPARAM&	lParam,
 	Flow<LRESULT>&	flow
 ) {
+	// non-state dependant inter-system command hotkeys (non-intercepting)
+	if (msg == WM_KEYDOWN || msg == WM_SYSKEYDOWN)
+	{
+		switch (static_cast<UCHAR>(wParam))
+		{
+		// F11 - toggle borderless fullscreen
+		case VK_F11:
+			if (broker) broker->pushImmediately(
+				WindowDisplayCommands::TOGGLEBORDERLESSFULLSCREEN
+			);
+			break;
+
+		case VK_F4:
+			// ALT F4 - kills program immediately
+			if ((HIWORD(lParam) & KF_ALTDOWN) == KF_ALTDOWN)
+			{
+				// send quit message
+				PostQuitMessage(0);
+			}
+			break;
+		}
+	}
+
 	// ensure keyboard state is bound and flow has not resolved
 	if (!keyboardState || !flow.stillRunning()) return;
 
 	// handle keyboard input messages 
 	switch (msg)
 	{
-		// handle key down
+	// handle key down
 	case WM_KEYDOWN:
 	case WM_SYSKEYDOWN:
 	{
-		// special inter-system command keys (non-intercepting)
-		switch (static_cast<UCHAR>(wParam))
-		{
-			// F11 - toggle borderless fullscreen
-		case VK_F11:
-			if (commandBroker) commandBroker->pushImmediately(
-				WindowDisplayCommands::TOGGLEBORDERLESSFULLSCREEN
-			); break;
-		}
-
 		keyboardState->notifyKeyDown(static_cast<UCHAR>(wParam));
 		return flow.resolve(0);
 	}
@@ -221,6 +251,6 @@ void InputExtension::wndProc(
 	Flow<LRESULT>&	flow
 ) {
 	// handle input messages
-	handleKeyboardInput(msg, wParam, flow);
+	handleKeyboardInput(msg, wParam, lParam, flow);
 	handleMouseInput(msg, wParam, lParam, flow);
 }

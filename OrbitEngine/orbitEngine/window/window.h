@@ -98,10 +98,14 @@ private:
 	HANDLE hMutex;
 
 
-	// command members
+	// messaging
 
-	// window command broker
-	MessageBroker commandBroker;
+	// pointer to shared message broker
+	MessageBroker* broker;
+
+	// specifies if the shared message broker is external or internal. if
+	// internal, it must be deallocated on window destruction.
+	bool ownsBroker;
 
 
 	// private methods
@@ -251,21 +255,29 @@ public:
 	// constructor
 	// =======================================================================
 	Window(
-		LPCWSTR	lpszClassName,
-		LPCWSTR	lpszMenuName	= D_LPSZMENUNAME,
-		UINT	style			= D_STYLE,
-		HBRUSH	hbrBackground	= D_HBRUSH,
-		HICON	hIcon			= D_HICON,
-		HICON	hIconSm			= D_HICON_SM,
-		HCURSOR	hCursor			= D_HCURSOR
+		LPCWSTR			lpszClassName,
+		MessageBroker*	pSharedBroker	= nullptr,
+		LPCWSTR			lpszMenuName	= D_LPSZMENUNAME,
+		UINT			style			= D_STYLE,
+		HBRUSH			hbrBackground	= D_HBRUSH,
+		HICON			hIcon			= D_HICON,
+		HICON			hIconSm			= D_HICON_SM,
+		HCURSOR			hCursor			= D_HCURSOR
 	) :
 		// window states
 		hwnd		(NULL),
 		className	(lpszClassName),
-		hMutex		(NULL)
+		hMutex		(NULL),
+		broker		(pSharedBroker)
 	{
 		// statically assert that ChildWnd adheres to CRTP
 		assertValidCRTP();
+
+		// check if a shared broker was provided
+		ownsBroker = broker == nullptr;
+
+		// if none was provided, manually allocate a new message broker
+		if (ownsBroker) broker = new MessageBroker();
 
 		// initialize window class info struct
 		WNDCLASSEXW	wcx{};
@@ -294,6 +306,16 @@ public:
 
 		// register window class from wcx struct
 		RegisterClassExW(&wcx);
+	}
+
+	// =======================================================================
+	// destructor
+	// =======================================================================
+	~Window()
+	{
+		// free broker from memory when the window is killed if it's not an
+		// external resource but is owned by this instance
+		if (ownsBroker) SAFE_DELETE(broker);
 	}
 
 
@@ -471,7 +493,7 @@ public:
 	// =======================================================================
 	// returns a reference to the shared window command broker
 	// =======================================================================
-	MessageBroker& getCommandBroker() { return commandBroker; }
+	MessageBroker* getBroker() { return broker; }
 
 };
 

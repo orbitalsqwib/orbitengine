@@ -41,7 +41,7 @@ DisplayExtension::DisplayExtension():
 void DisplayExtension::initialize()
 {
 	// register self with command broker
-	commandBroker->addSubscriber(*this);
+	broker->addSubscriber(*this);
 }
 
 
@@ -215,8 +215,11 @@ void DisplayExtension::setStyle(
 // ===========================================================================
 void DisplayExtension::toggleBorderlessFullscreen(bool enabled)
 {
-	// update flag, then update window to reflect flag
-	if (borderlessFullscreen = enabled)
+	// update flag
+	borderlessFullscreen = enabled;
+
+	// update window to reflect flag
+	if (borderlessFullscreen)
 	{
 		setStyle(WindowStyle::BORDERLESS);
 		ShowWindow(*hwndPtr, SW_MAXIMIZE);

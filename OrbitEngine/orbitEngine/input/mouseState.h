@@ -55,7 +55,7 @@ private:
 public:
 
 	// default constructor
-	MouseState(const bool& captureMouse);
+	MouseState(const bool& captureMouse = false);
 
 
 	// setters

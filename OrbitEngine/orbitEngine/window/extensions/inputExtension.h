@@ -60,6 +60,7 @@ private:
 	void handleKeyboardInput(
 		const UINT&		msg,
 		const WPARAM&	wParam,
+		const LPARAM&	lParam,
 		Flow<LRESULT>&	flow
 	);
 
@@ -78,6 +79,9 @@ public:
 		KeyboardState*	_keyboardState	= nullptr,
 		MouseState*		_mouseState		= nullptr
 	);
+
+	// destructor
+	~InputExtension();
 
 
 	// implement pure virtuals

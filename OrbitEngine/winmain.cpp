@@ -14,9 +14,6 @@
 #include <windows.h>
 
 // import necessary headers
-#include "orbitEngine/utils/pointers.h"
-#include "orbitEngine/game/gameWindow.h"
-#include "orbitEngine/messaging/pubsub.h"
 
 
 int WINAPI WinMain(
@@ -25,11 +22,7 @@ int WINAPI WinMain(
 	_In_		LPSTR		,
 	_In_		int			
 ) {	
-	//TODO: create main window
-	GameWindow test{};
-	test.bindWindow(L"Test");
-	test.getCommandBroker().pushImmediately(WindowDisplayCommands::BORDERLESSFULLSCREEN);
-
+	
 	// initialize message loop states
 	MSG msg;
 	int exit = false;

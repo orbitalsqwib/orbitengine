@@ -43,7 +43,7 @@ private:
 	void bindToWindow(Window<ChildWindow>* window)
 	{
 		hwndPtr			= window->getHwndPtr();
-		commandBroker	= &(window->getCommandBroker());
+		broker			= window->getBroker();
 		initialize();
 	}
 
@@ -60,7 +60,7 @@ protected:
 	HWND* hwndPtr;
 
 	// specifies the pointer to the shared command broker
-	MessageBroker* commandBroker;
+	MessageBroker* broker;
 
 public:
 
@@ -68,8 +68,8 @@ public:
 	WindowExtension():
 
 		// members
-		hwndPtr			(nullptr),
-		commandBroker	(nullptr)
+		hwndPtr	(nullptr),
+		broker	(nullptr)
 	{}
 
 	// abstract virtual destructor

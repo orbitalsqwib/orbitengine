@@ -19,7 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="orbitEngine\game\gameWindow.cpp" />
+    <ClCompile Include="orbitEngine\performance\timer.cpp" />
+    <ClCompile Include="orbitEngine\window\classes\gameWindow.cpp" />
     <ClCompile Include="orbitEngine\input\gamepad.cpp" />
     <ClCompile Include="orbitEngine\input\keyboardState.cpp" />
     <ClCompile Include="orbitEngine\input\mouseState.cpp" />
@@ -29,9 +30,16 @@
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="orbitEngine\common\colors.h" />
     <ClInclude Include="orbitEngine\common\priority.h" />
+    <ClInclude Include="orbitEngine\common\zvalues.h" />
     <ClInclude Include="orbitEngine\error.h" />
-    <ClInclude Include="orbitEngine\game\gameWindow.h" />
+    <ClInclude Include="orbitEngine\graphics\dxmacros.h" />
+    <ClInclude Include="orbitEngine\graphics\graphics.h" />
+    <ClInclude Include="orbitEngine\graphics\vertex.h" />
+    <ClInclude Include="orbitEngine\orbitEngine.h" />
+    <ClInclude Include="orbitEngine\performance\timer.h" />
+    <ClInclude Include="orbitEngine\window\classes\gameWindow.h" />
     <ClInclude Include="orbitEngine\input\gamepad.h" />
     <ClInclude Include="orbitEngine\input\keyboardState.h" />
     <ClInclude Include="orbitEngine\input\mouseState.h" />
@@ -116,6 +124,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>

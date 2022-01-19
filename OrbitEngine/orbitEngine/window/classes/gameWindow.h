@@ -9,23 +9,28 @@
 // OrbitEngine : Game Window Specification
 // ===========================================================================
 
-#ifndef _ORBIT_GAME_GAMEWINDOW_H
-#define _ORBIT_GAME_GAMEWINDOW_H
+#ifndef _ORBIT_WINDOWCLASS_GAMEWINDOW_H
+#define _ORBIT_WINDOWCLASS_GAMEWINDOW_H
 
 // import necessary headers
-#include "../window/window.h"
-#include "../window/extensions/displayExtension.h"
-#include "../window/extensions/inputExtension.h"
+#include "../window.h"
+#include "../extensions/displayExtension.h"
+#include "../extensions/inputExtension.h"
 
 
 // main definition
 
+// specifies the main game window class - this is what the game will be
+// rendered upon and user inputs recieved through
 class GameWindow : public Window<GameWindow>
 {
 public:
 
 	// constructor
-	GameWindow();
+	GameWindow(
+		KeyboardState*	keyboardState	= nullptr, 
+		MouseState*		mouseState		= nullptr
+	);
 
 	// delegate wndproc
 	virtual LRESULT wndProc(
@@ -35,4 +40,4 @@ public:
 	);
 };
 
-#endif // !_ORBIT_WINDOW_GAMEWINDOW_H
+#endif // !_ORBIT_WINDOWCLASS_GAMEWINDOW_H

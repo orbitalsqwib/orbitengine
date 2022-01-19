@@ -15,14 +15,16 @@
 // ===========================================================================
 // constructor
 // ===========================================================================
-GameWindow::GameWindow():
-
+GameWindow::GameWindow(
+	KeyboardState*	keyboardState,
+	MouseState*		mouseState
+):
 	// construct base object
 	Window	(L"GAME_WINDOW")
 {
-	// add extensions
+	// add extensions to window
 	addExtension(new DisplayExtension());
-	addExtension(new InputExtension(nullptr));
+	addExtension(new InputExtension(keyboardState, mouseState));
 }
 
 // ===========================================================================
