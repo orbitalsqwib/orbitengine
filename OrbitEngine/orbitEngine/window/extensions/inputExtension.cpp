@@ -104,7 +104,7 @@ void InputExtension::handleKeyboardInput(
 		// F11 - toggle borderless fullscreen
 		case VK_F11:
 			if (broker) broker->pushImmediately(
-				WindowDisplayCommands::TOGGLEBORDERLESSFULLSCREEN
+				DisplayCommands::TOGGLEBORDERLESSFULLSCREEN
 			);
 			break;
 

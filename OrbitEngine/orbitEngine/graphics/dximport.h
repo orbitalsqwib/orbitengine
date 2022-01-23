@@ -6,7 +6,7 @@
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 // ===========================================================================
-// OrbitEngine : Common DirectX Macros (and Imports)
+// OrbitEngine : DirectX Imports and Macros
 // ===========================================================================
 // NOTE: If d3dx9.h is NOT FOUND, go to Properties > VC++ Directories and add
 // $(DXSDK_DIR)Include and $(DXSDK_DIR)Lib\x86 into Include Directories and
@@ -16,11 +16,17 @@
 #ifndef _ORBIT_GRAPHICS_DXMACROS_H
 #define _ORBIT_GRAPHICS_DXMACROS_H
 
-// import d3d9 header and libraries
+// include intellisense warnings
+#include <CodeAnalysis/Warnings.h>
+
+// import d3d9 header and libraries (suppresses warnings from libraries)
+#pragma warning(push)
+#pragma warning(disable: ALL_CODE_ANALYSIS_WARNINGS )
 #include <d3d9.h>
 #include <d3dx9.h>
 #pragma comment(lib, "d3d9.lib")
 #pragma comment(lib, "d3dx9.lib")
+#pragma warning(pop)
 
 // directx interface aliases
 #define LP_TEXTURE		LPDIRECT3DTEXTURE9

@@ -14,6 +14,7 @@
 
 // import necessary headers
 #include "windowExtension.h"
+#include "../../common/commands/displayCommands.h"
 #include "../../common/priority.h"
 #include "../../input/keyboardState.h"
 #include "../../input/mouseState.h"

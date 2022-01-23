@@ -6,19 +6,17 @@
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 // ===========================================================================
-// OrbitEngine : Window Commands Enum Class Specification
+// OrbitEngine : Window Display Commands Enum Class Specification
 // ===========================================================================
 
-#ifndef _ORBIT_COMMON_WINDOWCOMMANDS_H
-#define _ORBIT_COMMON_WINDOWCOMMANDS_H
+#ifndef _ORBIT_COMMON_DISPLAYCOMMANDS_H
+#define _ORBIT_COMMON_DISPLAYCOMMANDS_H
 
 // main definition
 
-// specifies a list of commands that can be sent to a window instance to
-// modify the state and/or behaviour of its display extension
-enum class WindowDisplayCommands {
-
-	// DISPLAY EXTENSION
+// specifies a list of commands that can be sent to a window broker to modify
+// the state and/or behaviour of its display extension
+enum class DisplayCommands {
 
 	// sets window style to bordered
 	SETSTYLE_BORDERED,
@@ -59,4 +57,4 @@ enum class WindowDisplayCommands {
 
 };
 
-#endif // !_ORBIT_COMMON_WINDOWCOMMANDS_H
+#endif // !_ORBIT_COMMON_DISPLAYCOMMANDS_H

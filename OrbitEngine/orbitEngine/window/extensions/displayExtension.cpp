@@ -247,50 +247,50 @@ void DisplayExtension::toggleBorderlessFullscreen(bool enabled)
 // for the same window command.
 // ===========================================================================
 void DisplayExtension::handleMessage(
-	WindowDisplayCommands	command,
+	DisplayCommands		command,
 	MessageBroker*			
 ) {
 	// switch by command id
 	switch (command)
 	{
 	// SETSTYLE
-	case WindowDisplayCommands::SETSTYLE_BORDERED:
+	case DisplayCommands::SETSTYLE_BORDERED:
 		setStyle(WindowStyle::BORDERED);	break;
-	case WindowDisplayCommands::SETSTYLE_BORDERLESS:
+	case DisplayCommands::SETSTYLE_BORDERLESS:
 		setStyle(WindowStyle::BORDERLESS);	break;
-	case WindowDisplayCommands::SETSTYLE_UNSET:
+	case DisplayCommands::SETSTYLE_UNSET:
 		setStyle(WindowStyle::UNSET);		break;
 
 	// SETRESIZE
-	case WindowDisplayCommands::SETRESIZE_OFF:
+	case DisplayCommands::SETRESIZE_OFF:
 		resizeEnabled = false;	break;
-	case WindowDisplayCommands::SETRESIZE_ON:
+	case DisplayCommands::SETRESIZE_ON:
 		resizeEnabled = true;	break;
 
 	// SETDRAGGING
-	case WindowDisplayCommands::SETDRAGGING_OFF:
+	case DisplayCommands::SETDRAGGING_OFF:
 		dragEnabled = false;	break;
-	case WindowDisplayCommands::SETDRAGGING_ON:
+	case DisplayCommands::SETDRAGGING_ON:
 		dragEnabled = true;		break;
 
 	// SETDRAGGING
-	case WindowDisplayCommands::SETSHADOWS_OFF:
+	case DisplayCommands::SETSHADOWS_OFF:
 		shadowEnabled = false;	break;
-	case WindowDisplayCommands::SETSHADOWS_ON:
+	case DisplayCommands::SETSHADOWS_ON:
 		shadowEnabled = true;	break;
 
 	// BORDEREDWINDOWED
-	case WindowDisplayCommands::BORDEREDWINDOWED:
+	case DisplayCommands::BORDEREDWINDOWED:
 		toggleBorderlessFullscreen(false);
 		break;
 
 	// BORDERLESSFULLSCREEN
-	case WindowDisplayCommands::BORDERLESSFULLSCREEN:
+	case DisplayCommands::BORDERLESSFULLSCREEN:
 		toggleBorderlessFullscreen(true);
 		break;
 
 	// TOGGLEBORDERLESSFULLSCREEN
-	case WindowDisplayCommands::TOGGLEBORDERLESSFULLSCREEN:
+	case DisplayCommands::TOGGLEBORDERLESSFULLSCREEN:
 		toggleBorderlessFullscreen(!borderlessFullscreen);
 		break;
 	}

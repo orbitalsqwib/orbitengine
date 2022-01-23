@@ -17,7 +17,6 @@
 #include <windows.h>
 
 // import necessary headers
-#include "../../common/windowCommands.h"
 #include "../../messaging/pubsub.h"
 #include "../../utils/flow.h"
 

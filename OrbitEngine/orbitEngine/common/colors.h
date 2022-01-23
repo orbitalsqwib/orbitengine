@@ -31,7 +31,7 @@
 // main definition
 
 // common color value enums
-enum class Colors : COLOR_ARGB
+enum Colors : COLOR_ARGB
 {
 	// ARGB channel values range from 0 - 255 inclusive.
 	// A = Alpha channel (0 = transparent, 255 = opaque)

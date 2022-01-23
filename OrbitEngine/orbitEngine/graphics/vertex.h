@@ -17,7 +17,7 @@
 #include <windows.h>
 
 // import necessary headers
-#include "dxmacros.h"
+#include "dximport.h"
 #include "../common/colors.h"
 
 // define FVF format for Vertex

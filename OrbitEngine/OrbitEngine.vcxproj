@@ -19,6 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="orbitEngine\graphics\graphics.cpp" />
+    <ClCompile Include="orbitEngine\graphics\primitiveShape.cpp" />
     <ClCompile Include="orbitEngine\performance\timer.cpp" />
     <ClCompile Include="orbitEngine\window\classes\gameWindow.cpp" />
     <ClCompile Include="orbitEngine\input\gamepad.cpp" />
@@ -31,11 +33,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="orbitEngine\common\colors.h" />
+    <ClInclude Include="orbitEngine\common\commands\graphicsObjectCommands.h" />
+    <ClInclude Include="orbitEngine\common\notifications\windowResized.h" />
+    <ClInclude Include="orbitEngine\graphics\primitiveShape.h" />
     <ClInclude Include="orbitEngine\common\priority.h" />
     <ClInclude Include="orbitEngine\common\zvalues.h" />
     <ClInclude Include="orbitEngine\error.h" />
-    <ClInclude Include="orbitEngine\graphics\dxmacros.h" />
+    <ClInclude Include="orbitEngine\graphics\dximport.h" />
     <ClInclude Include="orbitEngine\graphics\graphics.h" />
+    <ClInclude Include="orbitEngine\graphics\spriteData.h" />
     <ClInclude Include="orbitEngine\graphics\vertex.h" />
     <ClInclude Include="orbitEngine\orbitEngine.h" />
     <ClInclude Include="orbitEngine\performance\timer.h" />
@@ -56,7 +62,7 @@
     <ClInclude Include="orbitEngine\utils\circularQueue.h" />
     <ClInclude Include="orbitEngine\utils\flow.h" />
     <ClInclude Include="orbitEngine\utils\pointers.h" />
-    <ClInclude Include="orbitEngine\common\windowCommands.h" />
+    <ClInclude Include="orbitEngine\common\commands\displayCommands.h" />
     <ClInclude Include="orbitEngine\utils\textQueue.h" />
     <ClInclude Include="orbitEngine\window\extensions\displayExtension.h" />
     <ClInclude Include="orbitEngine\window\extensions\inputExtension.h" />
@@ -118,6 +124,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -136,6 +144,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

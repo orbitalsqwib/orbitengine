@@ -42,6 +42,12 @@
     <ClCompile Include="orbitEngine\performance\timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="orbitEngine\graphics\primitiveShape.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\graphics\graphics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="orbitEngine\!config.h">
@@ -62,7 +68,7 @@
     <ClInclude Include="orbitEngine\utils\pointers.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="orbitEngine\common\windowCommands.h">
+    <ClInclude Include="orbitEngine\common\commands\displayCommands.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="orbitEngine\common\priority.h">
@@ -131,7 +137,7 @@
     <ClInclude Include="orbitEngine\graphics\graphics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="orbitEngine\graphics\dxmacros.h">
+    <ClInclude Include="orbitEngine\graphics\dximport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="orbitEngine\common\colors.h">
@@ -141,6 +147,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="orbitEngine\graphics\vertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\spriteData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\common\notifications\windowResized.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\primitiveShape.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\common\commands\graphicsObjectCommands.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

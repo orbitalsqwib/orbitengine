@@ -13,6 +13,7 @@
 #define _ORBIT_ORBITENGINE_H
 
 // import necessary headers
+#include "graphics/graphics.h"
 #include "input/keyboardState.h"
 #include "input/mouseState.h"
 #include "input/gamepad.h"

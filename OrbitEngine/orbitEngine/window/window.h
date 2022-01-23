@@ -20,8 +20,8 @@
 #include "windowContext.h"
 #include "extensions/windowExtension.h"
 #include "../!config.h"
+#include "../common/notifications/windowResized.h"
 #include "../macros.h"
-#include "../common/windowCommands.h"
 #include "../messaging/pubsub.h"
 #include "../utils/flow.h"
 #include "../utils/pointers.h"
@@ -96,6 +96,9 @@ private:
 	// contains a handle to a mutex previously defined during window binding.
 	// if no window was previously bound with a mutex, this defaults to NULL.
 	HANDLE hMutex;
+
+	// records the current dimensions of the displayed window
+	UINT width, height;
 
 
 	// messaging
@@ -206,6 +209,22 @@ protected:
 		// update instance count on window destruction
 		if (msg == WM_NCDESTROY) cWndPtr->decrementWindows();
 
+		// notify others on window resize
+		if (msg == WM_SIZE) {
+
+			// update states
+			cWndPtr->updateWidth(LOWORD(lParam));
+			cWndPtr->updateHeight(HIWORD(lParam));
+
+			// send window resized notification
+			cWndPtr->broker
+				->pushImmediately(WindowResized(
+					cWndPtr->getHwnd(),
+					cWndPtr->getWidth(),
+					cWndPtr->getHeight()
+				));
+		}
+
 		// ! end of delegate flow, return result
 		return flow.getResult();
 	}
@@ -249,6 +268,16 @@ protected:
 		extensions.push_back(std::move(extensionPtr));
 	}
 
+	// =======================================================================
+	// updates the window's recorded width
+	// =======================================================================
+	void updateWidth(const UINT& newWidth) { width = newWidth; }
+
+	// =======================================================================
+	// updates the window's recorded height
+	// =======================================================================
+	void updateHeight(const UINT& newHeight) { height = newHeight; }
+
 public:
 
 	// =======================================================================
@@ -268,6 +297,8 @@ public:
 		hwnd		(NULL),
 		className	(lpszClassName),
 		hMutex		(NULL),
+		width		(SETTINGS_NS::WND_INIT_WIDTH),
+		height		(SETTINGS_NS::WND_INIT_HEIGHT),
 		broker		(pSharedBroker)
 	{
 		// statically assert that ChildWnd adheres to CRTP
@@ -489,6 +520,16 @@ public:
 	// returns the name of this window class
 	// =======================================================================
 	LPCWSTR getClassName() const { return className; }
+
+	// =======================================================================
+	// returns the recorded width of the window
+	// =======================================================================
+	UINT getWidth() const { return width; }
+
+	// =======================================================================
+	// returns the recorded height of the window
+	// =======================================================================
+	UINT getHeight() const { return height; }
 
 	// =======================================================================
 	// returns a reference to the shared window command broker

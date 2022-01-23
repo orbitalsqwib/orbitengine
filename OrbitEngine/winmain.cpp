@@ -14,6 +14,7 @@
 #include <windows.h>
 
 // import necessary headers
+#include "orbitEngine/orbitEngine.h"
 
 
 int WINAPI WinMain(
@@ -22,7 +23,12 @@ int WINAPI WinMain(
 	_In_		LPSTR		,
 	_In_		int			
 ) {	
-	
+	//TODO: create main window
+	/*for (int i = 0; i < 10; i++) {
+		GameWindow* test = new GameWindow();
+		test->bindWindow(L"Test");
+		test->getBroker()->pushImmediately(DisplayCommands::SETSTYLE_BORDERED);
+	}*/
 	// initialize message loop states
 	MSG msg;
 	int exit = false;

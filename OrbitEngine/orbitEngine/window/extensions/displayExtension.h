@@ -15,6 +15,7 @@
 // import necessary headers
 #include "windowExtension.h"
 #include "../../!config.h"
+#include "../../common/commands/displayCommands.h"
 #include "../../common/priority.h"
 #include "../../common/windowStyle.h"
 #include "../../messaging/pubsub.h"
@@ -55,7 +56,7 @@ namespace {
 //   - enables finer control over display elements (shadows)
 class DisplayExtension : 
 	public WindowExtension,
-	public ISubscriber<WindowDisplayCommands>
+	public ISubscriber<DisplayCommands>
 {
 private:
 
@@ -134,8 +135,8 @@ public:
 	// or behaviour as necessary. may provide a pointer to the message broker
 	// that invoked this event, which should be null-checked prior to use.
 	virtual void handleMessage(
-		WindowDisplayCommands	command,
-		MessageBroker*			broker
+		DisplayCommands		command,
+		MessageBroker*		broker
 	);
 
 	// code to be run as an extension within base wndproc

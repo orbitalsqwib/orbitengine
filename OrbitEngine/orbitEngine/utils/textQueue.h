@@ -172,7 +172,7 @@ public:
 	// =======================================================================
 	// deletes the last len characters from the text buffer
 	// =======================================================================
-	TextQueue& popBack(const int& len = 1)
+	TextQueue& popBack(const size_t& len = 1)
 	{
 		// if len is greater than the buffer size, erase the entire buffer
 		if (len > maxSize) buffer.erase();

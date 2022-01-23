@@ -25,7 +25,7 @@
 #define SAFE_DELETE(ptr) { if(ptr) { delete(ptr);	ptr = NULL; } }
 
 // safely release pointer referenced object
-#define SAFE_RELEASE(ptr) { if(ptr && *ptr) { ptr->Release(); ptr = NULL; } }
+#define SAFE_RELEASE(ptr) { if(ptr) { ptr->Release(); ptr = NULL; } }
 
 // safely delete pointer referenced array
 #define SAFE_DELETE_ARRAY(ptr) { if(ptr) { delete [](ptr); ptr = NULL; } }
