@@ -17,47 +17,49 @@
 #include <windows.h>
 
 // import necessary headers
-#include "dximport.h"
+#include "../dximport.h"
+#include "../texture/textureData.h"
 
 
 // main definition
 
-// defines a set of data that can be sent to the graphics handler to position, 
-// transform and display a sprite texture within a window.
+// defines the set of data necessary to position, transform and display a
+// texture resource within a window. as a piece of pure state, all logic
+// using these states should be carried out by sprite operators.
 struct SpriteData
 {
 	// members
-	int			width;		// width of sprite in pixels
-	int			height;		// height of sprite in pixels
-	float		x;			// x-coord for top left corner of sprite
-	float		y;			// y-coord for top left corner of sprite
-	float		z;			// z-coord for depth of sprite (0 to 100)
-	float		angle;		// rotation angle in radians
-	float		scale;		// scales both width and height
-	RECT		srcRect;	// selects a portion of the spritesheet to display
-	LP_TEXTURE	pTexture;	// pointer to texture data
-	bool		flipX;		// mirror sprite on the x-axis
-	bool		flipY;		// mirror sprite on the y-axis
+	float			relX;		// relative x for sprite's top-left corner
+	float			relY;		// relative x for sprite's top-left corner
+	float			z;			// z-coord for depth of sprite (0.0 to 1.0)
+	int				width;		// width of sprite in pixels
+	int				height;		// height of sprite in pixels
+	float			angle;		// rotation angle in radians
+	float			scale;		// scales both width and height
+	RECT			srcRect;	// portion of the spritesheet to display
+	TextureData*	pTexture;	// pointer to texture data source
+	bool			flipX;		// mirror sprite on the x-axis
+	bool			flipY;		// mirror sprite on the y-axis
 
 	// convenience constructor
 	SpriteData(
+		const float&	_relX		= 0,
+		const float&	_relY		= 0,
+		const float&	_z			= 0.5f,
 		const int&		_width		= 0,
 		const int&		_height		= 0,
-		const float&	_x			= 0,
-		const float&	_y			= 0,
-		const float&	_z			= 0,
 		const float&	_angle		= 0,
 		const float&	_scale		= 0,
 		const RECT&		_srcRect	= {0, 0, 0, 0},
-		LP_TEXTURE		_pTexture	= NULL,
+		TextureData*	_pTexture	= NULL,
 		const bool&		_flipX		= 0,
 		const bool&		_flipY		= 0
 	):
+		relX		(_relX),
+		relY		(_relY),
+		z			(_z),
 		width		(_width),
 		height		(_height),
-		x			(_x),
-		y			(_y),
-		z			(_z),
 		angle		(_angle),
 		scale		(_scale),
 		srcRect		(_srcRect),

@@ -42,10 +42,34 @@
     <ClCompile Include="orbitEngine\performance\timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="orbitEngine\graphics\primitiveShape.cpp">
+    <ClCompile Include="orbitEngine\graphics\shape\shapeTranslator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="orbitEngine\graphics\graphics.cpp">
+    <ClCompile Include="orbitEngine\graphics\graphicsContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\graphics\texture\textureOperator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\graphics\texture\textureManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\graphics\sprite\spriteOperator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\graphics\shape\shapeOperator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\graphics\textStyle\textStyleOperator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\graphics\textStyle\textStyleManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\graphics\text\textOperator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\graphics\animSprite\animSpriteOperator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -134,7 +158,7 @@
     <ClInclude Include="orbitEngine\performance\timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="orbitEngine\graphics\graphics.h">
+    <ClInclude Include="orbitEngine\graphics\graphicsContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="orbitEngine\graphics\dximport.h">
@@ -149,17 +173,62 @@
     <ClInclude Include="orbitEngine\graphics\vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="orbitEngine\graphics\spriteData.h">
+    <ClInclude Include="orbitEngine\graphics\sprite\spriteData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="orbitEngine\common\notifications\windowResized.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="orbitEngine\graphics\primitiveShape.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="orbitEngine\common\commands\graphicsObjectCommands.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\text\textData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\sprite\spriteOperator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\texture\textureData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\texture\textureOperator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\texture\textureManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\graphicsOperator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\shape\shapeData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\shape\shapeOperator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\shape\shapeTranslator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\textStyle\textStyleOperator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\textStyle\textStyleData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\shape\translatedShape.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\textStyle\textStyleManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\animSprite\animSpriteData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\animSprite\animSpriteOperator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="orbitEngine\graphics\text\textOperator.h" />
   </ItemGroup>
 </Project>

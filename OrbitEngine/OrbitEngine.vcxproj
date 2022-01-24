@@ -19,8 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="orbitEngine\graphics\graphics.cpp" />
-    <ClCompile Include="orbitEngine\graphics\primitiveShape.cpp" />
+    <ClCompile Include="orbitEngine\graphics\animSprite\animSpriteOperator.cpp" />
+    <ClCompile Include="orbitEngine\graphics\graphicsContext.cpp" />
+    <ClCompile Include="orbitEngine\graphics\shape\shapeTranslator.cpp" />
+    <ClCompile Include="orbitEngine\graphics\shape\shapeOperator.cpp" />
+    <ClCompile Include="orbitEngine\graphics\sprite\spriteOperator.cpp" />
+    <ClCompile Include="orbitEngine\graphics\textStyle\textStyleManager.cpp" />
+    <ClCompile Include="orbitEngine\graphics\textStyle\textStyleOperator.cpp" />
+    <ClCompile Include="orbitEngine\graphics\texture\textureManager.cpp" />
+    <ClCompile Include="orbitEngine\graphics\texture\textureOperator.cpp" />
+    <ClCompile Include="orbitEngine\graphics\text\textOperator.cpp" />
     <ClCompile Include="orbitEngine\performance\timer.cpp" />
     <ClCompile Include="orbitEngine\window\classes\gameWindow.cpp" />
     <ClCompile Include="orbitEngine\input\gamepad.cpp" />
@@ -35,13 +43,27 @@
     <ClInclude Include="orbitEngine\common\colors.h" />
     <ClInclude Include="orbitEngine\common\commands\graphicsObjectCommands.h" />
     <ClInclude Include="orbitEngine\common\notifications\windowResized.h" />
-    <ClInclude Include="orbitEngine\graphics\primitiveShape.h" />
+    <ClInclude Include="orbitEngine\graphics\animSprite\animSpriteData.h" />
+    <ClInclude Include="orbitEngine\graphics\animSprite\animSpriteOperator.h" />
+    <ClInclude Include="orbitEngine\graphics\graphicsOperator.h" />
+    <ClInclude Include="orbitEngine\graphics\shape\shapeData.h" />
+    <ClInclude Include="orbitEngine\graphics\shape\shapeTranslator.h" />
+    <ClInclude Include="orbitEngine\graphics\shape\shapeOperator.h" />
+    <ClInclude Include="orbitEngine\graphics\shape\translatedShape.h" />
+    <ClInclude Include="orbitEngine\graphics\sprite\spriteOperator.h" />
+    <ClInclude Include="orbitEngine\graphics\textStyle\textStyleManager.h" />
+    <ClInclude Include="orbitEngine\graphics\text\textData.h" />
     <ClInclude Include="orbitEngine\common\priority.h" />
     <ClInclude Include="orbitEngine\common\zvalues.h" />
     <ClInclude Include="orbitEngine\error.h" />
     <ClInclude Include="orbitEngine\graphics\dximport.h" />
-    <ClInclude Include="orbitEngine\graphics\graphics.h" />
-    <ClInclude Include="orbitEngine\graphics\spriteData.h" />
+    <ClInclude Include="orbitEngine\graphics\graphicsContext.h" />
+    <ClInclude Include="orbitEngine\graphics\sprite\spriteData.h" />
+    <ClInclude Include="orbitEngine\graphics\texture\textureData.h" />
+    <ClInclude Include="orbitEngine\graphics\texture\textureManager.h" />
+    <ClInclude Include="orbitEngine\graphics\texture\textureOperator.h" />
+    <ClInclude Include="orbitEngine\graphics\textStyle\textStyleOperator.h" />
+    <ClInclude Include="orbitEngine\graphics\textStyle\textStyleData.h" />
     <ClInclude Include="orbitEngine\graphics\vertex.h" />
     <ClInclude Include="orbitEngine\orbitEngine.h" />
     <ClInclude Include="orbitEngine\performance\timer.h" />
@@ -69,6 +91,9 @@
     <ClInclude Include="orbitEngine\window\window.h" />
     <ClInclude Include="orbitEngine\window\windowContext.h" />
     <ClInclude Include="orbitEngine\window\extensions\windowExtension.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="orbitEngine\graphics\text\textOperator.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

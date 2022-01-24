@@ -13,13 +13,14 @@
 #define _ORBIT_ORBITENGINE_H
 
 // import necessary headers
-#include "graphics/graphics.h"
+#include "graphics/graphicsContext.h"
 #include "input/keyboardState.h"
 #include "input/mouseState.h"
 #include "input/gamepad.h"
 #include "messaging/pubsub.h"
 #include "performance/timer.h"
 #include "window/classes/gameWindow.h"
+
 
 // main definition
 
@@ -47,7 +48,8 @@ private:
 	// main game window
 	GameWindow window;
 
-	// TODO: GRAPHICS
+	// graphics context
+	GraphicsContext graphicsContext;
 
 
 	// gameplay components
@@ -67,6 +69,46 @@ private:
 
 public:
 
+	// provides getters to its owner's states
+	class Proxy
+	{
+	private:
+
+		// states
+
+		// non-owning pointer to the owner of the proxy
+		OrbitEngine* owner;
+
+
+		// constructor
+
+		// declare OrbitEngine as friend
+		friend OrbitEngine;
+
+		// can only be constructed by OrbitEngine classes
+		Proxy(OrbitEngine* _owner): owner(_owner) {}
+
+	public:
+
+		// getters
+
+		// returns a reference to the keyboard state container
+		KeyboardState& keyboard() { return owner->keyboard; }
+
+		// returns a reference to the mouse state container
+		MouseState& mouse() { return owner->mouse; }
+
+		// returns a reference to the gamepad handler
+		GamepadHandler& gamepads() { return owner->gamepads; }
+
+		// returns a reference to the graphics handler
+		GraphicsContext& graphicsContext() { return owner->graphicsContext; }
+
+		// returns a reference to the shared message broker
+		MessageBroker& broker() { return owner->broker; }
+
+	};
+
 	// constructor
 	OrbitEngine();
 
@@ -80,6 +122,11 @@ public:
 	// delegates work to game components in order.
 	void update();
 
+
+	// getterse
+
+	// returns a proxy object that provides access to member states
+	Proxy getProxy() { return Proxy(this); }
 };
 
 #endif // !_ORBIT_ORBITENGINE_H

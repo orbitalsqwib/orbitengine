@@ -29,6 +29,7 @@ int WINAPI WinMain(
 		test->bindWindow(L"Test");
 		test->getBroker()->pushImmediately(DisplayCommands::SETSTYLE_BORDERED);
 	}*/
+
 	// initialize message loop states
 	MSG msg;
 	int exit = false;
