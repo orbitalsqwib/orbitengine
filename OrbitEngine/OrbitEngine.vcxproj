@@ -19,6 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="orbitEngine\ecs\componentManager.cpp" />
+    <ClCompile Include="orbitEngine\ecs\entityManager.cpp" />
+    <ClCompile Include="orbitEngine\ecs\systemManager.cpp" />
     <ClCompile Include="orbitEngine\graphics\animSprite\animSpriteOperator.cpp" />
     <ClCompile Include="orbitEngine\graphics\graphicsContext.cpp" />
     <ClCompile Include="orbitEngine\graphics\shape\shapeTranslator.cpp" />
@@ -43,6 +46,15 @@
     <ClInclude Include="orbitEngine\common\colors.h" />
     <ClInclude Include="orbitEngine\common\commands\graphicsObjectCommands.h" />
     <ClInclude Include="orbitEngine\common\notifications\windowResized.h" />
+    <ClInclude Include="orbitEngine\ecs\componentArray.h" />
+    <ClInclude Include="orbitEngine\ecs\componentManager.h" />
+    <ClInclude Include="orbitEngine\ecs\entityManager.h" />
+    <ClInclude Include="orbitEngine\ecs\system.h" />
+    <ClInclude Include="orbitEngine\ecs\systemManager.h" />
+    <ClInclude Include="orbitEngine\ecs\types.h" />
+    <ClInclude Include="orbitEngine\ecs\types\entity.h" />
+    <ClInclude Include="orbitEngine\ecs\types\componentTypeEnum.h" />
+    <ClInclude Include="orbitEngine\ecs\types\signature.h" />
     <ClInclude Include="orbitEngine\graphics\animSprite\animSpriteData.h" />
     <ClInclude Include="orbitEngine\graphics\animSprite\animSpriteOperator.h" />
     <ClInclude Include="orbitEngine\graphics\graphicsOperator.h" />
@@ -67,6 +79,7 @@
     <ClInclude Include="orbitEngine\graphics\vertex.h" />
     <ClInclude Include="orbitEngine\orbitEngine.h" />
     <ClInclude Include="orbitEngine\performance\timer.h" />
+    <ClInclude Include="orbitEngine\scene\scene.h" />
     <ClInclude Include="orbitEngine\window\classes\gameWindow.h" />
     <ClInclude Include="orbitEngine\input\gamepad.h" />
     <ClInclude Include="orbitEngine\input\keyboardState.h" />
