@@ -81,6 +81,12 @@
     <ClCompile Include="orbitEngine\ecs\systemManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="orbitEngine\ecs\ecsInstance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\scene\scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="orbitEngine\!config.h">
@@ -264,6 +270,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="orbitEngine\ecs\systemManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\ecs\ecsInstance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\scene\ISceneManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\scene\sceneManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

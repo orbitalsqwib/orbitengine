@@ -43,7 +43,9 @@ SystemType* SystemManager::registerSystem()
 
 	// ensure system has not been registered before, else throw a warning
 	if (systems.count(type) == 0) throw Error(
-		"Warning: Component type " + type + "has already been registered!",
+		"Warning: Component type " 
+		+ std::string(type) 
+		+ "has already been registered!",
 		ErrorType::WARNING
 	);
 
@@ -91,14 +93,17 @@ void SystemManager::notifyEntitySignatureChanged(
 	// iterate through systems map
 	while (it != systems.end())
 	{
-		// get system signature from signature map
-		Signature systemSignature = signatures[it->first];
+		// get system signatures from signature map
+		Signature standard = signatures[it->first].first;
+		Signature exclusive = signatures[it->first].second;
 
-		// check if new signature contains system's signature, thus the
-		// components that the system needs are a subset of the entity's
-		// components.
-		if ((newSignature & systemSignature) == systemSignature)
-		{
+		// check entity signature to see if it meets system criterias
+		if (
+			// check entity has components that the system wants
+			(newSignature & standard) == standard &&
+			// check entity does not have any components the system excludes
+			(newSignature & exclusive) == 0
+		) {
 			// add without checking; set does nothing if entity already exists
 			it->second->entities.insert(entity);
 		}
@@ -118,10 +123,9 @@ void SystemManager::notifyEntitySignatureChanged(
 // setters
 
 // ===========================================================================
-// sets the signature for a registered system. this controls the criteria
-// for entities to be added or removed from the system entity container.
-// i.e: an entity's signature has to contain the system signature in order
-// for a system to operate on it
+// sets the standard  signature for a registered system. this controls the
+// components that an entity must possess in order to be added to the
+// system.
 // ===========================================================================
 template <class SystemType>
 void SystemManager::setSignature(
@@ -131,11 +135,39 @@ void SystemManager::setSignature(
 	TYPE_STRING type = typeid(System).name();
 
 	// ensure system has been registered before, else throw a warning
+	// ensure system has not been registered before, else throw a warning
 	if (systems.count(type) == 0) throw Error(
-		"Warning: Component type " + type + "has not been registered!",
+		"Warning: Component type "
+		+ std::string(type)
+		+ "has already been registered!",
 		ErrorType::WARNING
 	);
 
-	// set the specified signature for the specified system
-	signatures[type] = signature;
+	// sets the standard signature for the specified system
+	signatures[type].first = signature;
+}
+
+// ===========================================================================
+// sets the exclusive signature for a registered system. this controls the
+// components that an entity must not have in order to be added to the
+// system
+// ===========================================================================
+template <class SystemType>
+void SystemManager::setExclusiveSignature(
+	const Signature& signature
+) {
+	// get type string for system
+	TYPE_STRING type = typeid(System).name();
+
+	// ensure system has been registered before, else throw a warning
+	// ensure system has not been registered before, else throw a warning
+	if (systems.count(type) == 0) throw Error(
+		"Warning: Component type "
+		+ std::string(type)
+		+ "has already been registered!",
+		ErrorType::WARNING
+	);
+
+	// sets the standard signature for the specified system
+	signatures[type].second = signature;
 }

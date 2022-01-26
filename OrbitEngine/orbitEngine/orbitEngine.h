@@ -54,9 +54,7 @@ private:
 
 	// gameplay components
 
-	// TODO: SCENE MANAGER
-
-	// TODO: ECS
+	// TODO: SCENE MANAGER + ECS
 
 
 	// utility components
@@ -69,8 +67,8 @@ private:
 
 public:
 
-	// provides getters to its owner's states
-	class Proxy
+	// provides access to specific engine components and states.
+	class Context
 	{
 	private:
 
@@ -86,7 +84,7 @@ public:
 		friend OrbitEngine;
 
 		// can only be constructed by OrbitEngine classes
-		Proxy(OrbitEngine* _owner): owner(_owner) {}
+		Context(OrbitEngine* _owner): owner(_owner) {}
 
 	public:
 
@@ -125,8 +123,8 @@ public:
 
 	// getterse
 
-	// returns a proxy object that provides access to member states
-	Proxy getProxy() { return Proxy(this); }
+	// returns a context object that provides access to member states
+	Context getContext() { return Context(this); }
 };
 
 #endif // !_ORBIT_ORBITENGINE_H

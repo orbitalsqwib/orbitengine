@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="orbitEngine\ecs\componentManager.cpp" />
+    <ClCompile Include="orbitEngine\ecs\ecsInstance.cpp" />
     <ClCompile Include="orbitEngine\ecs\entityManager.cpp" />
     <ClCompile Include="orbitEngine\ecs\systemManager.cpp" />
     <ClCompile Include="orbitEngine\graphics\animSprite\animSpriteOperator.cpp" />
@@ -33,6 +34,7 @@
     <ClCompile Include="orbitEngine\graphics\texture\textureOperator.cpp" />
     <ClCompile Include="orbitEngine\graphics\text\textOperator.cpp" />
     <ClCompile Include="orbitEngine\performance\timer.cpp" />
+    <ClCompile Include="orbitEngine\scene\scene.cpp" />
     <ClCompile Include="orbitEngine\window\classes\gameWindow.cpp" />
     <ClCompile Include="orbitEngine\input\gamepad.cpp" />
     <ClCompile Include="orbitEngine\input\keyboardState.cpp" />
@@ -48,6 +50,7 @@
     <ClInclude Include="orbitEngine\common\notifications\windowResized.h" />
     <ClInclude Include="orbitEngine\ecs\componentArray.h" />
     <ClInclude Include="orbitEngine\ecs\componentManager.h" />
+    <ClInclude Include="orbitEngine\ecs\ecsInstance.h" />
     <ClInclude Include="orbitEngine\ecs\entityManager.h" />
     <ClInclude Include="orbitEngine\ecs\system.h" />
     <ClInclude Include="orbitEngine\ecs\systemManager.h" />
@@ -79,7 +82,9 @@
     <ClInclude Include="orbitEngine\graphics\vertex.h" />
     <ClInclude Include="orbitEngine\orbitEngine.h" />
     <ClInclude Include="orbitEngine\performance\timer.h" />
+    <ClInclude Include="orbitEngine\scene\ISceneManager.h" />
     <ClInclude Include="orbitEngine\scene\scene.h" />
+    <ClInclude Include="orbitEngine\scene\sceneManager.h" />
     <ClInclude Include="orbitEngine\window\classes\gameWindow.h" />
     <ClInclude Include="orbitEngine\input\gamepad.h" />
     <ClInclude Include="orbitEngine\input\keyboardState.h" />

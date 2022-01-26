@@ -94,8 +94,9 @@ public:
 	template <class ComponentType>
 	void removeComponent(const Entity& entity);
 
-	// handles entity destruction
-	void entityDestroyed(const Entity& entity);
+	// notifies this manager that the entity has been destroyed, and should
+	// clean up all related component data immediately.
+	void notifyEntityDestroyed(const Entity& entity);
 
 
 	// getters

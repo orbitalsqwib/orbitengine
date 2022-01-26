@@ -24,8 +24,10 @@
 // main definition
 
 // defines a base system object that contains a container for entities that
-// match the system's signature and can be managed by a system manager. can
-// be inherited by other classes with non-virtual inheritance.
+// match the system's signature and can be managed by a system manager. logic
+// should be specified per system, and does not prescribe a fixed run() method
+// that will be called every update. it is up to the implementer to call the
+// necessary system methods as needed for the logic to work.
 class System 
 {
 protected: 

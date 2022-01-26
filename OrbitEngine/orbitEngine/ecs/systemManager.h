@@ -39,13 +39,21 @@ private:
 	// defines a constant type string as returned by typeid().name()
 	typedef const char* TYPE_STRING;
 
+	// defines a pair of signatures. the first signature is the standard
+	// system signature, which an entity must possess as a subset of its total
+	// components. the second signature is the exclusive system signature,
+	// which specifies the components that an entity cannot have, and acts as
+	// a sort of filter for systems
+	typedef std::pair<Signature, Signature> SIGNATURE_PAIR;
+
+	// defines a map of type strings : unique pointers of generic systems
 	typedef std::unordered_map<TYPE_STRING, UniquePtr<System>> SYSTEM_MAP;
 
 
 	// members
 
 	// maps system type strings to system signatures
-	std::unordered_map<TYPE_STRING, Signature> signatures;
+	std::unordered_map<TYPE_STRING, SIGNATURE_PAIR> signatures;
 
 	// maps system type strings to unique pointers of generic systems.
 	SYSTEM_MAP systems;
@@ -79,12 +87,17 @@ public:
 
 	// setters
 
-	// sets the signature for a registered system. this controls the criteria
-	// for entities to be added or removed from the system entity container.
-	// i.e: an entity's signature has to contain the system signature in order
-	// for a system to operate on it
+	// sets the standard  signature for a registered system. this controls the
+	// components that an entity must possess in order to be added to the
+	// system.
 	template <class SystemType>
 	void setSignature(const Signature& signature);
+
+	// sets the exclusive signature for a registered system. this controls the
+	// components that an entity must not have in order to be added to the
+	// system
+	template <class SystemType>
+	void setExclusiveSignature(const Signature& signature);
 
 };
 

@@ -118,9 +118,10 @@ void ComponentManager::removeComponent(
 }
 
 // ===========================================================================
-// handles entity destruction
+// notifies this manager that the entity has been destroyed, and should
+// clean up all related component data immediately.
 // ===========================================================================
-void ComponentManager::entityDestroyed(
+void ComponentManager::notifyEntityDestroyed(
 	const Entity& entity
 ) {
 	// initialize iterator
@@ -149,10 +150,10 @@ ComponentTypeEnum ComponentManager::getTypeEnum()
 	// get type string for component type
 	TYPE_STRING type = typeid(ComponentType).name();
 
-	// ensure component type has been registered before, else throw warning
+	// ensure component type has been registered before, else throw error
 	if (typeEnums.count(type) == 0) throw Error(
-		"Warning: Component type " + type + "has not been registered!",
-		ErrorType::WARNING
+		"Error: Component type " + type + "has not been registered!",
+		ErrorType::FATAL_ERROR
 	);
 
 	// return component type enum
