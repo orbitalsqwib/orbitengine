@@ -33,6 +33,10 @@ public:
 		const std::string&	sceneName,
 		const bool&			replace
 	) = 0;
+
+	// should pop the current scene from the scene stack, resuming the last
+	// scene placed on the scene stack. this will destroy the current scene!
+	virtual void pop() = 0;
 };
 
 #endif // !_ORBIT_SCENE_ISCENEMANAGER_H

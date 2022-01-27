@@ -26,6 +26,7 @@ ECSInstance::ECSInstance():
 	pEntityMgr		(nullptr),
 	pComponentMgr	(nullptr),
 	pSystemMgr		(nullptr),
+	pEngineContext	(nullptr),
 	initialized		(false)
 {}
 
@@ -35,14 +36,20 @@ ECSInstance::ECSInstance():
 // manager, thus it is better to delay initialization until the instance
 // is actually needed.
 // ===========================================================================
-void ECSInstance::initialize()
-{
+void ECSInstance::initialize(
+	IEngineContext* _pEngineContext
+) {
+	// ensure that the incoming engine context is non-null, else throw error
+	if (!_pEngineContext) throw Error(
+		"Error: No engine context was provided!"
+	);
+
 	// allocate new managers and assign them to the unique pointer members. 
 	// on destruction of the instance, the unique pointers will automatically
 	// deallocate them and free up memory safely.
 	pEntityMgr		= new EntityManager();
 	pComponentMgr	= new ComponentManager();
-	pSystemMgr		= new SystemManager();
+	pSystemMgr		= new SystemManager(pEngineContext);
 }
 
 // ===========================================================================

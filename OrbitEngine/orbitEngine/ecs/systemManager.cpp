@@ -20,12 +20,22 @@
 // ===========================================================================
 // constructor
 // ===========================================================================
-SystemManager::SystemManager():
-
+SystemManager::SystemManager(
+	IEngineContext* _pEngineContext
+):
 	// members
-	signatures	(),
-	systems		()
-{}
+	signatures		(),
+	systems			(),
+	pEngineContext	(nullptr)
+{
+	// ensure that the incoming engine context is non-null, else throw error
+	if (!_pEngineContext) throw Error(
+		"Error: No engine context was provided!"
+	);
+
+	// set engine context pointer - should always be valid
+	pEngineContext = _pEngineContext;
+}
 
 
 // methods

@@ -18,6 +18,7 @@
 
 // import necessary headers
 #include "types.h"
+#include "../engine/IEngineContext.h"
 #include <set>
 
 
@@ -37,6 +38,9 @@ protected:
 
 	// protected entities container that can be accessed by system logic
 	std::set<Entity> entities;
+
+	// pointer to engine context, provides access to various handlers
+	IEngineContext* engine;
 
 };
 

@@ -20,6 +20,7 @@
 #include "entityManager.h"
 #include "componentManager.h"
 #include "systemManager.h"
+#include "../engine/IEngineContext.h"
 #include "../utils/pointers.h"
 
 
@@ -43,6 +44,10 @@ private:
 
 	// manages systems' entities and signatures - created on initialize()
 	UniquePtr<SystemManager> pSystemMgr;
+
+	// stores a pointer to the engine context that is copied to each system
+	// manager created by the instance.
+	IEngineContext* pEngineContext;
 
 	// initialization flag - only set to true after initialization complete
 	bool initialized;
@@ -73,7 +78,7 @@ public:
 	// required here as some managers are quite memory-intensive, e.g: entity
 	// manager, thus it is better to delay initialization until the instance
 	// is actually needed.
-	void initialize();
+	void initialize(IEngineContext* _pEngineContext);
 
 	// manually deallocates all manager objects and resets the instance state
 	// to uninitialized. this is useful if the ecs instance is not destroyed

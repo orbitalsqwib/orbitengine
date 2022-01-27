@@ -19,6 +19,7 @@
 // import necessary headers
 #include "types.h"
 #include "system.h"
+#include "../engine/IEngineContext.h"
 #include "../utils/pointers.h"
 #include <unordered_map>
 #include <typeinfo>
@@ -49,6 +50,10 @@ private:
 	// defines a map of type strings : unique pointers of generic systems
 	typedef std::unordered_map<TYPE_STRING, UniquePtr<System>> SYSTEM_MAP;
 
+	// stores a pointer to the engine context that is copied to each system
+	// created by the system manager.
+	IEngineContext* pEngineContext;
+
 
 	// members
 
@@ -61,7 +66,7 @@ private:
 public:
 
 	// constructor
-	SystemManager();
+	SystemManager(IEngineContext* _pEngineContext);
 
 
 	// methods

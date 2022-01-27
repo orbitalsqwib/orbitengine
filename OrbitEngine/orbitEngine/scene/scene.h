@@ -14,8 +14,9 @@
 
 // import necessary headers
 #include "ISceneManager.h"
+#include "IScene.h"
 #include "../ecs/ecsInstance.h"
-#include "../orbitEngine.h"
+#include "../engine/IEngineContext.h"
 #include "../error.h"
 
 
@@ -24,8 +25,18 @@
 // defines a base scene class that should be inherited by all game scenes.
 // provides a basic entity component system instance, as well as the game
 // engine's context. this is where all game logic should be implemented in.
-class Scene
+class Scene : public IScene
 {
+private:
+
+	// implement private pure virtuals
+
+	// should bind the scene to the specified scene manager.
+	virtual void setSceneManager(ISceneManager* _pSceneMgr);
+
+	// should bind the engine context to the specified scene manager.
+	virtual void setEngineContext(IEngineContext* _pEngineContext);
+
 protected:
 
 	// members
@@ -38,7 +49,7 @@ protected:
 	// game engine proxy, provides access to various game handlers that may
 	// be utilised by systems to implement game logic. guaranteed to be valid
 	// at the point of scene runtime.
-	OrbitEngine::Context* engine;
+	IEngineContext* engine;
 
 	// pointer to the scene manager. can be used to transition to another
 	// scene, or quit the game entirely.
@@ -53,7 +64,7 @@ public:
 	~Scene() {}
 
 
-	// methods
+	// implement pure virtuals
 
 	// delayed initializer method - sets up underlying managers before any
 	// scene methods are called. this is only called when the scene is

@@ -14,8 +14,10 @@
 
 // import necessary headers
 #include "ISceneManager.h"
-#include "scene.h"
+#include "IScene.h"
+#include "../engine/IEngineContext.h"
 #include "../utils/pointers.h"
+#include "../error.h"
 #include <stack>
 #include <string>
 #include <unordered_map>
@@ -32,15 +34,19 @@ private:
 	// defines a stack of active scenes, where only the top-most scene is
 	// continuously run each frame. note: each scene will take up memory until 
 	// removed from the stack.
-	std::stack<Scene*> sceneStack;
+	std::stack<IScene*> sceneStack;
 
 	// stores all registered scenes and maps them to their scene names.
-	std::unordered_map<std::string, UniquePtr<Scene>> sceneRegistry;
+	std::unordered_map<std::string, UniquePtr<IScene>> sceneRegistry;
+
+	// stores an engine context that is copied to each scene on registration
+	// and is automatically deallocated when the scene manager is destroyed.
+	UniquePtr<IEngineContext> pEngineContext;
 
 public:
 
 	// constructor
-	SceneManager();
+	SceneManager(IEngineContext* _pEngineContext);
 
 	
 	// methods
@@ -58,7 +64,7 @@ public:
 	// the scene's default constructor.
 	void registerScene(
 		const std::string&	sceneName,
-		Scene*				scene
+		IScene*				scene
 	);
 
 	// invokes the update function for the current scene
@@ -70,9 +76,13 @@ public:
 	// transitions to the specified scene, pausing or replacing the current
 	// scene according to the 'replace' boolean.
 	virtual void transition(
-		const std::string& sceneName,
-		const bool& replace
+		const std::string&	sceneName,
+		const bool&			replace
 	);
+
+	// should pop the current scene from the scene stack, resuming the last
+	// scene placed on the scene stack. this will destroy the current scene!
+	virtual void pop();
 
 };
 

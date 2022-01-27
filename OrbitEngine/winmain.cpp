@@ -14,7 +14,7 @@
 #include <windows.h>
 
 // import necessary headers
-#include "orbitEngine/orbitEngine.h"
+#include "orbitEngine/engine/orbitEngine.h"
 
 
 int WINAPI WinMain(
@@ -22,13 +22,9 @@ int WINAPI WinMain(
 	_In_opt_	HINSTANCE	,
 	_In_		LPSTR		,
 	_In_		int			
-) {	
-	//TODO: create main window
-	/*for (int i = 0; i < 10; i++) {
-		GameWindow* test = new GameWindow();
-		test->bindWindow(L"Test");
-		test->getBroker()->pushImmediately(DisplayCommands::SETSTYLE_BORDERED);
-	}*/
+) {
+	// create game engine instance
+	OrbitEngine game(L"Survive The Void");
 
 	// initialize message loop states
 	MSG msg;
@@ -48,7 +44,8 @@ int WINAPI WinMain(
 			DispatchMessageW(&msg);
 		}
 
-		//TODO: handle all queued window commands
+		// run game
+		game.update();
 
 	}
 	

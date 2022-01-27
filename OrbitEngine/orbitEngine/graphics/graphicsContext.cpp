@@ -31,8 +31,9 @@ GraphicsContext::GraphicsContext():
 	sprite3d		(nullptr),
 
 	// buffers
-	pVB				(nullptr),
-	vbMaxVertices	(0),
+	pVB					(nullptr),
+	vbMaxVertices		(0),
+	vbPrevMaxVertices	(0),
 
 	// messaging
 	broker			(nullptr),
@@ -292,7 +293,7 @@ void GraphicsContext::initialize(
 	const bool	_fullscreen
 ) {
 	// ensure that hWndPtr is valid
-	if (hWndPtr == nullptr) throw Error(
+	if (_hWndPtr == nullptr) throw Error(
 		"Error: Graphics Handler is not bound to a window!"
 	);
 

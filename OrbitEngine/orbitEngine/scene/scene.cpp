@@ -25,6 +25,27 @@ Scene::Scene():
 {}
 
 
+// implement private pure virtuals
+
+// ===========================================================================
+// should bind the scene to the specified scene manager.
+// ===========================================================================
+void Scene::setSceneManager(ISceneManager* _pSceneMgr)
+{
+	// ensure specified scene manager is a valid pointer and assign if so
+	if (_pSceneMgr) pSceneMgr = _pSceneMgr;
+}
+
+// ===========================================================================
+// should bind the engine context to the specified scene manager.
+// ===========================================================================
+void Scene::setEngineContext(IEngineContext* _pEngineContext)
+{
+	// ensure specified scene manager is a valid pointer and assign if so
+	if (_pEngineContext) engine = _pEngineContext;
+}
+
+
 // methods
 
 // ===========================================================================
@@ -40,7 +61,7 @@ void Scene::initialize()
 	);
 
 	// initialize ecs - the scene is valid from this point onwards
-	ecs.initialize();
+	ecs.initialize(engine);
 
 	// call scene setup
 	setup();

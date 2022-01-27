@@ -87,6 +87,12 @@
     <ClCompile Include="orbitEngine\scene\scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="orbitEngine\scene\sceneManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\engine\orbitEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="orbitEngine\!config.h">
@@ -167,7 +173,7 @@
     <ClInclude Include="orbitEngine\input\gamepad.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="orbitEngine\orbitEngine.h">
+    <ClInclude Include="orbitEngine\engine\orbitEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="orbitEngine\performance\timer.h">
@@ -279,6 +285,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="orbitEngine\scene\sceneManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\scene\IScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\engine\IEngineContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
