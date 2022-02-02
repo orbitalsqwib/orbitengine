@@ -24,10 +24,7 @@ TextureManager::TextureManager(
 	textureOp	(context)
 {
 	// subscribe self to graphics context broker (if it exists)
-	if (MessageBroker* broker = context->getBroker())
-	{
-		broker->addSubscriber(*this);
-	}
+	context->getBroker().addSubscriber(*this);
 }
 
 

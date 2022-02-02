@@ -32,29 +32,84 @@ OrbitEngine::OrbitEngine(
 	sceneManager	(new Context(this)), // manually allocate new context obj,
 										 // auto. destroyed by scene manager
 
-	// utility components
+	// messaging
 	messageBroker	(),
+
+	// fps / performance components
 	timer			(240.0f, 1.0f),
+	textStyleMgr	(&graphicsContext),
+	textOp			(&graphicsContext),
+	fpsTextData		(),
 
 	// flags
 	ready			(false),
 	paused			(false)
 {
-	// bind new instance of game window class, throw on failure
+	// game setup sequence
+
+	// ! bind new instance of game window class, throw on failure
 	if (!window.bindWindow(gameName)) throw Error(
 		"Error: Failed to bind game window!"
 	);
 
-	// set window presentation mode
+	// ! set window presentation mode
 	window.getBroker()->pushImmediately(DisplayCommands::BORDEREDWINDOWED);
 
-	// initialize graphics context
+	// ! initialize graphics context
 	graphicsContext.initialize(
 		window.getHwndPtr(),
 		window.getWidth(),
 		window.getHeight(),
 		false
 	);
+
+	// ! subscribe graphics context to window broker
+	window.getBroker()->addSubscriber<WindowResized>(graphicsContext);
+
+	// ! register default scenes
+	registerScene<StartupScene>(DefaultScenes::StartupScene);
+	registerScene<ExitScene>(DefaultScenes::ExitScene);
+
+	// ! setup fps counter
+
+	// create fps text style
+	textStyleMgr.addStyle(
+		"fps", 
+		TextStyleData(L"OCR A", 14, 0, 0, Colors::BLACK, Colors::LIME)
+	);
+
+	// configure fps text data
+	fpsTextData.x = 32;
+	fpsTextData.y = 32;
+	fpsTextData.z = ZValues::RESERVED;
+	fpsTextData.pStyle = textStyleMgr.getStyle("fps");
+
+	// TEST push startup scene
+	sceneManager.transition(DefaultScenes::StartupScene, false);
+	ready = true;
+}
+
+
+// private methods
+
+// ===========================================================================
+// updates the fps counter according to the performance timer
+// ===========================================================================
+void OrbitEngine::updateFPSCounter()
+{
+	// update fps text
+	int fps = int(timer.getFPS());
+	fpsTextData.text = "fps: " + std::to_string(fps);
+
+	// change fps indicator color according to current fps
+	COLOR_ARGB fpsBG = fps >= 60
+		? Colors::LIME
+		: fps >= 30
+		? Colors::YELLOW
+		: Colors::RED;
+
+	// update fps bg
+	textStyleMgr.getStyle("fps")->highlightColor = fpsBG;
 }
 
 
@@ -70,6 +125,13 @@ void OrbitEngine::setInitialScene(
 ) {
 	// attempt to push scene onto scene stack
 	sceneManager.transition(sceneName, false);
+
+	// push startup scene onto scene stack above initial scene - removes
+	// itself from the scene stack once it finishes playing
+	sceneManager.transition(DefaultScenes::StartupScene, false);
+
+	// tell engine that engine is ready to run.
+	ready = true;
 }
 
 // ===========================================================================
@@ -82,7 +144,22 @@ void OrbitEngine::update()
 	float frameTime = timer.runTimer();
 
 	// check that engine is in a valid state to run
-	if (!ready || paused) return;
+	if (!ready || paused || frameTime < 0) 
+		return;
+
+	// maintain graphics device
+	graphicsContext.maintainDevice();
+
+	// start rendering for the frame in advance
+	HRESULT sceneStarted = graphicsContext.beginSceneDraw();
+
+	// attempt to render fps display
+	if (graphicsContext.beginSpriteDraw() == D3D_OK)
+	{
+		updateFPSCounter();
+		textOp.render(fpsTextData);
+		graphicsContext.endSpriteDraw();
+	}
 
 	// run current scene's update method
 	sceneManager.updateCurrentScene(frameTime);
@@ -93,28 +170,23 @@ void OrbitEngine::update()
 	// handle all messages within the window's message broker
 	window.getBroker()->processAllMessages();
 
+	// finish draw sequence, then show current frame via page flip
+	if (sceneStarted == D3D_OK)
+	{
+		graphicsContext.endSceneDraw();
+		graphicsContext.showBackBuffer();
+	}
+
 	// update controller inputs and handle vibration
 	gamepadHandler.updateInputs();
 	gamepadHandler.updateGamepads(frameTime);
+
+	// clear key presses at end of each frame
+	keyboardState.clearKeyPresses();
 }
 
 
 // delegate (passthrough) methods
-
-// ===========================================================================
-// registers a scene with the engine's scene manager under sceneName. at
-// least one scene should be registered with the game engine for it to run
-// ===========================================================================
-template <class SceneType>
-OrbitEngine& OrbitEngine::registerScene(
-	const std::string&	sceneName
-) {
-	// delegate scene registration to scene manager
-	sceneManager.registerScene<SceneType>(sceneName);
-
-	// return reference to self to allow method chaining
-	return *this;
-}
 
 // ===========================================================================
 // registers a scene with the engine's scene manager under sceneName, but

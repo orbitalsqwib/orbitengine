@@ -52,9 +52,7 @@ public:
 	// beginSpriteDraw()...endSpriteDraw() method calls.
 	void render(
 		TextData&		text,
-		const float&	x			= 0,
-		const float&	y			= 0,
-		const UINT&		format		= DT_LEFT
+		const UINT&		format	= DT_LEFT
 	);
 
 };

@@ -14,14 +14,18 @@
 
 // import necessary headers
 #include "IEngineContext.h"
+#include "../common/defaultScenes.h"
 #include "../graphics/graphicsContext.h"
 #include "../input/keyboardState.h"
 #include "../input/mouseState.h"
 #include "../input/gamepad.h"
 #include "../messaging/pubsub.h"
 #include "../performance/timer.h"
+#include "../prefabs/scenes/exit/exitScene.h"
+#include "../prefabs/scenes/startup/startup.h"
 #include "../scene/sceneManager.h"
 #include "../window/classes/gameWindow.h"
+#include <string>
 
 
 // main definition
@@ -60,13 +64,25 @@ private:
 	SceneManager sceneManager;
 
 
-	// utility components
+	// messaging
 
 	// central gameplay message broker
 	MessageBroker messageBroker;
 
+
+	// fps / performance components
+
 	// performance timer
 	PerformanceTimer timer;
+
+	// fps text style manager
+	TextStyleManager textStyleMgr;
+
+	// fps text operator
+	TextOperator textOp;
+
+	// fps text data
+	TextData fpsTextData;
 
 
 	// flags
@@ -76,6 +92,12 @@ private:
 
 	// specifies if the engine is currently paused
 	bool paused;
+
+
+	// private methods
+
+	// updates the fps counter according to the performance timer
+	void updateFPSCounter();
 
 public:
 
@@ -145,7 +167,15 @@ public:
 	// registers a scene with the engine's scene manager under sceneName. at
 	// least one scene should be registered with the game engine for it to run
 	template <class SceneType>
-	OrbitEngine& registerScene(const std::string& sceneName);
+	OrbitEngine& registerScene(
+		const std::string&	sceneName
+	) {
+		// delegate scene registration to scene manager
+		sceneManager.registerScene<SceneType>(sceneName);
+
+		// return reference to self to allow method chaining
+		return *this;
+	}
 
 	// registers a scene with the engine's scene manager under sceneName, but
 	// adopts a manually allocated scene instead of creating a new scene

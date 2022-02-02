@@ -31,18 +31,16 @@ TextStyleOperator::TextStyleOperator(
 // and binds it to the text's font resource pointer.
 // ===========================================================================
 void TextStyleOperator::loadResource(
-	TextStyleData&	textStyle,
-	const bool&		bold,
-	const bool&		italic
+	TextStyleData&	textStyle
 ) {
 	// create directx font resource
 	HRESULT res = D3DXCreateFontW(
 		context->getD3DDevice(),
 		textStyle.fontHeight,
 		0,	// scale font size to font height
-		bold ? FW_BOLD : FW_NORMAL,
+		textStyle.bold ? FW_BOLD : FW_NORMAL,
 		1,	// mipmap levels should always be 1
-		italic,
+		textStyle.italics,
 		DEFAULT_CHARSET,
 		OUT_DEFAULT_PRECIS,
 		DEFAULT_QUALITY,

@@ -17,7 +17,7 @@
 #define _ORBIT_ECS_COMPONENTARRAY_H
 
 // import necessary headers
-#include "types.h"
+#include "../types.h"
 #include <array>
 
 // related constructs
@@ -29,7 +29,7 @@ class IComponentArray
 public:
 
 	// virtual destructor
-	virtual ~IComponentArray() = 0;
+	virtual ~IComponentArray() {};
 
 	// should handle entity destruction when called
 	virtual void notifyEntityDestroyed(const Entity& entity) = 0;
@@ -42,7 +42,7 @@ public:
 // is responsible for storing and providing access to its components, as well 
 // as managing the lifecycle of each component.
 template <class ComponentType>
-class ComponentArray : IComponentArray
+class ComponentArray : public IComponentArray
 {
 private:
 
@@ -73,8 +73,8 @@ private:
 	// the maximum size of the components array is the max entityid size)
 	std::array<COMPONENT_INDEX, ECS_MAX_ENTITIES> indexForEntity;
 
-	// sparse index array - maps indexes of the component array to entities
-	std::array<Entity, ECS_MAX_ENTITIES> entityForIndex;
+	// sparse index array - maps indexes of the component array to entitiy ids
+	std::array<EntityId, ECS_MAX_ENTITIES> entityForIndex;
 
 	// size of dense component array.
 	COMPONENT_INDEX size;
@@ -184,7 +184,7 @@ public:
 	) {
 		// delegate work to removeComponent() method, which will just exit
 		// quietly if no component exists for the entity.
-		removeComponent();
+		removeComponent(entity);
 	}
 
 
@@ -206,7 +206,7 @@ public:
 		if (indexForEntity[id] == INVALID_COMPONENT_INDEX) return nullptr;
 
 		// return a pointer to the component
-		return components[indexForEntity[id]];
+		return &components[indexForEntity[id]];
 	}
 
 };

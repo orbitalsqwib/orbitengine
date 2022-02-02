@@ -72,16 +72,13 @@
     <ClCompile Include="orbitEngine\graphics\animSprite\animSpriteOperator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="orbitEngine\ecs\entityManager.cpp">
+    <ClCompile Include="orbitEngine\ecs\internal\entityManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="orbitEngine\ecs\componentManager.cpp">
+    <ClCompile Include="orbitEngine\ecs\internal\systemManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="orbitEngine\ecs\systemManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="orbitEngine\ecs\ecsInstance.cpp">
+    <ClCompile Include="orbitEngine\ecs\internal\ecsInstance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="orbitEngine\scene\scene.cpp">
@@ -91,6 +88,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="orbitEngine\engine\orbitEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\prefabs\systems\renderSystems.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\prefabs\scenes\startup\startup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -263,22 +266,22 @@
     <ClInclude Include="orbitEngine\ecs\types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="orbitEngine\ecs\componentArray.h">
+    <ClInclude Include="orbitEngine\ecs\internal\componentArray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="orbitEngine\ecs\entityManager.h">
+    <ClInclude Include="orbitEngine\ecs\internal\entityManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="orbitEngine\ecs\componentManager.h">
+    <ClInclude Include="orbitEngine\ecs\internal\componentManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="orbitEngine\ecs\system.h">
+    <ClInclude Include="orbitEngine\ecs\internal\system.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="orbitEngine\ecs\systemManager.h">
+    <ClInclude Include="orbitEngine\ecs\internal\systemManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="orbitEngine\ecs\ecsInstance.h">
+    <ClInclude Include="orbitEngine\ecs\internal\ecsInstance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="orbitEngine\scene\ISceneManager.h">
@@ -287,14 +290,94 @@
     <ClInclude Include="orbitEngine\scene\sceneManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="orbitEngine\engine\IEngineContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\scenes\startup\startup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\systems\graphics\spriteRenderSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\components.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\operators.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\ecs\ecs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\components\positionData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\systems\graphics\spriteAnimationSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\systems\graphics\textRenderSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\systems\graphics\shapeRenderSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\systems\renderSystems.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\common\defaultScenes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\scenes\exit\exitScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="orbitEngine\scene\IScene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="orbitEngine\engine\IEngineContext.h">
+    <ClInclude Include="orbitEngine\imports\scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\imports\engine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\imports\ecs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\imports\components.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\imports\commons.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\imports\systems.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\listeners\transformListener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\commands\transformCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\commands\moveCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\commands\rotateCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\scenes\startup\components\cellData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\scenes\startup\systems\waveSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="orbitEngine\graphics\text\textOperator.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\ship.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\enemy.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

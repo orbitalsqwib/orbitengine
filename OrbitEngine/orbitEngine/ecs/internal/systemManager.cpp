@@ -21,50 +21,16 @@
 // constructor
 // ===========================================================================
 SystemManager::SystemManager(
-	IEngineContext* _pEngineContext
+	ECSInstance*	_ecs
 ):
 	// members
 	signatures		(),
 	systems			(),
-	pEngineContext	(nullptr)
-{
-	// ensure that the incoming engine context is non-null, else throw error
-	if (!_pEngineContext) throw Error(
-		"Error: No engine context was provided!"
-	);
-
-	// set engine context pointer - should always be valid
-	pEngineContext = _pEngineContext;
-}
+	ecs				(_ecs)
+{}
 
 
 // methods
-
-// ===========================================================================
-// registers a system with the system manager, creating a new system 
-// object instance within the system manager. also returns a pointer to 
-// the newly-created system so it can be used externally.
-// ===========================================================================
-template <class SystemType>
-SystemType* SystemManager::registerSystem()
-{
-	// get type string for system
-	TYPE_STRING type = typeid(System).name();
-
-	// ensure system has not been registered before, else throw a warning
-	if (systems.count(type) == 0) throw Error(
-		"Warning: Component type " 
-		+ std::string(type) 
-		+ "has already been registered!",
-		ErrorType::WARNING
-	);
-
-	// create the system and add it to systems map
-	systems[type] = UniquePtr<SystemType>(new SystemType());
-
-	// return non-owning system pointer for external use
-	return systems[type].get();
-}
 
 // ===========================================================================
 // notifies the manager that an entity has been destroyed. this removes
@@ -127,57 +93,4 @@ void SystemManager::notifyEntitySignatureChanged(
 		// increment iterator
 		it++;
 	}
-}
-
-
-// setters
-
-// ===========================================================================
-// sets the standard  signature for a registered system. this controls the
-// components that an entity must possess in order to be added to the
-// system.
-// ===========================================================================
-template <class SystemType>
-void SystemManager::setSignature(
-	const Signature&	signature
-) {
-	// get type string for system
-	TYPE_STRING type = typeid(System).name();
-
-	// ensure system has been registered before, else throw a warning
-	// ensure system has not been registered before, else throw a warning
-	if (systems.count(type) == 0) throw Error(
-		"Warning: Component type "
-		+ std::string(type)
-		+ "has already been registered!",
-		ErrorType::WARNING
-	);
-
-	// sets the standard signature for the specified system
-	signatures[type].first = signature;
-}
-
-// ===========================================================================
-// sets the exclusive signature for a registered system. this controls the
-// components that an entity must not have in order to be added to the
-// system
-// ===========================================================================
-template <class SystemType>
-void SystemManager::setExclusiveSignature(
-	const Signature& signature
-) {
-	// get type string for system
-	TYPE_STRING type = typeid(System).name();
-
-	// ensure system has been registered before, else throw a warning
-	// ensure system has not been registered before, else throw a warning
-	if (systems.count(type) == 0) throw Error(
-		"Warning: Component type "
-		+ std::string(type)
-		+ "has already been registered!",
-		ErrorType::WARNING
-	);
-
-	// sets the standard signature for the specified system
-	signatures[type].second = signature;
 }

@@ -39,8 +39,10 @@ struct ShapeData
 {
 	// members
 	BasicShape	type;			// specifies the basic shape type
-	float		relX;			// relative x for shape's top-left corner
-	float		relY;			// relative y for shape's top-left corner
+	float		x;				// x-coordinate for shape's top-left corner
+	float		y;				// y-coordinate for shape's top-left corner
+	float		relX;			// x-offset from logical to actual position 
+	float		relY;			// y-offset from logical to actual position
 	float		z;				// z-position for depth of text (0.0 - 1.0)
 	float		width;			// width of shape
 	float		height;			// height of shape
@@ -51,8 +53,8 @@ struct ShapeData
 	// convenience constructor
 	ShapeData(
 		const BasicShape&	_type			= BasicShape::RECTANGLE,
-		const float&		_relX			= 0,
-		const float&		_relY			= 0,
+		const float&		_x				= 0,
+		const float&		_y				= 0,
 		const float&		_z				= 0.5f,
 		const float&		_width			= 0,
 		const float&		_height			= 0,
@@ -61,8 +63,10 @@ struct ShapeData
 		const bool&			_xGradient		= true
 	):
 		type			(_type),
-		relX			(_relX),
-		relY			(_relY),
+		x				(_x),
+		y				(_y),
+		relX			(0),
+		relY			(0),
 		z				(_z),
 		width			(_width),
 		height			(_height),

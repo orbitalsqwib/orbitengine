@@ -46,8 +46,9 @@ public:
 	);
 
 	// updates animation data timer and handles frame updates accordingly
-	void updateAnimationTimer(
+	void updateAnimation(
 		AnimSpriteData&		animData,
+		SpriteData&			sprite,
 		const float&		updateTime
 	);
 

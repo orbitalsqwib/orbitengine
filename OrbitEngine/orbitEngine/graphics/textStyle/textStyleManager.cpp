@@ -23,11 +23,8 @@ TextStyleManager::TextStyleManager(
 	textStyleMap	(),
 	textStyleOp		(context)
 {
-	// subscribe self to graphics context broker (if it exists)
-	if (MessageBroker* broker = context->getBroker())
-	{
-		broker->addSubscriber(*this);
-	}
+	// subscribe self to graphics context broker
+	context->getBroker().addSubscriber(*this);
 }
 
 
@@ -77,7 +74,7 @@ void TextStyleManager::resetAllGraphics()
 // ===========================================================================
 // adds a texture to the texture map for the specified texture name
 // ===========================================================================
-TextStyleManager& TextStyleManager::addTextStyle(
+TextStyleManager& TextStyleManager::addStyle(
 	const std::string&		textStyleName,
 	const TextStyleData&	textStyle
 ) {
@@ -123,7 +120,7 @@ void TextStyleManager::handleMessage(
 // returns a pointer to the texture data for the specified texture name
 // if no texture data is found, the return value is nullptr.
 // ===========================================================================
-TextStyleData* TextStyleManager::getTextStyleData(
+TextStyleData* TextStyleManager::getStyle(
 	const std::string&	textureName
 ) {
 	// if no texture can be found for the texture name, return nullptr

@@ -19,6 +19,9 @@
 // include intellisense warnings
 #include <CodeAnalysis/Warnings.h>
 
+// define verbose debug info for d3dx9
+#define D3D_DEBUG_INFO
+
 // import d3d9 header and libraries (suppresses warnings from libraries)
 #pragma warning(push)
 #pragma warning(disable: ALL_CODE_ANALYSIS_WARNINGS )

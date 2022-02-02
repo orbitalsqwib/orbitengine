@@ -56,7 +56,26 @@ public:
 	// scenes constructed this way will require a default (no-argument)
 	// constructor.
 	template <class SceneType>
-	void registerScene(const std::string& sceneName);
+	void registerScene(
+		const std::string&	sceneName
+	) {
+		// ensure scene name has not been used yet, else throw error
+		if (sceneRegistry.count(sceneName) > 0) throw Error(
+			"Error: A scene has already been registered for: " + sceneName
+		);
+
+		// create new scene for type and cast it to interface
+		IScene* pNewScene = new SceneType();
+
+		// set scene's scene manager to this instance
+		pNewScene->setSceneManager(this);
+
+		// copy instance's engine context to the scene
+		pNewScene->setEngineContext(pEngineContext.get());
+
+		// add scene to scene registry
+		sceneRegistry[sceneName] = pNewScene;
+	}
 
 	// registers a scene class with the scene manager under sceneName, but
 	// accepts a pointer to a manually allocated scene object and inserts

@@ -40,11 +40,7 @@ public:
 
 	// creates a font resource from the fontname specified by the text data 
 	// and binds it to the text's font resource pointer.
-	void loadResource(
-		TextStyleData&	textStyle,
-		const bool&		bold			= false,
-		const bool&		italic			= false
-	);
+	void loadResource(TextStyleData& textStyle);
 
 	// releases the font resource at the text style's resource pointer
 	void releaseResource(TextStyleData& textStyle);

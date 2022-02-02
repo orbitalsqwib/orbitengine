@@ -17,10 +17,9 @@
 #define _ORBIT_ECS_SYSTEMMANAGER_H
 
 // import necessary headers
-#include "types.h"
 #include "system.h"
-#include "../engine/IEngineContext.h"
-#include "../utils/pointers.h"
+#include "../types.h"
+#include "../../utils/pointers.h"
 #include <unordered_map>
 #include <typeinfo>
 
@@ -50,10 +49,6 @@ private:
 	// defines a map of type strings : unique pointers of generic systems
 	typedef std::unordered_map<TYPE_STRING, UniquePtr<System>> SYSTEM_MAP;
 
-	// stores a pointer to the engine context that is copied to each system
-	// created by the system manager.
-	IEngineContext* pEngineContext;
-
 
 	// members
 
@@ -63,10 +58,13 @@ private:
 	// maps system type strings to unique pointers of generic systems.
 	SYSTEM_MAP systems;
 
+	// stores a pointer to the ecs instance class that owns this manager
+	ECSInstance* ecs;
+
 public:
 
 	// constructor
-	SystemManager(IEngineContext* _pEngineContext);
+	SystemManager(ECSInstance* _ecs);
 
 
 	// methods
@@ -75,7 +73,31 @@ public:
 	// object instance within the system manager. also returns a pointer to 
 	// the newly-created system so it can be used externally.
 	template <class SystemType>
-	SystemType* registerSystem();
+	SystemType* registerSystem()
+	{
+		// get type string for system
+		TYPE_STRING type = typeid(SystemType).name();
+
+		// ensure system has not been registered before, else throw a warning
+		if (systems.count(type) > 0) throw Error(
+			"Warning: System type "
+			+ std::string(type)
+			+ "has already been registered!",
+			ErrorType::WARNING
+		);
+
+		// create a new system of system type
+		SystemType* pNew = new SystemType();
+
+		// create the system and add its system interface to systems map
+		systems[type] = pNew;
+
+		// set system ecs to system manager's ecs
+		systems[type]->ecs = ecs;
+
+		// return new system pointer for external use
+		return pNew;
+	}
 
 	// notifies the manager that an entity has been destroyed. this removes
 	// the entity from all system entity containers that contain it.
@@ -96,13 +118,47 @@ public:
 	// components that an entity must possess in order to be added to the
 	// system.
 	template <class SystemType>
-	void setSignature(const Signature& signature);
+	void setSignature(
+		const Signature&	signature
+	) {
+		// get type string for system
+		TYPE_STRING type = typeid(SystemType).name();
+
+		// ensure system has been registered before, else throw a warning
+		// ensure system has not been registered before, else throw a warning
+		if (systems.count(type) == 0) throw Error(
+			"Warning: Component type "
+			+ std::string(type)
+			+ "has already been registered!",
+			ErrorType::WARNING
+		);
+
+		// sets the standard signature for the specified system
+		signatures[type].first = signature;
+	}
 
 	// sets the exclusive signature for a registered system. this controls the
 	// components that an entity must not have in order to be added to the
 	// system
 	template <class SystemType>
-	void setExclusiveSignature(const Signature& signature);
+	void setExclusiveSignature(
+		const Signature& signature
+	) {
+		// get type string for system
+		TYPE_STRING type = typeid(SystemType).name();
+
+		// ensure system has been registered before, else throw a warning
+		// ensure system has not been registered before, else throw a warning
+		if (systems.count(type) == 0) throw Error(
+			"Warning: Component type "
+			+ std::string(type)
+			+ "has already been registered!",
+			ErrorType::WARNING
+		);
+
+		// sets the standard signature for the specified system
+		signatures[type].second = signature;
+	}
 
 };
 

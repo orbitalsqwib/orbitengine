@@ -37,8 +37,6 @@ TextOperator::TextOperator(
 // ===========================================================================
 void TextOperator::render(
 	TextData&		text,
-	const float&	x,
-	const float&	y,
 	const UINT&		format
 ) {
 	// ensure font resource exists, else exit early
@@ -51,8 +49,8 @@ void TextOperator::render(
 	RECT textbox = textStyleOp.calculateBounds(text.text, *text.pStyle);
 
 	// calculate textbox position
-	textbox.left	+= static_cast<LONG>(text.relX + x);
-	textbox.top		+= static_cast<LONG>(text.relY + y);
+	textbox.left	+= static_cast<LONG>(text.x);
+	textbox.top		+= static_cast<LONG>(text.y);
 
 	// check if highlight is not fully transparent
 	if (text.pStyle->highlightColor & Colors::ALPHAMASK) {
@@ -81,12 +79,14 @@ void TextOperator::render(
 	}
 
 	// calculate textbox right / bottom actual positions
-	textbox.right	+= static_cast<LONG>(text.relX + x);
-	textbox.bottom	+= static_cast<LONG>(text.relY + y);
+	textbox.right	+= static_cast<LONG>(text.x);
+	textbox.bottom	+= static_cast<LONG>(text.y);
 
 	// apply z translation for text
+
+	D3DXMATRIX temp;
 	context->getD3DSprite()->SetTransform(
-		D3DXMatrixTranslation(nullptr, 0.0f, 0.0f, text.z)
+		D3DXMatrixTranslation(&temp, 0.0f, 0.0f, text.z)
 	);
 
 	// draw text

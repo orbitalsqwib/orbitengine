@@ -25,9 +25,6 @@ class ISubscriber
 {
 public:
 
-	// interface virtual destructor
-	virtual ~ISubscriber() {}
-
 	// should handle incoming messages and make changes to the object's state
 	// or behaviour as necessary. may provide a pointer to the message broker
 	// that invoked this event, which should be null-checked prior to use.

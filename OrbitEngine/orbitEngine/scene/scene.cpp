@@ -21,7 +21,8 @@ Scene::Scene():
 	// members
 	ecs			(),
 	engine		(nullptr),
-	pSceneMgr	(nullptr)
+	pSceneMgr	(nullptr),
+	sceneBroker	()
 {}
 
 
@@ -30,7 +31,7 @@ Scene::Scene():
 // ===========================================================================
 // should bind the scene to the specified scene manager.
 // ===========================================================================
-void Scene::setSceneManager(ISceneManager* _pSceneMgr)
+void Scene::setSceneManager(SceneManager* _pSceneMgr)
 {
 	// ensure specified scene manager is a valid pointer and assign if so
 	if (_pSceneMgr) pSceneMgr = _pSceneMgr;
@@ -61,7 +62,7 @@ void Scene::initialize()
 	);
 
 	// initialize ecs - the scene is valid from this point onwards
-	ecs.initialize(engine);
+	ecs.initialize();
 
 	// call scene setup
 	setup();

@@ -19,6 +19,7 @@
 // import necessary headers
 #include "../dximport.h"
 #include "../textStyle/textStyleData.h"
+#include "../../common/zvalues.h"
 #include <string>
 
 
@@ -31,23 +32,28 @@ struct TextData
 {
 	// members
 	std::string		text;	// text content to display
-	float			relX;	// relative x-position for text's top-left corner
-	float			relY;	// relative y-position for text's top-left corner
+	float			x;		// x-position for text's top-left corner
+	float			y;		// y-position for text's top-left corner
+	float			relX;	// x-offset from logical to actual position 
+	float			relY;	// y-offset from logical to actual position
 	float			z;		// z-position for depth of text (0.0 - 1.0)
 	TextStyleData*	pStyle;	// pointer to text style resource
 
 	// convenience constructor
 	TextData(
-		const std::string&	_text,
-		const float&		_relX,
-		const float&		_relY,
-		const float&		_z
+		const std::string&	_text	= "",
+		const float&		_x		= 0,
+		const float&		_y		= 0,
+		const float&		_z		= ZValues::FOREGROUND,
+		TextStyleData*		_pStyle = nullptr
 	):
 		text	(_text),
-		relX	(_relX),
-		relY	(_relY),
+		x		(_x),
+		y		(_y),
+		relX	(0),
+		relY	(0),
 		z		(_z),
-		pStyle	(nullptr)
+		pStyle	(_pStyle)
 	{}
 };
 

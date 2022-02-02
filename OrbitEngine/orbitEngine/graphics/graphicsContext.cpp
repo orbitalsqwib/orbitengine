@@ -36,7 +36,7 @@ GraphicsContext::GraphicsContext():
 	vbPrevMaxVertices	(0),
 
 	// messaging
-	broker			(nullptr),
+	broker			(),
 
 	// config states
 	d3dPP			()
@@ -257,7 +257,7 @@ void GraphicsContext::resetDevice()
 {
 	// notify all relevant subscribers to release their resources 
 	// immediately, in preparation for device reset
-	if (broker) broker->pushImmediately(
+	broker.pushImmediately(
 		GraphicsObjectCommands::RELEASE_ALL_GRAPHICS
 	);
 
@@ -272,7 +272,7 @@ void GraphicsContext::resetDevice()
 
 	// if reset succeeds, notify all relevant subscribers to re-initialize
 	// or re-acquire their resources immediately
-	if (broker) broker->pushImmediately(
+	broker.pushImmediately(
 		GraphicsObjectCommands::RESET_ALL_GRAPHICS
 	);
 
@@ -463,13 +463,13 @@ HRESULT GraphicsContext::endSceneDraw()
 // the directx sprite drawing sequence, and should only be called between
 // a beginSceneDraw()...endSceneDraw() method pair.
 // ===========================================================================
-void GraphicsContext::beginSpriteDraw()
+HRESULT GraphicsContext::beginSpriteDraw()
 {
 	// ensure that the sprite3d interface is valid, else exit early
-	if (sprite3d == nullptr) return;
+	if (sprite3d == nullptr) return E_FAIL;
 
 	// inform the sprite3d interface to begin the sprite drawing sequence
-	sprite3d->Begin(
+	return sprite3d->Begin(
 		D3DXSPRITE_ALPHABLEND |
 		D3DXSPRITE_SORT_DEPTH_FRONTTOBACK
 	);
@@ -481,13 +481,13 @@ void GraphicsContext::beginSpriteDraw()
 // beginSceneDraw()...endSceneDraw() method pair, after beginSpriteDraw()
 // has been invoked.
 // ===========================================================================
-void GraphicsContext::endSpriteDraw()
+HRESULT GraphicsContext::endSpriteDraw()
 {
 	// ensure that the sprite3d interface is valid, else exit early
-	if (sprite3d == nullptr) return;
+	if (sprite3d == nullptr) return E_FAIL;
 
 	// inform the sprite3d interface to end the sprite drawing sequence
-	sprite3d->End();
+	return sprite3d->End();
 }
 
 
@@ -561,5 +561,5 @@ void GraphicsContext::handleMessage(
 	bbHeight	= message.newHeight;
 
 	// reset device to update presentation parameters accordingly
-	resetDevice();
+	//resetDevice();
 }

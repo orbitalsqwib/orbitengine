@@ -35,17 +35,16 @@ public:
 	// constructor
 	ShapeOperator(GraphicsContext* _context);
 
+	// virtual destructor
+	virtual ~ShapeOperator() {}
+
 
 	// methods
 
 	// translates and queues the shape for rendering. should only be called
 	// between the graphics context's beginSpriteDraw()...endSpriteDraw()
 	// method calls.
-	void render(
-		const ShapeData&	shape,
-		const float&		x			= 0,
-		const float&		y			= 0
-	);
+	void render(const ShapeData& shape);
 };
 
 #endif // !_ORBIT_GRAPHICS_SHAPEOPERATOR_H

@@ -32,9 +32,7 @@ ShapeOperator::ShapeOperator(
 // method calls.
 // ===========================================================================
 void ShapeOperator::render(
-	const ShapeData&	shape,
-	const float&		x,
-	const float&		y
+	const ShapeData&	shape
 ) {
 	// translate and render shape
 	switch (shape.type)
@@ -43,7 +41,7 @@ void ShapeOperator::render(
 	{
 		// translate shape to primitives
 		TranslatedShape<4> t 
-			= ShapeTranslator::translateRectangle(shape, x, y);
+			= ShapeTranslator::translateRectangle(shape);
 
 		// draw primitives
 		context->drawVertices(
@@ -52,6 +50,7 @@ void ShapeOperator::render(
 			t.type,
 			t.nPrimitives
 		);
+		break;
 	}
 	default:
 	{

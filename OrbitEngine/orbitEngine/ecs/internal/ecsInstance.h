@@ -20,8 +20,7 @@
 #include "entityManager.h"
 #include "componentManager.h"
 #include "systemManager.h"
-#include "../engine/IEngineContext.h"
-#include "../utils/pointers.h"
+#include "../../utils/pointers.h"
 
 
 // main definition
@@ -45,10 +44,6 @@ private:
 	// manages systems' entities and signatures - created on initialize()
 	UniquePtr<SystemManager> pSystemMgr;
 
-	// stores a pointer to the engine context that is copied to each system
-	// manager created by the instance.
-	IEngineContext* pEngineContext;
-
 	// initialization flag - only set to true after initialization complete
 	bool initialized;
 
@@ -65,9 +60,22 @@ private:
 	// managers as necessary.
 	template <class ComponentType>
 	void updateEntitySignatureForComponent(
-		const Entity&	entity,
-		const bool&		flagValue
-	);
+		const Entity& entity,
+		const bool& flagValue
+	) {
+		// method should only be called when instance initialized
+		assert(initialized);
+
+		// calculate new signature for entity, update bit flag for component
+		Signature s = pEntityMgr->getSignature(entity);
+		s.set(pComponentMgr->getTypeEnum<ComponentType>(), true);
+
+		// update entity signature to new signature
+		pEntityMgr->setSignature(entity, s);
+
+		// notify systems of entity's signature update
+		pSystemMgr->notifyEntitySignatureChanged(entity, s);
+	}
 
 public:
 
@@ -78,7 +86,7 @@ public:
 	// required here as some managers are quite memory-intensive, e.g: entity
 	// manager, thus it is better to delay initialization until the instance
 	// is actually needed.
-	void initialize(IEngineContext* _pEngineContext);
+	void initialize();
 
 	// manually deallocates all manager objects and resets the instance state
 	// to uninitialized. this is useful if the ecs instance is not destroyed
@@ -100,29 +108,71 @@ public:
 	// registers a component type with the manager. this must be done before
 	// any components are used with the manager, else the operations will fail
 	template <class ComponentType>
-	void registerComponent();
+	void registerComponent()
+	{
+		// ensure instance is initalized
+		guardIsInitialized();
+
+		// delegate call to component manager
+		pComponentMgr->registerComponent<ComponentType>();
+	}
 
 	// adds a component to the appropriate component array for a specific
 	// entity. this method will do nothing if a component already exists.
 	template <class ComponentType>
 	void addComponent(
-		const Entity&			entity,
-		const ComponentType&	component
-	);
+		const Entity& entity,
+		const ComponentType& component
+	) {
+		// ensure instance is initalized
+		guardIsInitialized();
+
+		// delegate call to component manager
+		pComponentMgr->addComponent<ComponentType>(entity, component);
+
+		// update entity signature
+		updateEntitySignatureForComponent<ComponentType>(entity, true);
+	}
 
 	// removes a component from the appropriate component array for a specific
 	// entity. this method will do nothing if the component does not exists.
 	template <class ComponentType>
-	void removeComponent(const Entity& entity);
+	void removeComponent(
+		const Entity& entity
+	) {
+		// ensure instance is initalized
+		guardIsInitialized();
+
+		// delegate call to component manager
+		pComponentMgr->removeComponent<ComponentType>(entity);
+
+		// update entity signature
+		updateEntitySignatureForComponent<ComponentType>(entity, false);
+	}
 
 	// retrieves the component type enum for the specified component type.
 	template <class ComponentType>
-	ComponentTypeEnum getTypeEnum();
+	ComponentTypeEnum getTypeEnum()
+	{
+		// ensure instance is initalized
+		guardIsInitialized();
+
+		// delegate call to component manager
+		return pComponentMgr->getTypeEnum<ComponentType>();
+	}
 
 	// retrieves the component for the specified entity. if no component can
 	// be found, the return value will be nullptr.
 	template <class ComponentType>
-	ComponentType* getComponent(const Entity& entity);
+	ComponentType* getComponent(
+		const Entity&	entity
+	) {
+		// ensure instance is initalized
+		guardIsInitialized();
+
+		// delegate call to component manager
+		return pComponentMgr->getComponent<ComponentType>(entity);
+	}
 
 
 	// system methods
@@ -131,19 +181,42 @@ public:
 	// object instance within the system manager. also returns a pointer to 
 	// the newly-created system so it can be used externally.
 	template <class SystemType>
-	SystemType* registerSystem();
+	SystemType* registerSystem()
+	{
+		// ensure instance is initalized
+		guardIsInitialized();
+
+		// delegate call to system manager
+		return pSystemMgr->registerSystem<SystemType>();
+	}
 
 	// sets the standard signature for a registered system. this controls the
 	// components that an entity must possess in order to be added to the
 	// system.
 	template <class SystemType>
-	void setSignature(const Signature& signature);
+	void setSignature(
+		const Signature&	signature
+	) {
+		// ensure instance is initalized
+		guardIsInitialized();
+
+		// delegate call to system manager
+		pSystemMgr->setSignature<SystemType>(signature);
+	}
 
 	// sets the exclusive signature for a registered system. this controls the
 	// components that an entity must not have in order to be added to the
 	// system
 	template <class SystemType>
-	void setExclusiveSignature(const Signature& signature);
+	void setExclusiveSignature(
+		const Signature&	signature
+	) {
+		// ensure instance is initalized
+		guardIsInitialized();
+
+		// delegate call to system manager
+		pSystemMgr->setExclusiveSignature<SystemType>(signature);
+	}
 
 };
 

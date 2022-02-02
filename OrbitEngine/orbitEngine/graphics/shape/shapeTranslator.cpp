@@ -32,42 +32,40 @@
 // y                tv
 // ===========================================================================
 TranslatedShape<4>&& ShapeTranslator::translateRectangle(
-	const ShapeData&	shape,
-	float				x,
-	float				y
+	const ShapeData&	shape
 ) {
-	// assert that shape endGradient should not be null
-	assert(shape.endGradient);
+	// handle single color shapes
+	COLOR_ARGB endGrad = shape.endGradient ? shape.color : shape.endGradient;
 
 	// generate and return PrimitiveShape
 	return std::move(TranslatedShape<4>(
 		std::array<Vertex, 4>{
 			Vertex(
-				x + shape.relX,
-				y + shape.relY,
+				shape.x + shape.relX,
+				shape.y + shape.relY,
 				shape.z, 
 				shape.color,
 				0.0f, 0.0f
 			),
 			Vertex(
-				x + shape.relX + shape.width,
-				y + shape.relY,
+				shape.x + shape.relX + shape.width,
+				shape.y + shape.relY,
 				shape.z, 
-				shape.xGradient ? shape.color : shape.endGradient,
+				shape.xGradient ? shape.color : endGrad,
 				1.0f, 0.0f
 			),
 			Vertex(
-				x + shape.relX,
-				y + shape.relY + shape.height,
+				shape.x + shape.relX,
+				shape.y + shape.relY + shape.height,
 				shape.z,
-				shape.xGradient ? shape.endGradient : shape.color,
+				shape.xGradient ? endGrad : shape.color,
 				0.0f, 1.0f
 			),
 			Vertex(
-				x + shape.relX + shape.width,
-				y + shape.relY + shape.height,
+				shape.x + shape.relX + shape.width,
+				shape.y + shape.relY + shape.height,
 				shape.z,
-				shape.endGradient,
+				endGrad,
 				1.0f, 1.0f
 			)
 		},

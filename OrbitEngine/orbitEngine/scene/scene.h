@@ -15,7 +15,7 @@
 // import necessary headers
 #include "ISceneManager.h"
 #include "IScene.h"
-#include "../ecs/ecsInstance.h"
+#include "../ecs/ecs.h"
 #include "../engine/IEngineContext.h"
 #include "../error.h"
 
@@ -29,10 +29,10 @@ class Scene : public IScene
 {
 private:
 
-	// implement private pure virtuals
+	// private methods
 
 	// should bind the scene to the specified scene manager.
-	virtual void setSceneManager(ISceneManager* _pSceneMgr);
+	virtual void setSceneManager(SceneManager* _pSceneMgr);
 
 	// should bind the engine context to the specified scene manager.
 	virtual void setEngineContext(IEngineContext* _pEngineContext);
@@ -53,7 +53,10 @@ protected:
 
 	// pointer to the scene manager. can be used to transition to another
 	// scene, or quit the game entirely.
-	ISceneManager* pSceneMgr;
+	SceneManager* pSceneMgr;
+
+	// scene-specific message broker, for local scene messaging
+	MessageBroker sceneBroker;
 
 public:
 
@@ -61,10 +64,10 @@ public:
 	Scene();
 
 	// virtual destructor
-	~Scene() {}
+	virtual ~Scene() {}
 
 
-	// implement pure virtuals
+	// methods
 
 	// delayed initializer method - sets up underlying managers before any
 	// scene methods are called. this is only called when the scene is

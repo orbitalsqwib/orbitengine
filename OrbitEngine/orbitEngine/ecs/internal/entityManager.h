@@ -17,8 +17,8 @@
 #define _ORBIT_ECS_ENTITYMANAGER_H
 
 // import necessary headers
-#include "types.h"
-#include "../error.h"
+#include "../types.h"
+#include "../../error.h"
 #include <queue>
 #include <array>
 

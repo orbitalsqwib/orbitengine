@@ -19,10 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="orbitEngine\ecs\componentManager.cpp" />
-    <ClCompile Include="orbitEngine\ecs\ecsInstance.cpp" />
-    <ClCompile Include="orbitEngine\ecs\entityManager.cpp" />
-    <ClCompile Include="orbitEngine\ecs\systemManager.cpp" />
+    <ClCompile Include="orbitEngine\ecs\internal\ecsInstance.cpp" />
+    <ClCompile Include="orbitEngine\ecs\internal\entityManager.cpp" />
+    <ClCompile Include="orbitEngine\ecs\internal\systemManager.cpp" />
     <ClCompile Include="orbitEngine\engine\orbitEngine.cpp" />
     <ClCompile Include="orbitEngine\graphics\animSprite\animSpriteOperator.cpp" />
     <ClCompile Include="orbitEngine\graphics\graphicsContext.cpp" />
@@ -35,6 +34,8 @@
     <ClCompile Include="orbitEngine\graphics\texture\textureOperator.cpp" />
     <ClCompile Include="orbitEngine\graphics\text\textOperator.cpp" />
     <ClCompile Include="orbitEngine\performance\timer.cpp" />
+    <ClCompile Include="orbitEngine\prefabs\scenes\startup\startup.cpp" />
+    <ClCompile Include="orbitEngine\prefabs\systems\renderSystems.cpp" />
     <ClCompile Include="orbitEngine\scene\scene.cpp" />
     <ClCompile Include="orbitEngine\scene\sceneManager.cpp" />
     <ClCompile Include="orbitEngine\window\classes\gameWindow.cpp" />
@@ -50,12 +51,33 @@
     <ClInclude Include="orbitEngine\common\colors.h" />
     <ClInclude Include="orbitEngine\common\commands\graphicsObjectCommands.h" />
     <ClInclude Include="orbitEngine\common\notifications\windowResized.h" />
-    <ClInclude Include="orbitEngine\ecs\componentArray.h" />
-    <ClInclude Include="orbitEngine\ecs\componentManager.h" />
-    <ClInclude Include="orbitEngine\ecs\ecsInstance.h" />
-    <ClInclude Include="orbitEngine\ecs\entityManager.h" />
-    <ClInclude Include="orbitEngine\ecs\system.h" />
-    <ClInclude Include="orbitEngine\ecs\systemManager.h" />
+    <ClInclude Include="orbitEngine\common\defaultScenes.h" />
+    <ClInclude Include="orbitEngine\imports\commons.h" />
+    <ClInclude Include="orbitEngine\imports\components.h" />
+    <ClInclude Include="orbitEngine\imports\ecs.h" />
+    <ClInclude Include="orbitEngine\imports\engine.h" />
+    <ClInclude Include="orbitEngine\imports\scene.h" />
+    <ClInclude Include="orbitEngine\imports\systems.h" />
+    <ClInclude Include="orbitEngine\prefabs\commands\moveCommand.h" />
+    <ClInclude Include="orbitEngine\prefabs\commands\rotateCommand.h" />
+    <ClInclude Include="orbitEngine\prefabs\commands\transformCommand.h" />
+    <ClInclude Include="orbitEngine\prefabs\components\positionData.h" />
+    <ClInclude Include="orbitEngine\prefabs\scenes\exit\exitScene.h" />
+    <ClInclude Include="orbitEngine\prefabs\listeners\transformListener.h" />
+    <ClInclude Include="orbitEngine\prefabs\scenes\startup\components\cellData.h" />
+    <ClInclude Include="orbitEngine\prefabs\scenes\startup\systems\waveSystem.h" />
+    <ClInclude Include="orbitEngine\prefabs\systems\renderSystems.h" />
+    <ClInclude Include="orbitEngine\prefabs\systems\graphics\shapeRenderSystem.h" />
+    <ClInclude Include="orbitEngine\prefabs\systems\graphics\spriteAnimationSystem.h" />
+    <ClInclude Include="orbitEngine\prefabs\systems\graphics\textRenderSystem.h" />
+    <ClInclude Include="orbitEngine\ecs\ecs.h" />
+    <ClInclude Include="orbitEngine\ecs\internal\componentArray.h" />
+    <ClInclude Include="orbitEngine\ecs\internal\componentManager.h" />
+    <ClInclude Include="orbitEngine\prefabs\systems\graphics\spriteRenderSystem.h" />
+    <ClInclude Include="orbitEngine\ecs\internal\ecsInstance.h" />
+    <ClInclude Include="orbitEngine\ecs\internal\entityManager.h" />
+    <ClInclude Include="orbitEngine\ecs\internal\system.h" />
+    <ClInclude Include="orbitEngine\ecs\internal\systemManager.h" />
     <ClInclude Include="orbitEngine\ecs\types.h" />
     <ClInclude Include="orbitEngine\ecs\types\entity.h" />
     <ClInclude Include="orbitEngine\ecs\types\componentTypeEnum.h" />
@@ -63,7 +85,9 @@
     <ClInclude Include="orbitEngine\engine\IEngineContext.h" />
     <ClInclude Include="orbitEngine\graphics\animSprite\animSpriteData.h" />
     <ClInclude Include="orbitEngine\graphics\animSprite\animSpriteOperator.h" />
+    <ClInclude Include="orbitEngine\graphics\components.h" />
     <ClInclude Include="orbitEngine\graphics\graphicsOperator.h" />
+    <ClInclude Include="orbitEngine\graphics\operators.h" />
     <ClInclude Include="orbitEngine\graphics\shape\shapeData.h" />
     <ClInclude Include="orbitEngine\graphics\shape\shapeTranslator.h" />
     <ClInclude Include="orbitEngine\graphics\shape\shapeOperator.h" />
@@ -85,6 +109,7 @@
     <ClInclude Include="orbitEngine\graphics\vertex.h" />
     <ClInclude Include="orbitEngine\engine\orbitEngine.h" />
     <ClInclude Include="orbitEngine\performance\timer.h" />
+    <ClInclude Include="orbitEngine\prefabs\scenes\startup\startup.h" />
     <ClInclude Include="orbitEngine\scene\IScene.h" />
     <ClInclude Include="orbitEngine\scene\ISceneManager.h" />
     <ClInclude Include="orbitEngine\scene\scene.h" />
@@ -116,6 +141,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="orbitEngine\graphics\text\textOperator.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\enemy.png" />
+    <Image Include="assets\ship.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

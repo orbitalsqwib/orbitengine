@@ -19,6 +19,7 @@
 // import necessary headers
 #include "../dximport.h"
 #include "../texture/textureData.h"
+#include "../../common/zvalues.h"
 
 
 // main definition
@@ -29,8 +30,10 @@
 struct SpriteData
 {
 	// members
-	float			relX;		// relative x for sprite's top-left corner
-	float			relY;		// relative x for sprite's top-left corner
+	float			x;			// x-coordinate for sprite's top-left corner
+	float			y;			// y-coordinate for sprite's top-left corner
+	float			relX;		// x-offset from logical to actual position 
+	float			relY;		// y-offset from logical to actual position
 	float			z;			// z-coord for depth of sprite (0.0 to 1.0)
 	int				width;		// width of sprite in pixels
 	int				height;		// height of sprite in pixels
@@ -43,20 +46,22 @@ struct SpriteData
 
 	// convenience constructor
 	SpriteData(
-		const float&	_relX		= 0,
-		const float&	_relY		= 0,
-		const float&	_z			= 0.5f,
+		const float&	_x			= 0,
+		const float&	_y			= 0,
+		const float&	_z			= ZValues::FOREGROUND,
 		const int&		_width		= 0,
 		const int&		_height		= 0,
 		const float&	_angle		= 0,
-		const float&	_scale		= 0,
+		const float&	_scale		= 1,
 		const RECT&		_srcRect	= {0, 0, 0, 0},
-		TextureData*	_pTexture	= NULL,
+		TextureData*	_pTexture	= nullptr,
 		const bool&		_flipX		= 0,
 		const bool&		_flipY		= 0
 	):
-		relX		(_relX),
-		relY		(_relY),
+		x			(_x),
+		y			(_y),
+		relX		(0),
+		relY		(0),
 		z			(_z),
 		width		(_width),
 		height		(_height),

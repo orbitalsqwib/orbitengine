@@ -17,10 +17,11 @@
 // ===========================================================================
 GameWindow::GameWindow(
 	KeyboardState*	keyboardState,
-	MouseState*		mouseState
+	MouseState*		mouseState,
+	MessageBroker*	externalBroker
 ):
 	// construct base object
-	Window	(L"GAME_WINDOW")
+	Window	(L"GAME_WINDOW", externalBroker)
 {
 	// add extensions to window
 	addExtension(new DisplayExtension());

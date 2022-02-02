@@ -68,7 +68,7 @@ public:
 	// methods
 
 	// adds a texture to the texture map for the specified texture name
-	TextStyleManager& addTextStyle(
+	TextStyleManager& addStyle(
 		const std::string&		textStyleName,
 		const TextStyleData&	textStyle
 	);
@@ -88,7 +88,7 @@ public:
 
 	// returns a pointer to the text style data for the specified text style
 	// name. if no texture data is found, the return value is nullptr.
-	TextStyleData* getTextStyleData(const std::string& textStyleName);
+	TextStyleData* getStyle(const std::string& textStyleName);
 
 };
 

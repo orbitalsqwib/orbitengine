@@ -17,9 +17,11 @@
 #define _ORBIT_ECS_SYSTEM_H
 
 // import necessary headers
-#include "types.h"
-#include "../engine/IEngineContext.h"
+#include "../types.h"
 #include <set>
+
+// forward declaration
+class ECSInstance;
 
 
 // main definition
@@ -36,12 +38,29 @@ protected:
 	// allow system manager to manage system entities
 	friend class SystemManager;
 
+
+	// typedefs
+
+	// defines a set of entities that can be iterated through
+	typedef std::set<Entity> ENTITY_SET;
+
+
+	// members
+
 	// protected entities container that can be accessed by system logic
-	std::set<Entity> entities;
+	ENTITY_SET entities;
 
-	// pointer to engine context, provides access to various handlers
-	IEngineContext* engine;
+	// stores a pointer to the ecs instance containing this system
+	ECSInstance* ecs;
 
+	
+	// protected constructor
+	System(): entities(), ecs(nullptr) {}
+
+public: 
+
+	// virtual destructor
+	virtual ~System() {}
 };
 
 #endif // !_ORBIT_ECS_SYSTEM_H

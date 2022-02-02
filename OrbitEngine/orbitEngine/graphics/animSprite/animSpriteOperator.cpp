@@ -50,11 +50,12 @@ void AnimSpriteOperator::updateSpriteForAnimation(
 // ===========================================================================
 // updates animation data timer and handles frame updates accordingly
 // ===========================================================================
-void AnimSpriteOperator::updateAnimationTimer(
+void AnimSpriteOperator::updateAnimation(
 	AnimSpriteData&		animData,
+	SpriteData&			sprite,
 	const float&		updateTime
 ) {
-	// ensure sprite is animated
+	// ensure sprite has a valid animation
 	if (animData.endFrame - animData.startFrame <= 0) return;
 
 	// update total elapsed time
@@ -68,6 +69,9 @@ void AnimSpriteOperator::updateAnimationTimer(
 	// update timer and frame counter
 	animData.frameTimer -= animData.frameDelay;
 	animData.currentFrame++;
+
+	// update sprite frame
+	updateSpriteForAnimation(animData, sprite);
 
 	// handle animation complete
 	if (

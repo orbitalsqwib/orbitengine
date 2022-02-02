@@ -30,7 +30,7 @@
 
 // main definition
 
-class GraphicsContext : ISubscriber<WindowResized>
+class GraphicsContext : public ISubscriber<WindowResized>
 {
 private:
 
@@ -75,8 +75,8 @@ private:
 	
 	// messaging
 
-	// pointer to shared message broker
-	MessageBroker* broker;
+	// internal graphics broker
+	MessageBroker broker;
 
 
 	// config states
@@ -163,13 +163,13 @@ public:
 	// prepares the direct3d device for drawing sprites. marks the start of
 	// the directx sprite drawing sequence, and should only be called between
 	// a beginSceneDraw()...endSceneDraw() method pair.
-	void beginSpriteDraw();
+	HRESULT beginSpriteDraw();
 
 	// ends the directx sprite drawing sequence, and submits all batched
 	// sprites to the device to be rendered. should only be called between a
 	// beginSceneDraw()...endSceneDraw() method pair, after beginSpriteDraw()
 	// has been invoked.
-	void endSpriteDraw();
+	HRESULT endSpriteDraw();
 
 
 	// primitive drawing methods
@@ -226,7 +226,7 @@ public:
 	UINT getDisplayHeight() { return bbHeight; }
 
 	// returns the shared message broker the context is subscribed to
-	MessageBroker* getBroker() { return broker; }
+	MessageBroker& getBroker() { return broker; }
 
 
 	// setters

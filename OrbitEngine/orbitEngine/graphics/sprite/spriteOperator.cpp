@@ -33,8 +33,6 @@ SpriteOperator::SpriteOperator(
 // ===========================================================================
 void SpriteOperator::render(
 	const SpriteData&	sprite,
-	const float&		x,
-	const float&		y,
 	COLOR_ARGB			color
 ) {
 	// ensure spriteData contains a valid texture resource, else exit early
@@ -49,8 +47,8 @@ void SpriteOperator::render(
 
 	// define translation transform (translates from world origin {0, 0, 0})
 	D3DXVECTOR3 translateVec{
-		sprite.relX + x,
-		sprite.relY + y,
+		sprite.x + sprite.relX,
+		sprite.y + sprite.relY,
 		sprite.z
 	};
 

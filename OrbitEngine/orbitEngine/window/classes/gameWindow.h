@@ -29,7 +29,8 @@ public:
 	// constructor
 	GameWindow(
 		KeyboardState*	keyboardState	= nullptr, 
-		MouseState*		mouseState		= nullptr
+		MouseState*		mouseState		= nullptr,
+		MessageBroker*	externalBroker	= nullptr			
 	);
 
 	// delegate wndproc
