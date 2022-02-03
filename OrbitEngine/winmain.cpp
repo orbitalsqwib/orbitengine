@@ -15,6 +15,7 @@
 
 // import necessary headers
 #include "orbitEngine/imports/engine.h"
+#include "surviveTheVoid/scenes/main.h"
 
 // include headers for memory leak detection
 #define _CRTDBG_MAP_ALLOC
@@ -35,6 +36,8 @@ int WINAPI WinMain(
 
 	// create game engine instance
 	OrbitEngine game (L"Survive The Void");
+	game.registerScene<MainScene>("STV_MAIN");
+	game.setInitialScene("STV_MAIN");
 
 	// initialize message loop states
 	MSG msg;

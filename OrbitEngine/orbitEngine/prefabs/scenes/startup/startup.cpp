@@ -32,12 +32,6 @@ void StartupScene::setup()
 	engine->graphics().setBGColor(Colors::BLACK);
 
 
-	// ! setup basic systems
-
-	// initialize transform listener
-	transformListener.initialize(ecs, sceneBroker);
-
-
 	// ! setup text objects
 
 	// build new text style manager
@@ -54,7 +48,6 @@ void StartupScene::setup()
 
 
 	// ! register components
-	ecs.registerComponent<PositionData>();
 	ecs.registerComponent<CellData>();
 
 
@@ -167,8 +160,19 @@ void StartupScene::setup()
 void StartupScene::update(
 	const float&	deltaTime
 ) {
+	// update systems
 	pWaveSystem->update(deltaTime);
 	renderSystems.render(deltaTime);
+
+	// decrease time remaining
+	sceneTimeRemaining -= deltaTime;
+
+	// check if startup scene should be dismissed
+	if (sceneTimeRemaining <= 0 || engine->keyboard().anyKeyPressed())
+	{
+		// dismiss scene
+		pSceneMgr->pop();
+	}
 }
 
 // ===========================================================================
@@ -180,6 +184,9 @@ void StartupScene::update(
 // ===========================================================================
 void StartupScene::teardown()
 {
-	// reset background color
-	engine->graphics().setBGColor(Colors::LIME);
+	// reset text style manager
+	pTextStyleManager.reset();
+
+	// reset scene time remaining
+	sceneTimeRemaining = 3.0f;
 }

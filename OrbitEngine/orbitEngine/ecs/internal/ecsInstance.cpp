@@ -59,6 +59,9 @@ void ECSInstance::reset()
 	pEntityMgr.reset();
 	pComponentMgr.reset();
 	pSystemMgr.reset();
+
+	// set initialized flag to false
+	initialized = false;
 }
 
 

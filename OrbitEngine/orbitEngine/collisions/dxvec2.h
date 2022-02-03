@@ -19,15 +19,15 @@
 #define Vec2 D3DXVECTOR2
 
 // d3dx9 vector methods
-namespace Vec2Math
+struct Vec2Math
 {
-	float length(const Vec2* pVec) 
+	static float length(const Vec2* pVec) 
 	{ return D3DXVec2Length(pVec); }
 
-	float dot(const Vec2* pV1, const Vec2* pV2) 
+	static float dot(const Vec2* pV1, const Vec2* pV2)
 	{ return D3DXVec2Dot(pV1, pV2); }
 
-	Vec2& normalize(Vec2* pVec)
+	static Vec2& normalize(Vec2* pVec)
 	{ D3DXVec2Normalize(pVec, pVec); return *pVec; }
 };
 

@@ -6,38 +6,42 @@
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 // ===========================================================================
-// OrbitEngine : Startup Scene Specification
+// SurviveTheVoid : Main Scene Specification
 // ===========================================================================
 
-#ifndef _ORBIT_PREFABS_STARTUPSCENE_H
-#define _ORBIT_PREFABS_STARTUPSCENE_H
+#ifndef _STV_SCENES_MAIN_H
+#define _STV_SCENES_MAIN_H
 
 // import necessary headers
-#include "../../../scene/scene.h"
-#include "systems/waveSystem.h"
-#include "components/cellData.h"
-#include <time.h>
-
-// import scene systems
-#include "../../systems/renderSystems.h"
-#include "../../listeners/transformListener.h"
-#include "../../../graphics/textStyle/textStyleManager.h"
+#include "../../orbitEngine/imports/commons.h"
+#include "../../orbitEngine/imports/scene.h"
+#include "../../orbitEngine/imports/systems.h"
+#include "../../orbitEngine/imports/graphics.h"
+#include "../entityGroups/mainMenu.h"
 
 
 // main definition
 
-// defines the logic for the engine's startup scene
-class StartupScene : public Scene
+class MainScene : public Scene
 {
 private:
 
-	// systems (managed by ecs instance)
+	// systems
 
 	// scene render group
 	RenderSystems renderSystems;
 
-	// color wave system
-	WaveSystem* pWaveSystem;
+	// velocity system
+	VelocitySystem* pVelocitySystem;
+
+	// collision system
+	CollisionSystem* pCollisionSystem;
+
+
+	// listeners
+
+	// transform handler
+	TransformListener transformListener;
 
 
 	// managers
@@ -45,27 +49,48 @@ private:
 	// text style manager
 	UniquePtr<TextStyleManager> pTextStyleManager;
 
-	
-	// timers
+	// main menu handler
+	MainMenu menu;
 
-	// records the time remaining until the startup scene transitions to the
-	// initial game scene
-	float sceneTimeRemaining;
+
+	// states
+
+	// specifies if the game is currently playing;
+	bool gameActive;
+
+	// specifies if the game is on the main menu
+	bool onMainMenu;
+
+
+	// private methods
+
+	// handle menu selection
+	void handleMenuSelection();
+
+	// sets game states and entities
+	void setupGameState();
+
+	// resets the game state and entities
+	void resetGameState();
 
 public:
 
 	// constructor
-	StartupScene(): 
-
+	MainScene(): 
+		
 		// systems
-		renderSystems		(), 
-		pWaveSystem			(nullptr),
+		renderSystems		(),
+		pVelocitySystem		(nullptr),
+		pCollisionSystem	(nullptr),
+
+		// listeners
+		transformListener	(),
 
 		// managers
 		pTextStyleManager	(nullptr),
-
-		// timers
-		sceneTimeRemaining	(3.0f)
+		menu				(),
+		gameActive			(false),
+		onMainMenu			(true)
 	{}
 
 	// scene methods
@@ -93,4 +118,4 @@ public:
 
 };
 
-#endif // !_ORBIT_PREFABS_STARTUPSCENE_H
+#endif // !_STV_SCENES_MAIN_H

@@ -46,6 +46,8 @@
     <ClCompile Include="orbitEngine\window\extensions\displayExtension.cpp" />
     <ClCompile Include="orbitEngine\window\extensions\inputExtension.cpp" />
     <ClCompile Include="orbitEngine\window\windowContext.cpp" />
+    <ClCompile Include="surviveTheVoid\entityGroups\mainMenu.cpp" />
+    <ClCompile Include="surviveTheVoid\scenes\main.cpp" />
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -56,6 +58,7 @@
     <ClInclude Include="orbitEngine\common\commands\graphicsObjectCommands.h" />
     <ClInclude Include="orbitEngine\common\notifications\windowResized.h" />
     <ClInclude Include="orbitEngine\common\defaultScenes.h" />
+    <ClInclude Include="orbitEngine\imports\graphics.h" />
     <ClInclude Include="orbitEngine\imports\messaging.h" />
     <ClInclude Include="orbitEngine\imports\commons.h" />
     <ClInclude Include="orbitEngine\imports\components.h" />
@@ -63,6 +66,7 @@
     <ClInclude Include="orbitEngine\imports\engine.h" />
     <ClInclude Include="orbitEngine\imports\scene.h" />
     <ClInclude Include="orbitEngine\imports\systems.h" />
+    <ClInclude Include="orbitEngine\prefabs\components\velocityData.h" />
     <ClInclude Include="orbitEngine\prefabs\commands\moveCommand.h" />
     <ClInclude Include="orbitEngine\prefabs\commands\rotateCommand.h" />
     <ClInclude Include="orbitEngine\prefabs\commands\transformCommand.h" />
@@ -117,6 +121,7 @@
     <ClInclude Include="orbitEngine\engine\orbitEngine.h" />
     <ClInclude Include="orbitEngine\performance\timer.h" />
     <ClInclude Include="orbitEngine\prefabs\scenes\startup\startup.h" />
+    <ClInclude Include="orbitEngine\prefabs\systems\velocitySystem.h" />
     <ClInclude Include="orbitEngine\scene\IScene.h" />
     <ClInclude Include="orbitEngine\scene\ISceneManager.h" />
     <ClInclude Include="orbitEngine\scene\scene.h" />
@@ -145,6 +150,8 @@
     <ClInclude Include="orbitEngine\window\window.h" />
     <ClInclude Include="orbitEngine\window\windowContext.h" />
     <ClInclude Include="orbitEngine\window\extensions\windowExtension.h" />
+    <ClInclude Include="surviveTheVoid\scenes\main.h" />
+    <ClInclude Include="surviveTheVoid\entityGroups\mainMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="orbitEngine\graphics\text\textOperator.h" />

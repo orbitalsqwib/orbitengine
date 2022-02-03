@@ -70,6 +70,13 @@ void SceneManager::updateCurrentScene(
 	// if scene stack has no scenes, exit early
 	if (sceneStack.size() < 1) return;
 
+	// ensure that scene is initialized
+	if (!sceneStack.top()->isInitialized())
+	{
+		// if not initialized, initialize the scene again
+		sceneStack.top()->initialize();
+	}
+
 	// else, run the top-most scene
 	sceneStack.top()->update(deltaTime);
 }
@@ -87,7 +94,7 @@ void SceneManager::transition(
 ) {
 	// ensure scene name has been registered, else throw error
 	if (sceneRegistry.count(sceneName) == 0) throw Error(
-		"Error: A scene has already been registered for: " + sceneName
+		"Error: A scene has not been registered for: " + sceneName
 	);
 
 	// if replace is true, remove top-most scene to prepare for new scene

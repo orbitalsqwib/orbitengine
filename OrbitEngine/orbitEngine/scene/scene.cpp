@@ -31,7 +31,7 @@ Scene::Scene():
 // ===========================================================================
 // should bind the scene to the specified scene manager.
 // ===========================================================================
-void Scene::setSceneManager(SceneManager* _pSceneMgr)
+void Scene::setSceneManager(ISceneManager* _pSceneMgr)
 {
 	// ensure specified scene manager is a valid pointer and assign if so
 	if (_pSceneMgr) pSceneMgr = _pSceneMgr;
@@ -66,6 +66,9 @@ void Scene::initialize()
 
 	// call scene setup
 	setup();
+
+	// update initialization flag
+	initialized = true;
 }
 
 // ===========================================================================
@@ -82,4 +85,7 @@ void Scene::reset()
 	// reset ecs and free all ecs-reserved memory - the scene is invalid after
 	// this method is called.
 	ecs.reset();
+	
+	// update initialization flag
+	initialized = false;
 }

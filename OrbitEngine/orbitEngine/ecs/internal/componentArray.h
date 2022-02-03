@@ -156,7 +156,7 @@ public:
 		// ensure that component for entity exists, else exit early
 		if (indexForEntity[id] == INVALID_COMPONENT_INDEX) return;
 
-		COMPONENT_INDEX iDeleted	= indexForEntity[entity];
+		COMPONENT_INDEX iDeleted	= indexForEntity[id];
 		COMPONENT_INDEX iLast		= size - 1;
 		EntityId		lastEntity	= entityForIndex[iLast];
 
@@ -166,7 +166,7 @@ public:
 		// update array maps
 		indexForEntity[lastEntity]	= iDeleted;
 		entityForIndex[iDeleted]	= lastEntity;
-		indexForEntity[entity]		= INVALID_COMPONENT_INDEX;
+		indexForEntity[id]			= INVALID_COMPONENT_INDEX;
 		entityForIndex[iLast]		= ECS_INVALID_ENTITY;
 
 		// reduce size

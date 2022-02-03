@@ -29,10 +29,10 @@ struct EntityCollided
 
 	// convenience constructor
 	EntityCollided(
-		const Entity&	_subject,
-		const Entity&	_target,
-		const char		_tag[32],
-		const Vec2&		_cV
+		const Entity&	_subject	= ECS_INVALID_ENTITY,
+		const Entity&	_target		= ECS_INVALID_ENTITY,
+		const char		_tag[32]	= "",
+		const Vec2&		_cV			= Vec2()
 	) :
 		// members
 		subject	(_subject),

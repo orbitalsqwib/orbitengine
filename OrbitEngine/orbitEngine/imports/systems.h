@@ -15,6 +15,7 @@
 // import necessary headers
 #include "../prefabs/systems/renderSystems.h"
 #include "../prefabs/systems/collisionSystem.h"
+#include "../prefabs/systems/velocitySystem.h"
 #include "../prefabs/listeners/transformListener.h"
 
 #endif // !_ORBIT_IMPORTS_SYSTEMS_H

@@ -9,8 +9,8 @@
 // OrbitEngineECS : Position Data Component Specification
 // ===========================================================================
 
-#ifndef _ORBIT_ECS_POSITIONDATA_H
-#define _ORBIT_ECS_POSITIONDATA_H
+#ifndef _ORBIT_PREFABS_POSITIONDATA_H
+#define _ORBIT_PREFABS_POSITIONDATA_H
 
 struct PositionData
 {
@@ -36,4 +36,4 @@ struct PositionData
 	{}
 };
 
-#endif // !_ORBIT_ECS_POSITIONCOMPONENT_H
+#endif // !_ORBIT_PREFABS_POSITIONDATA_H

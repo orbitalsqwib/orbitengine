@@ -107,7 +107,7 @@ private:
 			// empty slot over for tail to point to.
 
 			// create a index pointing to the current element to shift
-			int indexToShift = 0;
+			size_t indexToShift = 0;
 
 			// while the index for the element to shift is < tail,
 			while (indexToShift < tail)

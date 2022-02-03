@@ -32,7 +32,7 @@ private:
 	// collision message queue
 	MessageBroker collisionBroker;
 
-	// initialization flag
+	// debug initialization flag
 	bool debugReady;
 
 public:
@@ -44,7 +44,7 @@ public:
 	void setSignature(
 		ECSInstance& ecs
 	) {
-		// add text data component to ecs
+		// add collider data component to ecs
 		ecs.registerComponent<ColliderData>();
 
 		// set system signature
@@ -84,8 +84,8 @@ public:
 			// get collider component for subject entity
 			ColliderData* cSub = ecs->getComponent<ColliderData>(*it);
 			
-			// ensure collider component for subject exists, else exit early
-			if (!cSub) return;
+			// ensure collider component for subject exists, else skip to next
+			if (!cSub) continue;
 
 			// check collisions from each entity in the set after subject
 			for (it++; it != colliderSet.end(); it++)

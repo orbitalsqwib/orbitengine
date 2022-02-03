@@ -13,7 +13,6 @@
 #define _ORBIT_SCENE_ISCENE_H
 
 // forward declarations
-class SceneManager;
 class IEngineContext;
 
 
@@ -25,10 +24,10 @@ class IScene
 private:
 
 	// only allow access to scene manager
-	friend SceneManager;
+	friend class SceneManager;
 
 	// should bind the scene to the specified scene manager.
-	virtual void setSceneManager(SceneManager* pSceneMgr) = 0;
+	virtual void setSceneManager(ISceneManager* pSceneMgr) = 0;
 
 	// should bind the scene to the specified engine context
 	virtual void setEngineContext(IEngineContext* pEngineContext) = 0;
@@ -37,6 +36,9 @@ public:
 
 	// virtual destructor
 	virtual ~IScene() {}
+
+	// should return the current initialization state of the scene
+	virtual bool isInitialized() = 0;
 
 	// delayed initializer method - sets up underlying managers before any
 	// scene methods are called. this is only called when the scene is

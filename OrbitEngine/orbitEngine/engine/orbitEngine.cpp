@@ -79,14 +79,10 @@ OrbitEngine::OrbitEngine(
 	);
 
 	// configure fps text data
-	fpsTextData.x = 32;
-	fpsTextData.y = 32;
+	fpsTextData.x = 16;
+	fpsTextData.y = 16;
 	fpsTextData.z = ZValues::RESERVED;
 	fpsTextData.pStyle = textStyleMgr.getStyle("fps");
-
-	// TEST push startup scene
-	sceneManager.transition(DefaultScenes::StartupScene, false);
-	ready = true;
 }
 
 

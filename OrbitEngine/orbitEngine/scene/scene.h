@@ -32,7 +32,7 @@ private:
 	// private methods
 
 	// should bind the scene to the specified scene manager.
-	virtual void setSceneManager(SceneManager* _pSceneMgr);
+	virtual void setSceneManager(ISceneManager* _pSceneMgr);
 
 	// should bind the engine context to the specified scene manager.
 	virtual void setEngineContext(IEngineContext* _pEngineContext);
@@ -53,10 +53,13 @@ protected:
 
 	// pointer to the scene manager. can be used to transition to another
 	// scene, or quit the game entirely.
-	SceneManager* pSceneMgr;
+	ISceneManager* pSceneMgr;
 
 	// scene-specific message broker, for local scene messaging
 	MessageBroker sceneBroker;
+
+	// initialization flag
+	bool initialized;
 
 public:
 
@@ -68,6 +71,9 @@ public:
 
 
 	// methods
+
+	// returns the current initialization state of the scene
+	virtual bool isInitialized() { return initialized; }
 
 	// delayed initializer method - sets up underlying managers before any
 	// scene methods are called. this is only called when the scene is
