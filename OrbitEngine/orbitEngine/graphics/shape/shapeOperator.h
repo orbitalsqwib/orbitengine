@@ -35,9 +35,6 @@ public:
 	// constructor
 	ShapeOperator(GraphicsContext* _context);
 
-	// virtual destructor
-	virtual ~ShapeOperator() {}
-
 
 	// methods
 

@@ -96,6 +96,9 @@
     <ClCompile Include="orbitEngine\prefabs\scenes\startup\startup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="orbitEngine\collisions\colliderOperator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="orbitEngine\!config.h">
@@ -368,6 +371,24 @@
     <ClInclude Include="orbitEngine\prefabs\scenes\startup\systems\waveSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="orbitEngine\collisions\colliderData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\collisions\dxvec2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\collisions\colliderOperator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\systems\collisionSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\notifications\entityCollided.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\imports\messaging.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="orbitEngine\graphics\text\textOperator.h" />
@@ -377,6 +398,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="assets\enemy.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\shipSm.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\pickup.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

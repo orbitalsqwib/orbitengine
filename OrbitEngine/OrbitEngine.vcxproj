@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="orbitEngine\collisions\colliderOperator.cpp" />
     <ClCompile Include="orbitEngine\ecs\internal\ecsInstance.cpp" />
     <ClCompile Include="orbitEngine\ecs\internal\entityManager.cpp" />
     <ClCompile Include="orbitEngine\ecs\internal\systemManager.cpp" />
@@ -48,10 +49,14 @@
     <ClCompile Include="winmain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="orbitEngine\collisions\colliderData.h" />
+    <ClInclude Include="orbitEngine\collisions\colliderOperator.h" />
+    <ClInclude Include="orbitEngine\collisions\dxvec2.h" />
     <ClInclude Include="orbitEngine\common\colors.h" />
     <ClInclude Include="orbitEngine\common\commands\graphicsObjectCommands.h" />
     <ClInclude Include="orbitEngine\common\notifications\windowResized.h" />
     <ClInclude Include="orbitEngine\common\defaultScenes.h" />
+    <ClInclude Include="orbitEngine\imports\messaging.h" />
     <ClInclude Include="orbitEngine\imports\commons.h" />
     <ClInclude Include="orbitEngine\imports\components.h" />
     <ClInclude Include="orbitEngine\imports\ecs.h" />
@@ -62,10 +67,12 @@
     <ClInclude Include="orbitEngine\prefabs\commands\rotateCommand.h" />
     <ClInclude Include="orbitEngine\prefabs\commands\transformCommand.h" />
     <ClInclude Include="orbitEngine\prefabs\components\positionData.h" />
+    <ClInclude Include="orbitEngine\prefabs\notifications\entityCollided.h" />
     <ClInclude Include="orbitEngine\prefabs\scenes\exit\exitScene.h" />
     <ClInclude Include="orbitEngine\prefabs\listeners\transformListener.h" />
     <ClInclude Include="orbitEngine\prefabs\scenes\startup\components\cellData.h" />
     <ClInclude Include="orbitEngine\prefabs\scenes\startup\systems\waveSystem.h" />
+    <ClInclude Include="orbitEngine\prefabs\systems\collisionSystem.h" />
     <ClInclude Include="orbitEngine\prefabs\systems\renderSystems.h" />
     <ClInclude Include="orbitEngine\prefabs\systems\graphics\shapeRenderSystem.h" />
     <ClInclude Include="orbitEngine\prefabs\systems\graphics\spriteAnimationSystem.h" />
@@ -143,8 +150,10 @@
     <None Include="orbitEngine\graphics\text\textOperator.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="assets\pickup.png" />
     <Image Include="assets\enemy.png" />
     <Image Include="assets\ship.png" />
+    <Image Include="assets\shipSm.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
