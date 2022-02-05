@@ -557,8 +557,8 @@ void GraphicsContext::handleMessage(
 	if (hWndPtr && message.hwnd != *hWndPtr) return;
 
 	// update the backbuffer width and height accordingly
-	bbWidth		= message.newWidth;
-	bbHeight	= message.newHeight;
+	//bbWidth		= message.newWidth;
+	//bbHeight	= message.newHeight;
 
 	// reset device to update presentation parameters accordingly
 	//resetDevice();

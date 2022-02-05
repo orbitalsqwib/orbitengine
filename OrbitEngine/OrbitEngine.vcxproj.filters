@@ -410,6 +410,57 @@
     <ClInclude Include="surviveTheVoid\entityGroups\mainMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="surviveTheVoid\components\directionData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\components\thrustData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\components\massData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\components\trackingData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\components\playerControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\components\enemyData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\systems\thrustSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\systems\trackingSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\systems\controlSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\entityGroups\timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\systems\boostSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\components\boostData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\components\playerData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\entityGroups\player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\handlers\border.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\utils\floatRect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\systems\boostAnimSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="orbitEngine\graphics\text\textOperator.h" />
@@ -421,10 +472,10 @@
     <Image Include="assets\enemy.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="assets\shipSm.png">
+    <Image Include="assets\pickup.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="assets\pickup.png">
+    <Image Include="assets\circleOutline.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -68,14 +68,14 @@ private:
 	// specifies a pointer reference to an external text style manager
 	TextStyleManager* pTextStyleMgr;
 
+	// local text style operator
+	UniquePtr<TextStyleOperator> pTextStyleOp;
+
 	// records the current selected option
 	int selected;
 
 	// records the height of the title
-	float titleH;
-
-	// records the height of each option
-	float optionH;
+	int titleH;
 
 	// records the visibility of the menu
 	bool active;
@@ -94,12 +94,13 @@ public:
 	// initializer
 	void initialize(
 		ECSInstance&		_ecs,
+		GraphicsContext&	_graphics,
 		TextStyleManager&	_textStyleManager,
 		const std::string	_titleString,
 		const bool&			_lightMode		= false,
 		const float&		_leftPadding	= 64,
 		const float&		_topPadding		= 64,
-		const float&		_titleSpacing	= 64,
+		const float&		_titleSpacing	= 48,
 		const float&		_optionSpacing	= 32
 	);
 

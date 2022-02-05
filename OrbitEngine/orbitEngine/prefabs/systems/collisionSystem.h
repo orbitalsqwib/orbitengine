@@ -21,7 +21,9 @@
 
 // main definition
 
-// renders entities with a text data component
+// checks for collisions between entities and emits a entitycollided message
+// on a successful collision check. this message should be picked up and
+// handled by the relevant collision resolution systems.
 class CollisionSystem : public System
 {
 private:
@@ -107,7 +109,9 @@ public:
 						EntityCollided(subject, *it, targetTag, cV)
 					);
 					collisionBroker.queue(
-						EntityCollided(*it, subject, targetTag, cV * -1)
+						EntityCollided(
+							*it, subject, cSub->getTag().c_str(), cV * -1
+						)
 					);
 				}
 
@@ -161,7 +165,9 @@ public:
 					EntityCollided(subject, *it, targetTag, cV)
 				);
 				collisionBroker.queue(
-					EntityCollided(*it, subject, targetTag, cV * -1)
+					EntityCollided(EntityCollided(
+						*it, subject, cSub->getTag().c_str(), cV * -1
+					))
 				);
 			}
 		}

@@ -18,6 +18,7 @@
 
 // import necessary headers
 #include "dxvec2.h"
+#include "../utils/floatRect.h"
 #include <assert.h>
 #include <string>
 
@@ -25,30 +26,6 @@
 
 enum class ColliderType { NONE, CIRCLE, BOX };
 enum class Edge { LEFT, TOP, RIGHT, BOTTOM };
-
-struct FloatRect
-{
-	float left;
-	float top;
-	float right;
-	float bottom;
-
-	// default constructor
-	FloatRect(): left(0), top(0), right(0), bottom(0) {}
-
-	// convenience constructor
-	FloatRect(
-		const float& _left,
-		const float& _top,
-		const float& _right,
-		const float& _bottom
-	) :
-		left	(_left),
-		top		(_top),
-		right	(_right),
-		bottom	(_bottom)
-	{}
-};
 
 
 // main definition
@@ -103,7 +80,7 @@ public:
 		tag			(""),
 		pos			(0, 0),
 		angle		(0),
-		scale		(0),
+		scale		(1),
 		ptsDirty	(0),
 		boxDirty	(0),
 		radius		(0),
@@ -128,7 +105,7 @@ public:
 		tag			(_tag),
 		pos			(_topLeftX, _topLeftY),
 		angle		(0),
-		scale		(0),
+		scale		(1),
 		ptsDirty	(true),
 		boxDirty	(true),
 		radius		(_radius),
@@ -156,7 +133,7 @@ public:
 		tag			(_tag),
 		pos			(_topLeftX, _topLeftY),
 		angle		(0),
-		scale		(0),
+		scale		(1),
 		ptsDirty	(true),
 		boxDirty	(true),
 		radius		(0),
@@ -185,7 +162,7 @@ public:
 		tag			(_tag),
 		pos			(_topLeftX, _topLeftY),
 		angle		(0),
-		scale		(0),
+		scale		(1),
 		ptsDirty	(true),
 		boxDirty	(true),
 		radius		(0),

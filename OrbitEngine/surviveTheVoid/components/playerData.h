@@ -6,19 +6,15 @@
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 // ===========================================================================
-// OrbitEngine : Common Objects Import Header Specification
+// SurviveTheVoid : Player Component Specification
 // ===========================================================================
 
-#ifndef _ORBIT_IMPORTS_COMMONS_H
-#define _ORBIT_IMPORTS_COMMONS_H
+#ifndef _STV_COMPONENTS_PLAYER_H
+#define _STV_COMPONENTS_PLAYER_H
 
-// import necessary headers
-#include "../common/colors.h"
-#include "../common/defaultScenes.h"
-#include "../common/windowStyle.h"
-#include "../common/zvalues.h"
-#include "../utils/floatRect.h"
-#include "../utils/pointers.h"
-#include "../collisions/dxvec2.h"
+// main definition
 
-#endif // !_ORBIT_IMPORTS_COMMONS_H
+// indicates that the entity is the player
+struct PlayerData {};
+
+#endif // !_STV_COMPONENTS_PLAYER_H

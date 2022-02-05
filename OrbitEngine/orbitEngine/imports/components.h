@@ -15,5 +15,6 @@
 // import necessary headers
 #include "../graphics/components.h"
 #include "../prefabs/components/positionData.h"
+#include "../prefabs/components/velocityData.h"
 
 #endif // !_ORBIT_IMPORTS_COMPONENTS_H

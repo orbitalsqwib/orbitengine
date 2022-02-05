@@ -83,6 +83,9 @@ void MainScene::handleMenuSelection()
 		{
 			// RETURN TO MAIN MENU
 
+			// reset game states
+			resetGameState();
+
 			// update menu
 			menu.setTitle("Survive The Void");
 			menu.setOption("Start", 0);
@@ -95,10 +98,58 @@ void MainScene::handleMenuSelection()
 
 			// menu will now be the main menu
 			onMainMenu = true;
-
-			// reset game states
-			resetGameState();
 		}
+		}
+	}
+}
+
+// ===========================================================================
+// handles menu controls
+// ===========================================================================
+void MainScene::handleMenu()
+{
+	// if game is paused and menu is active, handle menu controls
+	if (!gameActive)
+	{
+		// unpause game if on pause menu
+		if (engine->keyboard().wasKeyPressed(VK_ESCAPE) && !onMainMenu)
+		{
+			// unpause game
+			gameActive = true;
+
+			// show menu
+			menu.toggleMenu(false);
+		}
+
+		// handle cursor
+		if (engine->keyboard().wasKeyPressed(VK_DOWN))
+		{
+			// go to next menu option
+			menu.selectNextOption();
+		}
+		else if (engine->keyboard().wasKeyPressed(VK_UP))
+		{
+			// go to previous menu option
+			menu.selectPrevOption();
+		}
+
+		// handle selection for main menu
+		if (engine->keyboard().wasKeyPressed(VK_RETURN))
+		{
+			handleMenuSelection();
+		}
+	}
+	// if game is active, handle game controls
+	else
+	{
+		// handle pausing
+		if (engine->keyboard().wasKeyPressed(VK_ESCAPE))
+		{
+			// pause game
+			gameActive = false;
+
+			// show menu
+			menu.toggleMenu(true);
 		}
 	}
 }
@@ -108,7 +159,8 @@ void MainScene::handleMenuSelection()
 // ===========================================================================
 void MainScene::setupGameState()
 {
-
+	// create entities
+	player.create();
 }
 
 // ===========================================================================
@@ -116,7 +168,62 @@ void MainScene::setupGameState()
 // ===========================================================================
 void MainScene::resetGameState() 
 {
-	
+	// reset timer to zero
+	timer.reset();
+
+	// destroy all tracked entities and their components
+	player.destroy();
+
+	// return title to normal pause menu
+	menu.setTitle("Paused");
+
+	// setup game state again
+	setupGameState();
+}
+
+// ===========================================================================
+// kills the player and handles player death
+// ===========================================================================
+void MainScene::gameOver(const std::string& cause)
+{
+	// destroy player entity
+	player.destroy();
+
+	// stop game
+	gameActive = false;
+
+	// update menu title to present score
+	menu.setTitle(
+		"You have died. The Void's Loop activates...\n\n"
+		"Survival Time: " + timer.getTimeStr() + "\n"
+		"Killed By: " + cause
+	);
+
+	// present menu
+	menu.toggleMenu(true);
+}
+
+// ===========================================================================
+// kills the player if the player's collider is outside of the border
+// ===========================================================================
+void MainScene::enforceGameBorder()
+{
+	// ensure player is alive, else skip check.
+	if (!player.isAlive()) return;
+
+	// retrieve entity for player
+	Entity pEntity = player.getEntity();
+
+	// attempt to get collider data for player
+	if (ColliderData* pCol = ecs.getComponent<ColliderData>(pEntity))
+	{
+		// check if player exceeded game border
+		if (colliderOp.outsideRect(*pCol, border.getCorners().getRECT()))
+		{
+			// kill player
+			gameOver("The Void's Border");
+		}
+	}
 }
 
 
@@ -143,20 +250,50 @@ void MainScene::setup()
 
 	// register and initialize velocity system
 	pVelocitySystem = ecs.registerSystem<VelocitySystem>();
+	pVelocitySystem->setSignature(ecs);
 	pVelocitySystem->initialize(sceneBroker);
 
 	// initialize transform listener
 	transformListener.initialize(ecs, sceneBroker);
+	ecs.registerComponent<PositionData>();
 
 	// register and initialize collision system
 	pCollisionSystem = ecs.registerSystem<CollisionSystem>();
+	pCollisionSystem->setSignature(ecs);
 	pCollisionSystem->DEBUG_initializeRenderer(&engine->graphics());
 
+	// register thrust system
+	pThrustSystem = ecs.registerSystem<ThrustSystem>();
+	pThrustSystem->setSignature(ecs);
 
-	// ! setup text objects
+
+	// ! setup game logic systems
+
+	// register and initializes player control system
+	pControlSystem = ecs.registerSystem<ControlSystem>();
+	pControlSystem->setSignature(ecs);
+	pControlSystem->initialize(sceneBroker, engine->keyboard());
+
+	// register boost system
+	pBoostSystem = ecs.registerSystem<BoostSystem>();
+	pBoostSystem->setSignature(ecs);
+
+	// register boost animation system
+	pBoostAnimSystem = ecs.registerSystem<BoostAnimSystem>();
+	pBoostAnimSystem->setSignature(ecs);
+	pBoostAnimSystem->initialize(engine->graphics());
+
+
+	// ! setup managers
+
+	// build new texture manager
+	pTextureManager = new TextureManager(&engine->graphics());
 
 	// build new text style manager
 	pTextStyleManager = new TextStyleManager(&engine->graphics());
+
+
+	// ! setup scene text objects
 
 	// register text styles
 	pTextStyleManager->addStyle("default",
@@ -164,11 +301,12 @@ void MainScene::setup()
 	);
 
 
-	// ! create entities
+	// ! create main menu
 
 	// setup main menu group
 	menu.initialize(
 		ecs,
+		engine->graphics(),
 		*pTextStyleManager,
 		"Survive The Void",
 		false
@@ -177,6 +315,25 @@ void MainScene::setup()
 	// setup main menu options
 	menu.addOption("Start");
 	menu.addOption("Quit");
+
+
+	// ! setup timer
+	timer.initialize(
+		ecs,
+		engine->graphics(),
+		pTextStyleManager.get()
+	);
+
+
+	// ! setup border
+	border.initialize(32, 32, engine->graphics());
+
+
+	// ! prepare player
+	player.initialize(ecs, engine->graphics(), pTextureManager.get());
+
+
+	setupGameState();
 }
 
 // ===========================================================================
@@ -190,39 +347,35 @@ void MainScene::setup()
 void MainScene::update(
 	const float&	deltaTime
 ) {
-	// if game is paused and menu is active, handle menu controls
-	if (!gameActive)
-	{
-		// handle cursor
-		if (engine->keyboard().wasKeyPressed(VK_DOWN))
-		{
-			// go to next menu option
-			menu.selectNextOption();
-		}
-		else if (engine->keyboard().wasKeyPressed(VK_UP))
-		{
-			// go to previous menu option
-			menu.selectPrevOption();
-		}
-		
-		// handle selection for main menu
-		if (engine->keyboard().wasKeyPressed(VK_RETURN))
-		{
-			handleMenuSelection();
-		}
-	}
-	// if game is active, handle game controls
-	else
-	{
-		// handle pausing
-		if (engine->keyboard().wasKeyPressed(VK_ESCAPE))
-		{
-			// pause game
-			gameActive = false;
+	// handle menu controls
+	handleMenu();
 
-			// show menu
-			menu.toggleMenu(true);
-		}
+	// handle game updates
+	if (gameActive)
+	{
+		// update timer
+		timer.update(deltaTime);
+
+		// apply last frame's velocities
+		pVelocitySystem->applyVelocities(deltaTime);
+
+		// enforce game boundary on player
+		enforceGameBorder();
+
+		// handle player control
+		pControlSystem->handleUserInputs(deltaTime);
+
+		// apply boost mechanics
+		pBoostSystem->applyBoost(deltaTime);
+
+		// update player sprite to reflect boost fuel %
+		pBoostAnimSystem->updatePlayerSprite();
+
+		// run thrust system
+		pThrustSystem->applyThrust();
+
+		// render border
+		border.render();
 	}
 
 	// render scene

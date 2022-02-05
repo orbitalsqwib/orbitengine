@@ -8,7 +8,7 @@
 // ===========================================================================
 // OrbitEngine : Publisher/Subscriber Include Header
 // ===========================================================================
-// NOTE: Due to circular dependency issues, the headers within pubsub_internal
+// NOTE: Due to circular dependency issues, the headers within pubsub
 // cannot be imported out of order. Hence, users should import this header
 // even if it contains extra components to avoid "incomplete type" errors
 // ===========================================================================

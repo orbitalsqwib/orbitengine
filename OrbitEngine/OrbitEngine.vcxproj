@@ -56,6 +56,7 @@
     <ClInclude Include="orbitEngine\collisions\dxvec2.h" />
     <ClInclude Include="orbitEngine\common\colors.h" />
     <ClInclude Include="orbitEngine\common\commands\graphicsObjectCommands.h" />
+    <ClInclude Include="orbitEngine\utils\floatRect.h" />
     <ClInclude Include="orbitEngine\common\notifications\windowResized.h" />
     <ClInclude Include="orbitEngine\common\defaultScenes.h" />
     <ClInclude Include="orbitEngine\imports\graphics.h" />
@@ -150,17 +151,33 @@
     <ClInclude Include="orbitEngine\window\window.h" />
     <ClInclude Include="orbitEngine\window\windowContext.h" />
     <ClInclude Include="orbitEngine\window\extensions\windowExtension.h" />
+    <ClInclude Include="surviveTheVoid\components\boostData.h" />
+    <ClInclude Include="surviveTheVoid\components\enemyData.h" />
+    <ClInclude Include="surviveTheVoid\components\massData.h" />
+    <ClInclude Include="surviveTheVoid\components\directionData.h" />
+    <ClInclude Include="surviveTheVoid\components\playerData.h" />
+    <ClInclude Include="surviveTheVoid\components\playerControl.h" />
+    <ClInclude Include="surviveTheVoid\components\thrustData.h" />
+    <ClInclude Include="surviveTheVoid\components\trackingData.h" />
+    <ClInclude Include="surviveTheVoid\handlers\border.h" />
+    <ClInclude Include="surviveTheVoid\entityGroups\player.h" />
+    <ClInclude Include="surviveTheVoid\entityGroups\timer.h" />
     <ClInclude Include="surviveTheVoid\scenes\main.h" />
     <ClInclude Include="surviveTheVoid\entityGroups\mainMenu.h" />
+    <ClInclude Include="surviveTheVoid\systems\boostAnimSystem.h" />
+    <ClInclude Include="surviveTheVoid\systems\boostSystem.h" />
+    <ClInclude Include="surviveTheVoid\systems\controlSystem.h" />
+    <ClInclude Include="surviveTheVoid\systems\thrustSystem.h" />
+    <ClInclude Include="surviveTheVoid\systems\trackingSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="orbitEngine\graphics\text\textOperator.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="assets\circleOutline.png" />
     <Image Include="assets\pickup.png" />
     <Image Include="assets\enemy.png" />
     <Image Include="assets\ship.png" />
-    <Image Include="assets\shipSm.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

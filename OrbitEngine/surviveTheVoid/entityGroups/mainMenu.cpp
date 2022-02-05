@@ -30,7 +30,6 @@ MainMenu::MainMenu():
 	pTextStyleMgr	(nullptr),
 	selected		(0),
 	titleH			(0),
-	optionH			(0),
 	active			(false)
 {}
 
@@ -39,6 +38,7 @@ MainMenu::MainMenu():
 // ===========================================================================
 void MainMenu::initialize(
 	ECSInstance&		_ecs,
+	GraphicsContext&	_graphics,
 	TextStyleManager&	_textStyleManager,
 	const std::string	_titleString,
 	const bool&			_lightMode,
@@ -52,12 +52,14 @@ void MainMenu::initialize(
 	pTextStyleMgr = &_textStyleManager;
 
 	// initialize states
-	titleString = _titleString;
 	lightMode = _lightMode;
 	leftPadding = _leftPadding;
 	topPadding = _topPadding;
 	titleSpacing = _titleSpacing;
 	optionSpacing = _optionSpacing;
+
+	// setup text style operator
+	pTextStyleOp = new TextStyleOperator(&_graphics);
 
 	// setup theme
 	COLOR_ARGB foreground = lightMode ? Colors::BLACK : Colors::WHITE;
@@ -77,6 +79,9 @@ void MainMenu::initialize(
 		)
 	);
 
+	// set title string
+	setTitle(_titleString);
+
 	// create title
 	createTitle();
 
@@ -94,6 +99,12 @@ void MainMenu::createTitle()
 {
 	// create title entity
 	title = ecs->createEntity();
+
+	// update title height
+	titleH = pTextStyleOp->calculateHeight(
+		titleString,
+		*pTextStyleMgr->getStyle(TEXTSTYLE_TITLE)
+	);
 
 	// add text component for title
 	ecs->addComponent<TextData>(title,

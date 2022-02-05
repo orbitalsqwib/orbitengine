@@ -17,7 +17,38 @@
 #include "../../orbitEngine/imports/scene.h"
 #include "../../orbitEngine/imports/systems.h"
 #include "../../orbitEngine/imports/graphics.h"
+#include "../systems/controlSystem.h"
+#include "../systems/thrustSystem.h"
+#include "../systems/trackingSystem.h"
+#include "../systems/boostSystem.h"
+#include "../systems/boostAnimSystem.h"
 #include "../entityGroups/mainMenu.h"
+#include "../entityGroups/player.h"
+#include "../entityGroups/timer.h"
+#include "../handlers/border.h"
+#include <math.h>
+
+// local constants
+namespace {
+
+	// asset filepaths
+	const LPCWSTR ASSET_SHIP = L"./assets/ship.png";
+
+
+	// asset info
+
+	// ship
+	const int ASSET_SHIP_HEIGHT = 64;
+	const int ASSET_SHIP_WIDTH	= 64;
+
+
+	// entity info
+
+	// ship
+	const int HEIGHT_SHIP		= 32;
+	const int WIDTH_SHIP		= 32;
+
+}
 
 
 // main definition
@@ -37,6 +68,18 @@ private:
 	// collision system
 	CollisionSystem* pCollisionSystem;
 
+	// thrust system
+	ThrustSystem* pThrustSystem;
+
+	// player control system
+	ControlSystem* pControlSystem;
+
+	// boost mechanic system
+	BoostSystem* pBoostSystem;
+
+	// boost animation system
+	BoostAnimSystem* pBoostAnimSystem;
+
 
 	// listeners
 
@@ -49,8 +92,23 @@ private:
 	// text style manager
 	UniquePtr<TextStyleManager> pTextStyleManager;
 
+	// texture manager
+	UniquePtr<TextureManager> pTextureManager;
+
 	// main menu handler
 	MainMenu menu;
+
+	// timer handler
+	Timer timer;
+
+	// border handler
+	Border border;
+
+	
+	// operators
+
+	// collider operator
+	ColliderOperator colliderOp;
 
 
 	// states
@@ -62,16 +120,31 @@ private:
 	bool onMainMenu;
 
 
+	// key entities
+
+	// player entitiy
+	Player player;
+
+
 	// private methods
 
 	// handle menu selection
 	void handleMenuSelection();
+
+	// handles menu controls
+	void handleMenu();
 
 	// sets game states and entities
 	void setupGameState();
 
 	// resets the game state and entities
 	void resetGameState();
+
+	// stops the game and presents the game over screen
+	void gameOver(const std::string& cause = "The Architects");
+
+	// calls gameover if the player's collider is outside of the border
+	void enforceGameBorder();
 
 public:
 
@@ -82,6 +155,10 @@ public:
 		renderSystems		(),
 		pVelocitySystem		(nullptr),
 		pCollisionSystem	(nullptr),
+		pThrustSystem		(nullptr),
+		pControlSystem		(nullptr),
+		pBoostSystem		(nullptr),
+		pBoostAnimSystem	(nullptr),
 
 		// listeners
 		transformListener	(),
@@ -90,7 +167,10 @@ public:
 		pTextStyleManager	(nullptr),
 		menu				(),
 		gameActive			(false),
-		onMainMenu			(true)
+		onMainMenu			(true),
+
+		// key entities
+		player				()
 	{}
 
 	// scene methods

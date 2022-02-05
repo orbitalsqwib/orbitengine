@@ -494,22 +494,22 @@ int ColliderOperator::outsideRect(
 	ColliderData&	c, 
 	const RECT&		rect
 ) {
+	// get updated points
+	updatePoints(c);
+
 	// if collider is a circle, check if axis-aligned edge projections of 
-	// circle are completely within rect edges
+	// circle are completely inside of rect edges
 	if (c.type == ColliderType::CIRCLE)
 	{
-		if (c.center.x + c.radius < rect.left)		return 1;
-		if (c.center.x - c.radius > rect.right)		return 3;
-		if (c.center.y + c.radius < rect.top)		return 2;
-		if (c.center.y - c.radius > rect.bottom)	return 4;
+		if (c.center.x - c.radius * c.scale < rect.left)	return 1;
+		if (c.center.x + c.radius * c.scale > rect.right)	return 3;
+		if (c.center.y - c.radius * c.scale < rect.top)		return 2;
+		if (c.center.y + c.radius * c.scale > rect.bottom)	return 4;
 	}
 
 	// else, check if box corners are outside of rect
 	else if (c.type == ColliderType::BOX)
 	{
-		// get updated corners
-		updatePoints(c);
-
 		// check if any corner is completely outside of rect edge projection
 		for (int i = 0; i < 4; i++) {
 
@@ -537,7 +537,7 @@ void ColliderOperator::renderDebug(
 	// get updated corners
 	updatePoints(c);
 
-	// set up vertex buffers for line strip
+	// set up vertices for debug outline
 	Vertex vertices[5]
 	{
 		Vertex(
@@ -547,10 +547,10 @@ void ColliderOperator::renderDebug(
 			c.corners[1].x, c.corners[1].y, ZValues::RESERVED, col, 1.0f, 0.0f
 		),
 		Vertex(
-			c.corners[2].x, c.corners[2].y, ZValues::RESERVED, col, 0.0f, 1.0f
+			c.corners[2].x, c.corners[2].y, ZValues::RESERVED, col, 1.0f, 1.0f
 		),
 		Vertex(
-			c.corners[3].x, c.corners[3].y, ZValues::RESERVED, col, 1.0f, 1.0f
+			c.corners[3].x, c.corners[3].y, ZValues::RESERVED, col, 0.0f, 1.0f
 		),
 		Vertex(
 			c.corners[0].x, c.corners[0].y, ZValues::RESERVED, col, 0.0f, 0.0f

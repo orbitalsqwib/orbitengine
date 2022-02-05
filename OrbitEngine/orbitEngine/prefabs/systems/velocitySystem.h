@@ -53,7 +53,7 @@ public:
 	void setSignature(
 		ECSInstance&	ecs
 	) {
-		// add velocity data component to ecs
+		// register components with ecs (if not already registered)
 		ecs.registerComponent<VelocityData>();
 
 		// set system signature
