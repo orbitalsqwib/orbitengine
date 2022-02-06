@@ -9,47 +9,75 @@
 // WinMain : Main Application Entry Point
 // ===========================================================================
 
+#define _CRT_SECURE_NO_WARNINGS
+
 // import windows headers
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
 // import necessary headers
-#include "orbitEngine/orbitEngine.h"
+#include "orbitEngine/imports/engine.h"
+#include "surviveTheVoid/scenes/main.h"
+
+// include headers for memory leak detection
+#define _CRTDBG_MAP_ALLOC
+#include <crtdbg.h>
 
 
+// define application entry point (winmain)
 int WINAPI WinMain(
 	_In_		HINSTANCE	,
 	_In_opt_	HINSTANCE	,
 	_In_		LPSTR		,
 	_In_		int			
-) {	
-	//TODO: create main window
-	/*for (int i = 0; i < 10; i++) {
-		GameWindow* test = new GameWindow();
-		test->bindWindow(L"Test");
-		test->getBroker()->pushImmediately(DisplayCommands::SETSTYLE_BORDERED);
-	}*/
+) {
+	// check for memory leak on debug builds
+	#if defined(DEBUG) | defined(_DEBUG)
+		_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	#endif
+
+	// create game engine instance
+	OrbitEngine game (L"Survive The Void");
+	game.registerScene<MainScene>("STV_MAIN");
+	game.setInitialScene("STV_MAIN");
+
 	// initialize message loop states
 	MSG msg;
 	int exit = false;
 
-	// run message loop
-	while (!exit) {
+	try {
 
-		// check for new messages
-		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-		{
-			// check for and handle application quit messages
-			if (msg.message == WM_QUIT) exit = true;
+		// run message loop
+		while (!exit) {
 
-			// translate and dispatch message to relevant window
-			TranslateMessage(&msg);
-			DispatchMessageW(&msg);
+			// check for new messages
+			if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+			{
+				// check for and handle application quit messages
+				if (msg.message == WM_QUIT) exit = true;
+
+				// translate and dispatch message to relevant window
+				TranslateMessage(&msg);
+				DispatchMessageW(&msg);
+			}
+
+			// run game
+			game.update();
+
 		}
-
-		//TODO: handle all queued window commands
+	}
+	catch (const Error& err)
+	{
+		// show error message
+		MessageBoxA(NULL, err.getMessage(), "Error", MB_OK);
 
 	}
+	catch (...)
+	{
+		// show error message
+		MessageBoxA(NULL, "Unknown error occured in game", "Error", MB_OK);
+	}
+	
 	
 	// return final message parameters on quit
 	return static_cast<int>(msg.wParam);

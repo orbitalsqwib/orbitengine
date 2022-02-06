@@ -6,11 +6,11 @@
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 // ===========================================================================
-// OrbitEngine : Graphics Handler Class Specification
+// OrbitEngine : Graphics Context Class Specification
 // ===========================================================================
 
-#ifndef _ORBIT_GRAPHICS_GRAPHICS_H
-#define _ORBIT_GRAPHICS_GRAPHICS_H
+#ifndef _ORBIT_GRAPHICS_GRAPHICSCONTEXT_H
+#define _ORBIT_GRAPHICS_GRAPHICSCONTEXT_H
 
 // import minimal windows headers
 #define WIN32_LEAN_AND_MEAN
@@ -18,8 +18,6 @@
 
 // import necessary headers
 #include "dximport.h"
-#include "primitiveShape.h"
-#include "spriteData.h"
 #include "vertex.h"
 #include "../!config.h"
 #include "../error.h"
@@ -31,7 +29,8 @@
 
 
 // main definition
-class GraphicsHandler : ISubscriber<WindowResized>
+
+class GraphicsContext : public ISubscriber<WindowResized>
 {
 private:
 
@@ -70,11 +69,14 @@ private:
 	// records the maximum number of vertices that the vertex buffer can hold
 	size_t vbMaxVertices;
 
+	// records the previous vertice capacity of the vertex buffer before reset
+	size_t vbPrevMaxVertices;
+
 	
 	// messaging
 
-	// pointer to shared message broker
-	MessageBroker* broker;
+	// internal graphics broker
+	MessageBroker broker;
 
 
 	// config states
@@ -121,10 +123,10 @@ private:
 public:
 
 	// constructor
-	GraphicsHandler();
+	GraphicsContext();
 
 	// destructor
-	~GraphicsHandler();
+	~GraphicsContext();
 
 
 	// basic methods
@@ -137,15 +139,6 @@ public:
 		const bool	_fullscreen
 	);
 
-	// clears the backbuffer and initiates the directx scene drawing sequence.
-	// all renderables should be queued for rendering after this function is
-	// called, up until endSceneDraw() is called.
-	HRESULT beginSceneDraw();
-
-	// ends the directx scene drawing sequence. once this is called, all 
-	// renderables queued will be passed to the driver for rendering.
-	HRESULT endSceneDraw();
-
 	// swaps the back-buffer with the currently displayed frame buffer,
 	// displaying it. (page-flipping)
 	HRESULT showBackBuffer();
@@ -156,36 +149,27 @@ public:
 	void maintainDevice();
 
 
-	// sprite drawing methods
+	// draw sequence methods
+
+	// clears the backbuffer and initiates the directx scene drawing sequence.
+	// all renderables should be queued for rendering after this function is
+	// called, up until endSceneDraw() is called.
+	HRESULT beginSceneDraw();
+
+	// ends the directx scene drawing sequence. once this is called, all 
+	// renderables queued will be passed to the driver for rendering.
+	HRESULT endSceneDraw();
 
 	// prepares the direct3d device for drawing sprites. marks the start of
 	// the directx sprite drawing sequence, and should only be called between
 	// a beginSceneDraw()...endSceneDraw() method pair.
-	void beginSpriteDraw();
+	HRESULT beginSpriteDraw();
 
 	// ends the directx sprite drawing sequence, and submits all batched
 	// sprites to the device to be rendered. should only be called between a
 	// beginSceneDraw()...endSceneDraw() method pair, after beginSpriteDraw()
 	// has been invoked.
-	void endSpriteDraw();
-
-	// creates a texture resource from a file and saves a reference to it 
-	// to a texture resource pointer.
-	HRESULT loadTexture(
-		LPCWSTR			filename,
-		COLOR_ARGB		chromaKey,
-		UINT&			textureWidthOut,
-		UINT&			textureHeightOut,
-		LP_TEXTURE&		pTextureOut
-	);
-
-	// queues a sprite to be drawn with the texture and transforms specified
-	// by a spriteData struct. should only be called between a
-	// beginSpriteDraw()...endSpriteDraw() method pair.
-	void drawSprite(
-		const SpriteData&	spriteData,
-		COLOR_ARGB			color
-	);
+	HRESULT endSpriteDraw();
 
 
 	// primitive drawing methods
@@ -203,10 +187,6 @@ public:
 		D3DPRIMITIVETYPE	primitiveType,
 		size_t				nPrimitives
 	);
-
-	// convenience method - wraps drawVertices() for primitive shape structs
-	template <size_t nVertices>
-	void drawPrimitive(const PrimitiveShape<nVertices>& shape);
 
 
 	// message handlers
@@ -245,8 +225,8 @@ public:
 	// canonical display height in any graphics calculations
 	UINT getDisplayHeight() { return bbHeight; }
 
-	// return a pointer to the current vertex buffer pointer
-	LP_VERTEXBUFFER* getPPVB() { return &pVB; }
+	// returns the shared message broker the context is subscribed to
+	MessageBroker& getBroker() { return broker; }
 
 
 	// setters
@@ -256,4 +236,4 @@ public:
 
 };
 
-#endif // !_ORBIT_GRAPHICS_GRAPHICS_H
+#endif // !_ORBIT_GRAPHICS_GRAPHICSCONTEXT_H

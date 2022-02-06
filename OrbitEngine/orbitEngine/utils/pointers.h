@@ -339,7 +339,7 @@ public:
 	// =======================================================================
 	// bool operator. checks if the managed data pointer is nullptr
 	// =======================================================================
-	operator bool() const { return dataPtr == nullptr; }
+	operator bool() const { return dataPtr != nullptr; }
 
 	// =======================================================================
 	// dereference operator (*)

@@ -25,6 +25,7 @@
 #include "../messaging/pubsub.h"
 #include "../utils/flow.h"
 #include "../utils/pointers.h"
+#include "../error.h"
 #include <type_traits>
 
 // default values
@@ -433,9 +434,10 @@ public:
 		// attempt to make handle with mutexName
 		HANDLE hMutexRes = CreateMutexW(NULL, true, mutexName);
 
-		// if mutex handle is NULL, an internal error has occurred!
-		// TODO: ERROR LOGGING
-		if (hMutexRes == NULL) return false;
+		// if mutex handle is NULL, throw an error
+		if (hMutexRes == NULL) throw Error(
+			"Error: An internal error has occurred!"
+		);
 
 		// if the last error returned is ERROR_ALREADY_EXISTS, an instance has
 		// already been created for the specified mutex.

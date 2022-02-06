@@ -42,10 +42,67 @@
     <ClCompile Include="orbitEngine\performance\timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="orbitEngine\graphics\primitiveShape.cpp">
+    <ClCompile Include="orbitEngine\graphics\shape\shapeTranslator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="orbitEngine\graphics\graphics.cpp">
+    <ClCompile Include="orbitEngine\graphics\graphicsContext.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\graphics\texture\textureOperator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\graphics\texture\textureManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\graphics\sprite\spriteOperator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\graphics\shape\shapeOperator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\graphics\textStyle\textStyleOperator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\graphics\textStyle\textStyleManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\graphics\text\textOperator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\graphics\animSprite\animSpriteOperator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\ecs\internal\entityManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\ecs\internal\systemManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\ecs\internal\ecsInstance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\scene\scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\scene\sceneManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\engine\orbitEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\prefabs\systems\renderSystems.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\prefabs\scenes\startup\startup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="orbitEngine\collisions\colliderOperator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="surviveTheVoid\scenes\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="surviveTheVoid\entityGroups\mainMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -128,13 +185,13 @@
     <ClInclude Include="orbitEngine\input\gamepad.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="orbitEngine\orbitEngine.h">
+    <ClInclude Include="orbitEngine\engine\orbitEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="orbitEngine\performance\timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="orbitEngine\graphics\graphics.h">
+    <ClInclude Include="orbitEngine\graphics\graphicsContext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="orbitEngine\graphics\dximport.h">
@@ -149,17 +206,316 @@
     <ClInclude Include="orbitEngine\graphics\vertex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="orbitEngine\graphics\spriteData.h">
+    <ClInclude Include="orbitEngine\graphics\sprite\spriteData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="orbitEngine\common\notifications\windowResized.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="orbitEngine\graphics\primitiveShape.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="orbitEngine\common\commands\graphicsObjectCommands.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\text\textData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\sprite\spriteOperator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\texture\textureData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\texture\textureOperator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\texture\textureManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\graphicsOperator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\shape\shapeData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\shape\shapeOperator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\shape\shapeTranslator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\textStyle\textStyleOperator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\textStyle\textStyleData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\shape\translatedShape.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\textStyle\textStyleManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\animSprite\animSpriteData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\animSprite\animSpriteOperator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\scene\scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\ecs\types\entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\ecs\types\componentTypeEnum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\ecs\types\signature.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\ecs\types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\ecs\internal\componentArray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\ecs\internal\entityManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\ecs\internal\componentManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\ecs\internal\system.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\ecs\internal\systemManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\ecs\internal\ecsInstance.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\scene\ISceneManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\scene\sceneManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\engine\IEngineContext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\scenes\startup\startup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\systems\graphics\spriteRenderSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\components.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\graphics\operators.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\ecs\ecs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\components\positionData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\systems\graphics\spriteAnimationSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\systems\graphics\textRenderSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\systems\graphics\shapeRenderSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\systems\renderSystems.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\common\defaultScenes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\scenes\exit\exitScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\scene\IScene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\imports\scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\imports\engine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\imports\ecs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\imports\components.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\imports\commons.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\imports\systems.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\listeners\transformListener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\commands\transformCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\commands\moveCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\commands\rotateCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\scenes\startup\components\cellData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\scenes\startup\systems\waveSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\collisions\colliderData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\collisions\dxvec2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\collisions\colliderOperator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\systems\collisionSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\notifications\entityCollided.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\imports\messaging.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\components\velocityData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\prefabs\systems\velocitySystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\scenes\main.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\imports\graphics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\entityGroups\mainMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\components\directionData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\components\thrustData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\components\massData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\components\trackingData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\components\playerControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\components\enemyData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\systems\thrustSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\systems\trackingSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\systems\controlSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\entityGroups\timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\systems\boostSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\components\boostData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\components\playerData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\entityGroups\player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\handlers\border.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="orbitEngine\utils\floatRect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\systems\fuelAnimSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\archetypes\enemyArchetype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\systems\spawnSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\archetypes\IArchetype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\archetypes\pickupArchetype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\components\pickupData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\components\blastData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\systems\resetSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\archetypes\blastArchetype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\systems\blastSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\components\fuelData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\systems\iframeSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\components\iframeData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="orbitEngine\graphics\text\textOperator.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\ship.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\enemy.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\pickup.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\circleOutline.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

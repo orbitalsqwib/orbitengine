@@ -6,14 +6,14 @@
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 // ===========================================================================
-// OrbitEngine : Primitive Shape / Factory Class Implementation
+// OrbitEngine : Shape Translator Struct Implementation
 // ===========================================================================
 
 // import specification
-#include "primitiveShape.h"
+#include "shapeTranslator.h"
 
 
-// factory methods
+// methods
 
 // ===========================================================================
 // creates a rectangle with a triangle strip. if yGradient is set to true,
@@ -31,28 +31,45 @@
 // v   2---3        v   0,1---1,1
 // y                tv
 // ===========================================================================
-PrimitiveShape<4> ShapeFactory::createRect(
-	const float&	x,
-	const float&	y,
-	const float&	z,
-	const float&	w,
-	const float&	h,
-	COLOR_ARGB		startCol,
-	COLOR_ARGB		endCol,
-	bool			xGrad
+TranslatedShape<4>&& ShapeTranslator::translateRectangle(
+	const ShapeData&	shape
 ) {
-	// handle single color rect
-	if (!endCol) endCol = startCol;
+	// handle single color shapes
+	COLOR_ARGB endGrad = shape.endGradient ? shape.color : shape.endGradient;
 
 	// generate and return PrimitiveShape
-	return PrimitiveShape<4>(
+	return std::move(TranslatedShape<4>(
 		std::array<Vertex, 4>{
-			Vertex(x,     y,     z, xGrad ? startCol : startCol, 0.0f, 0.0f),
-			Vertex(x + w, y,     z, xGrad ? startCol : endCol,   1.0f, 0.0f),
-			Vertex(x,     y + h, z, xGrad ? endCol   : startCol, 0.0f, 1.0f),
-			Vertex(x + w, y + h, z, xGrad ? endCol   : endCol,   1.0f, 1.0f),
+			Vertex(
+				shape.x + shape.relX,
+				shape.y + shape.relY,
+				shape.z, 
+				shape.color,
+				0.0f, 0.0f
+			),
+			Vertex(
+				shape.x + shape.relX + shape.width,
+				shape.y + shape.relY,
+				shape.z, 
+				shape.xGradient ? shape.color : endGrad,
+				1.0f, 0.0f
+			),
+			Vertex(
+				shape.x + shape.relX,
+				shape.y + shape.relY + shape.height,
+				shape.z,
+				shape.xGradient ? endGrad : shape.color,
+				0.0f, 1.0f
+			),
+			Vertex(
+				shape.x + shape.relX + shape.width,
+				shape.y + shape.relY + shape.height,
+				shape.z,
+				endGrad,
+				1.0f, 1.0f
+			)
 		},
 		D3DPT_TRIANGLESTRIP,
 		2
-	);
+	));
 }

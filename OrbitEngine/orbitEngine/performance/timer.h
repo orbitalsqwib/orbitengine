@@ -86,10 +86,15 @@ public:
 
 	// updates and recalculates timer states. if a target frame rate is
 	// specified, this timer will intentionally add delays to reach the target
-	// frame rate. returns the frametime for the last frame - if this is 0,
-	// the invoker should not process another frame.
+	// frame rate. returns the frametime for the last frame - if this is < 0,
+	// the invoker should skip to the next frame.
 	float runTimer();
 
+
+	// getters
+
+	// returns the current frames per second as a float
+	float getFPS() const { return fps; }
 };
 
 #endif // !_ORBIT_PERFORMANCE_TIMER_H

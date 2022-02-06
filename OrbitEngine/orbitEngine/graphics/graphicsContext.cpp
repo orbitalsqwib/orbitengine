@@ -6,17 +6,17 @@
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 // ===========================================================================
-// OrbitEngine : Graphics Handler Class Implementation
+// OrbitEngine : Graphics Context Class Implementation
 // ===========================================================================
 
 // import specification
-#include "graphics.h"
+#include "graphicsContext.h"
 
 
 // ===========================================================================
 // constructor
 // ===========================================================================
-GraphicsHandler::GraphicsHandler():
+GraphicsContext::GraphicsContext():
 
 	// display states
 	hWndPtr			(nullptr),
@@ -31,11 +31,12 @@ GraphicsHandler::GraphicsHandler():
 	sprite3d		(nullptr),
 
 	// buffers
-	pVB				(nullptr),
-	vbMaxVertices	(0),
+	pVB					(nullptr),
+	vbMaxVertices		(0),
+	vbPrevMaxVertices	(0),
 
 	// messaging
-	broker			(nullptr),
+	broker			(),
 
 	// config states
 	d3dPP			()
@@ -44,7 +45,7 @@ GraphicsHandler::GraphicsHandler():
 // ===========================================================================
 // destructor
 // ===========================================================================
-GraphicsHandler::~GraphicsHandler()
+GraphicsContext::~GraphicsContext()
 {
 	// release all interfaces
 	SAFE_RELEASE(direct3d);
@@ -63,7 +64,7 @@ GraphicsHandler::~GraphicsHandler()
 // on initialization or when display states have been updated, which will
 // reset the swap chain for the graphics handler.
 // ===========================================================================
-void GraphicsHandler::initializeD3DPP()
+void GraphicsContext::initializeD3DPP()
 {
 	assert(hWndPtr != NULL);
 	try
@@ -112,7 +113,7 @@ void GraphicsHandler::initializeD3DPP()
 // ===========================================================================
 // creates a direct3d device and binds it to the device3d interface
 // ===========================================================================
-void GraphicsHandler::initializeDevice3D()
+void GraphicsContext::initializeDevice3D()
 {
 	assert(hWndPtr != NULL);
 
@@ -162,7 +163,7 @@ void GraphicsHandler::initializeDevice3D()
 // ===========================================================================
 // creates a direct3d sprite object and binds it to the sprite3d interface
 // ===========================================================================
-void GraphicsHandler::initializeSprite3D()
+void GraphicsContext::initializeSprite3D()
 {
 	// create the d3d sprite object and bind it to the sprite3d interface
 	if (D3DXCreateSprite(device3d, &sprite3d) != D3D_OK) {
@@ -182,7 +183,7 @@ void GraphicsHandler::initializeSprite3D()
 // primitive drawing task. this buffer may be recreated with a larger size
 // using the resizeVB() method. (default size = 128 vertices)
 // ===========================================================================
-void GraphicsHandler::initializeVB(
+void GraphicsContext::initializeVB(
 	size_t	maxVertices
 ) {
 	// create result container
@@ -214,12 +215,15 @@ void GraphicsHandler::initializeVB(
 // ===========================================================================
 // frees the current vertex buffer from memory
 // ===========================================================================
-void GraphicsHandler::releaseVB()
+void GraphicsContext::releaseVB()
 {
+	// save current vertex buffer capacity if it's a non-zero value
+	if (vbMaxVertices > 0) vbPrevMaxVertices = vbMaxVertices;
+
 	// release vertex buffer
 	SAFE_RELEASE(pVB);
 
-	// reset max vertices to 0
+	// reset current max vertices to 0
 	vbMaxVertices = 0;
 }
 
@@ -229,7 +233,7 @@ void GraphicsHandler::releaseVB()
 // ===========================================================================
 // checks if the current state of the direct3d device is valid
 // ===========================================================================
-HRESULT GraphicsHandler::checkDeviceState()
+HRESULT GraphicsContext::checkDeviceState()
 {
 	// create result container and initialize it to fail by default
 	HRESULT res = E_FAIL;
@@ -249,13 +253,16 @@ HRESULT GraphicsHandler::checkDeviceState()
 // device is in an invalid / lost state, or when the device's presentation
 // parameters should be updated.
 // ===========================================================================
-void GraphicsHandler::resetDevice()
+void GraphicsContext::resetDevice()
 {
 	// notify all relevant subscribers to release their resources 
 	// immediately, in preparation for device reset
-	if (broker) broker->pushImmediately(
+	broker.pushImmediately(
 		GraphicsObjectCommands::RELEASE_ALL_GRAPHICS
 	);
+
+	// release graphics vertex buffer
+	releaseVB();
 
 	// re-initialise device presentation parameters
 	initializeD3DPP();
@@ -265,9 +272,12 @@ void GraphicsHandler::resetDevice()
 
 	// if reset succeeds, notify all relevant subscribers to re-initialize
 	// or re-acquire their resources immediately
-	if (broker) broker->pushImmediately(
+	broker.pushImmediately(
 		GraphicsObjectCommands::RESET_ALL_GRAPHICS
 	);
+
+	// re-initialize graphics vertex buffer
+	initializeVB(vbPrevMaxVertices);
 }
 
 
@@ -276,14 +286,14 @@ void GraphicsHandler::resetDevice()
 // ===========================================================================
 // initializes the graphics handler instance, binding it to a window.
 // ===========================================================================
-void GraphicsHandler::initialize(
+void GraphicsContext::initialize(
 	HWND*		_hWndPtr,
 	const UINT&	_backBufferWidth,
 	const UINT&	_backBufferHeight,
 	const bool	_fullscreen
 ) {
 	// ensure that hWndPtr is valid
-	if (hWndPtr == nullptr) throw Error(
+	if (_hWndPtr == nullptr) throw Error(
 		"Error: Graphics Handler is not bound to a window!"
 	);
 
@@ -312,11 +322,69 @@ void GraphicsHandler::initialize(
 }
 
 // ===========================================================================
+// swaps the back-buffer with the currently displayed frame buffer,
+// displaying it. (page-flipping)
+// ===========================================================================
+HRESULT GraphicsContext::showBackBuffer()
+{
+	// create result container and initialize it to fail by default
+	HRESULT res = E_FAIL;
+
+	// ensure that graphics device exists, else exit early
+	if (device3d == nullptr) return res;
+
+	// display the back-buffer by swapping it with the current frame buffer
+	res = device3d->Present(NULL, NULL, NULL, NULL);
+
+	// return status
+	return res;
+}
+
+// ===========================================================================
+// checks if the current state of the direct3d device is valid. if it is
+// not, handles the necessary procedures to recover the device. should be
+// called frequently, optimally every update frame.
+// ===========================================================================
+void GraphicsContext::maintainDevice()
+{
+	// query device state
+	HRESULT deviceState = checkDeviceState();
+
+	// if device state is normal, return early
+	if (deviceState == D3D_OK) return;
+
+	// else, handle abnormal status accordingly
+	switch (deviceState)
+	{
+	// device is lost
+	case D3DERR_DEVICELOST:
+	{
+		// reset unavailable at this time - wait and retry on next call
+		Sleep(100);
+		break;
+	}
+
+	// device is available for reset
+	case D3DERR_DEVICENOTRESET:
+	{
+		// attempt to reset device
+		resetDevice();
+		break;
+	}
+
+	// note: other device errors are not handled
+	}
+}
+
+
+// draw sequence methods
+
+// ===========================================================================
 // clears the backbuffer and initiates the directx scene drawing sequence.
 // all renderables should be queued for rendering after this function is
 // called, up until endSceneDraw() is called.
 // ===========================================================================
-HRESULT GraphicsHandler::beginSceneDraw()
+HRESULT GraphicsContext::beginSceneDraw()
 {
 	// create result container and initialize it to fail by default
 	HRESULT res = E_FAIL;
@@ -338,9 +406,9 @@ HRESULT GraphicsHandler::beginSceneDraw()
 	D3DXMATRIX viewTransform;
 
 	// ! define view transform matrix parameters
-	D3DXVECTOR3 eyePos	{ 0.0f, 0.0f, 10.0f };	// eye position
-	D3DXVECTOR3 atPos	{ 0.0f, 0.0f,  0.0f };	// camera look-at target
-	D3DXVECTOR3 upDir	{ 0.0f, 1.0f,  0.0f };	// world "up" direction
+	D3DXVECTOR3 eyePos{ 0.0f, 0.0f, 10.0f };	// eye position
+	D3DXVECTOR3 atPos{ 0.0f, 0.0f,  0.0f };	// camera look-at target
+	D3DXVECTOR3 upDir{ 0.0f, 1.0f,  0.0f };	// world "up" direction
 
 	// ! construct view transform matrix
 	D3DXMatrixLookAtLH(
@@ -375,7 +443,7 @@ HRESULT GraphicsHandler::beginSceneDraw()
 // ends the directx scene drawing sequence. once this is called, all 
 // renderables queued will be passed to the driver for rendering.
 // ===========================================================================
-HRESULT GraphicsHandler::endSceneDraw()
+HRESULT GraphicsContext::endSceneDraw()
 {
 	// create result container and initialize it to fail by default
 	HRESULT res = E_FAIL;
@@ -391,75 +459,17 @@ HRESULT GraphicsHandler::endSceneDraw()
 }
 
 // ===========================================================================
-// swaps the back-buffer with the currently displayed frame buffer,
-// displaying it. (page-flipping)
-// ===========================================================================
-HRESULT GraphicsHandler::showBackBuffer()
-{
-	// create result container and initialize it to fail by default
-	HRESULT res = E_FAIL;
-
-	// ensure that graphics device exists, else exit early
-	if (device3d == nullptr) return res;
-
-	// display the back-buffer by swapping it with the current frame buffer
-	res = device3d->Present(NULL, NULL, NULL, NULL);
-
-	// return status
-	return res;
-}
-
-// ===========================================================================
-// checks if the current state of the direct3d device is valid. if it is
-// not, handles the necessary procedures to recover the device. should be
-// called frequently, optimally every update frame.
-// ===========================================================================
-void GraphicsHandler::maintainDevice()
-{
-	// query device state
-	HRESULT deviceState = checkDeviceState();
-
-	// if device state is normal, return early
-	if (deviceState == D3D_OK) return;
-
-	// else, handle abnormal status accordingly
-	switch (deviceState)
-	{
-	// device is lost
-	case D3DERR_DEVICELOST:
-	{
-		// reset unavailable at this time - wait and retry on next call
-		Sleep(100);
-		break;
-	}
-
-	// device is available for reset
-	case D3DERR_DEVICENOTRESET:
-	{
-		// attempt to reset device
-		resetDevice();
-		break;
-	}
-
-	// note: other device errors are not handled
-	}
-}
-
-
-// sprite drawing methods
-
-// ===========================================================================
 // prepares the direct3d device for drawing sprites. marks the start of
 // the directx sprite drawing sequence, and should only be called between
 // a beginSceneDraw()...endSceneDraw() method pair.
 // ===========================================================================
-void GraphicsHandler::beginSpriteDraw()
+HRESULT GraphicsContext::beginSpriteDraw()
 {
 	// ensure that the sprite3d interface is valid, else exit early
-	if (sprite3d == nullptr) return;
+	if (sprite3d == nullptr) return E_FAIL;
 
 	// inform the sprite3d interface to begin the sprite drawing sequence
-	sprite3d->Begin(
+	return sprite3d->Begin(
 		D3DXSPRITE_ALPHABLEND |
 		D3DXSPRITE_SORT_DEPTH_FRONTTOBACK
 	);
@@ -471,192 +481,13 @@ void GraphicsHandler::beginSpriteDraw()
 // beginSceneDraw()...endSceneDraw() method pair, after beginSpriteDraw()
 // has been invoked.
 // ===========================================================================
-void GraphicsHandler::endSpriteDraw()
+HRESULT GraphicsContext::endSpriteDraw()
 {
 	// ensure that the sprite3d interface is valid, else exit early
-	if (sprite3d == nullptr) return;
+	if (sprite3d == nullptr) return E_FAIL;
 
 	// inform the sprite3d interface to end the sprite drawing sequence
-	sprite3d->End();
-}
-
-// ===========================================================================
-// creates a texture resource from a file and saves a reference to it 
-// to a texture resource pointer.
-// ===========================================================================
-HRESULT GraphicsHandler::loadTexture(
-	LPCWSTR			filename,
-	COLOR_ARGB		chromaKey,
-	UINT&			textureWidthOut,
-	UINT&			textureHeightOut,
-	LP_TEXTURE&		pTextureOut
-) {
-	// create result container and initialize it to fail by default
-	HRESULT res = E_FAIL;
-
-	// initialize image data container
-	D3DXIMAGE_INFO imageInfo;
-
-	// attempt to load texture from file
-	try
-	{
-		// ensure filename is provided
-		if (filename == NULL)
-		{
-			// if not, fail gracefully and return the appropriate status
-			pTextureOut = NULL;
-			return E_FAIL;
-		}
-
-		// get width and height of texture from file
-		res = D3DXGetImageInfoFromFile(filename, &imageInfo);
-
-		// ensure image data is successfully retrieved
-		if (res != D3D_OK)
-		{
-			// if not, fail gracefully and return the appropriate status
-			pTextureOut = NULL;
-			return res;
-		}
-
-		// update references for texture dimensions using file info
-		textureWidthOut		= imageInfo.Width;
-		textureHeightOut	= imageInfo.Height;
-
-		// create the texture resource from the image file
-		res = D3DXCreateTextureFromFileExW(
-			device3d,			// the bound d3d device interface
-			filename,			// image filename
-			imageInfo.Width,	// texture width
-			imageInfo.Height,	// texture height
-			1,					// mip-map levels (1 for no chain)
-			0,					// usage (dynamic texture)
-			D3DFMT_UNKNOWN,		// surface format (default)
-			D3DPOOL_DEFAULT,	// memory class for texture
-			D3DX_DEFAULT,		// image filter
-			D3DX_DEFAULT,		// mip filter
-			chromaKey,			// color key for transparency
-			&imageInfo,			// file info (from loaded file)
-			NULL,				// color palette
-			&pTextureOut		// resource pointer destination
-		);
-	}
-	catch (...)
-	{
-		// throw on error
-		throw Error("Error: Failed to load texture from file!");
-	}
-
-	// return result status
-	return res;
-}
-
-// ===========================================================================
-// queues a sprite to be drawn with the texture and transforms specified
-// by a spriteData struct. should only be called between a
-// beginSpriteDraw()...endSpriteDraw() method pair.
-// ===========================================================================
-void GraphicsHandler::drawSprite(
-	const SpriteData&	spriteData,
-	COLOR_ARGB			color
-) {
-	// ensure spriteData contains a valid texture resource, else exit early
-	if (spriteData.pTexture == nullptr) return;
-
-	// calculate center of sprite (assuming top-left corner sprite origin)
-	D3DXVECTOR3 center {
-		(spriteData.width  >> 1) * spriteData.scale,
-		(spriteData.height >> 1) * spriteData.scale,
-		0.0f
-	};
-
-	// define translation transform (translates from world origin {0, 0, 0})
-	D3DXVECTOR3 translateVec {
-		spriteData.x,
-		spriteData.y,
-		spriteData.z
-	};
-
-	// define scaling transform
-	D3DXVECTOR3 scalingVec {
-		spriteData.scale,
-		spriteData.scale,
-		1.0f
-	};
-
-	// handle sprite reflection on y-axis (horizontal mirroring)
-	if (spriteData.flipY)
-	{
-		// ====================================================
-		// apply the general reflection matrix about the y-axis
-		// Ty = [-1  0]
-		//      [ 0  1]
-		// ====================================================
-		scalingVec.x *= -1.0f;
-
-		// update center for reflected sprite
-		center.x -= spriteData.width * spriteData.scale;
-
-		// compensate for offset center by translating sprite rightwards 
-		// (which is only applied after all other transforms)
-		translateVec.x += spriteData.width * spriteData.scale;
-	}
-
-	// handle sprite reflection on x-axis (vertical mirroring)
-	if (spriteData.flipX)
-	{
-		// ====================================================
-		// apply the general reflection matrix about the y-axis
-		// Ty = [1   0]
-		//      [0  -1]
-		// ====================================================
-		scalingVec.y *= -1.0f;
-
-		// update center for reflected sprite
-		center.y -= spriteData.height * spriteData.scale;
-
-		// compensate for offset center by translating sprite rightwards 
-		// (which is only applied after all other transforms)
-		translateVec.y += spriteData.height * spriteData.scale;
-	}
-
-	// build rotation quaternion
-	D3DXQUATERNION rotationQuad;
-
-	// define rotation matrix
-	D3DXMATRIX rotationMatrix;
-
-	// apply z-axis rotation in radians
-	D3DXMatrixRotationZ(&rotationMatrix, spriteData.angle);
-
-	// transform rotationMatrix to rotationQuad
-	D3DXQuaternionRotationMatrix(&rotationQuad, &rotationMatrix);
-
-	// create final transform matrice
-	D3DXMATRIX T;
-
-	// consolidate all transforms into T: R^3 -> R^3
-	D3DXMatrixTransformation(
-		&T,				// transformation matrix out
-		NULL,			// keep origin at top left when scaling
-		NULL,			// no scaling rotation
-		&scalingVec,	// scale amount
-		&center,		// rotation center
-		&rotationQuad,	// rotation angle
-		&translateVec	// x,y,z position
-	);
-
-	// apply T to sprite
-	sprite3d->SetTransform(&T);
-
-	// draw sprite at transformed coordinates
-	sprite3d->Draw(
-		spriteData.pTexture,
-		&spriteData.srcRect,
-		NULL,
-		NULL,
-		color
-	);
+	return sprite3d->End();
 }
 
 
@@ -666,7 +497,7 @@ void GraphicsHandler::drawSprite(
 // re-initializes the vertex buffer to a different size, freeing the 
 // previous vertex buffer from memory. (default size = 128 vertices)
 // ===========================================================================
-void GraphicsHandler::resizeVB(
+void GraphicsContext::resizeVB(
 	size_t	maxVertices
 ) {
 	// release previous vertex buffer
@@ -681,7 +512,7 @@ void GraphicsHandler::resizeVB(
 // vertices should not exceed the maximum number of vertices that can
 // be stored within the currently allocated vertex buffer.
 // ===========================================================================
-void GraphicsHandler::drawVertices(
+void GraphicsContext::drawVertices(
 	Vertex				vertices[],
 	size_t				nVertices,
 	D3DPRIMITIVETYPE	primitiveType,
@@ -710,22 +541,6 @@ void GraphicsHandler::drawVertices(
 	device3d->DrawPrimitive(primitiveType, 0, nPrimitives);
 }
 
-// ===========================================================================
-// convenience method - wraps drawVertices() for primitive shape structs
-// ===========================================================================
-template <size_t nVertices>
-void GraphicsHandler::drawPrimitive(
-	const PrimitiveShape<nVertices>&	shape
-) {
-	// delegate work to drawVertices()
-	drawVertices(
-		shape.vertices,
-		nVertices,
-		shape.type,
-		shape.nPrimitives
-	);
-}
-
 
 // message handlers
 
@@ -734,7 +549,7 @@ void GraphicsHandler::drawPrimitive(
 // parameters for the graphics handlers. note that this will reset the 
 // directx device in the process.
 // ===========================================================================
-void GraphicsHandler::handleMessage(
+void GraphicsContext::handleMessage(
 	WindowResized	message,
 	MessageBroker*	broker
 ) {
@@ -742,9 +557,9 @@ void GraphicsHandler::handleMessage(
 	if (hWndPtr && message.hwnd != *hWndPtr) return;
 
 	// update the backbuffer width and height accordingly
-	bbWidth		= message.newWidth;
-	bbHeight	= message.newHeight;
+	//bbWidth		= message.newWidth;
+	//bbHeight	= message.newHeight;
 
 	// reset device to update presentation parameters accordingly
-	resetDevice();
+	//resetDevice();
 }

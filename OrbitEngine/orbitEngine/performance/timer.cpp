@@ -57,19 +57,22 @@ PerformanceTimer::PerformanceTimer(
 // ===========================================================================
 // updates and recalculates timer states. if a target frame rate is
 // specified, this timer will intentionally add delays to reach the target
-// frame rate. returns the frametime for the last frame - if this is 0,
-// the invoker should not process another frame.
+// frame rate. returns the frametime for the last frame - if this is < 0,
+// the invoker should skip to the next frame.
 // ===========================================================================
 float PerformanceTimer::runTimer()
 {
 	// update end time to the current performance counter value
 	QueryPerformanceCounter(&timeEnd);
 
-	// calculate ticks elapsed since the end of the last frame
-	frameTime = static_cast<float>(timeEnd.QuadPart - timeStart.QuadPart);
+	// update frame time
+	frameTime = 
+		
+		// calculate ticks elapsed since the end of the last frame
+		static_cast<float>(timeEnd.QuadPart - timeStart.QuadPart)
 
-	// convert frame time from ticks to seconds
-	frameTime /= static_cast<float>(frequency.QuadPart);
+		// convert frame time from ticks to seconds
+		/ static_cast<float>(frequency.QuadPart);
 
 	// check if frametime is smaller than the minimum allotted frame time.
 	if (minimumFrameTime > 0 && frameTime < minimumFrameTime)
@@ -96,7 +99,7 @@ float PerformanceTimer::runTimer()
 	// else, if framerate over minimum allotted frame time, continue normally
 
 	// calculate current fps (check prevents divide by zero error)
-	if (frameTime > 0.0) fps = (fps * 0.99f) + (0.1f / frameTime);
+	if (frameTime > 0.0) fps = (fps * 0.99f) + (0.01f / frameTime);
 
 	// cap maximum frametime if frame processing becomes exceedingly slow
 	if (maximumFrameTime > 0 && frameTime > maximumFrameTime)

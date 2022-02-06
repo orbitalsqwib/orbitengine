@@ -116,16 +116,13 @@ public:
 	void processAllMessages()
 	{
 		// initialize iterator
-		MQ_MAP::iterator it = messageQueues.begin();
+		MQ_MAP::iterator it;
 
 		// for each message queue in the map
-		while (it != messageQueues.end())
+		for (it = messageQueues.begin(); it != messageQueues.end(); it++)
 		{
 			// process all messages in the queue
 			it->second->processMessages(this);
-
-			// increment iterator
-			it++;
 		}
 	}
 
