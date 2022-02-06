@@ -6,15 +6,27 @@
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 // ===========================================================================
-// SurviveTheVoid : Enemy Component Specification
+// SurviveTheVoid : IFrame Data Struct Specification
 // ===========================================================================
 
-#ifndef _STV_COMPONENTS_ENEMY_H
-#define _STV_COMPONENTS_ENEMY_H
+#ifndef _STV_COMPONENTS_IFRAMEDATA_H
+#define _STV_COMPONENTS_IFRAMEDATA_H
 
 // main definition
 
-// indicates that the entity is an enemy
-struct EnemyData {};
+// defines the data for an entity's iframe
+struct IFrameData
+{
+	// members
+	float timeLeft;		// remaining time until the iframe expires
 
-#endif // !_STV_COMPONENTS_ENEMY_H
+	// convenience constructor
+	IFrameData(
+		const float& _iframeTime = 0.5f
+	):
+		// members
+		timeLeft	(_iframeTime)
+	{}
+};
+
+#endif // !_STV_COMPONENTS_IFRAMEDATA_H

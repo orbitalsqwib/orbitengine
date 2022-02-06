@@ -22,23 +22,26 @@
 struct EntityCollided
 {
 	// members
-	Entity subject;		// the subject of the collision
-	Entity target;		// the target of the collision
-	std::string tag;	// the target collider tag for the collision
-	Vec2 cV;			// the collision vector of the collision
+	Entity subject;				// the subject of the collision
+	Entity target;				// the target of the collision
+	std::string subjectTag;		// the subject collider tag for the collision
+	std::string targetTag;		// the target collider tag for the collision
+	Vec2 cV;					// the collision vector of the collision
 
 	// convenience constructor
 	EntityCollided(
-		const Entity&	_subject	= ECS_INVALID_ENTITY,
-		const Entity&	_target		= ECS_INVALID_ENTITY,
-		const char		_tag[32]	= "",
-		const Vec2&		_cV			= Vec2()
+		const Entity&	_subject		= ECS_INVALID_ENTITY,
+		const Entity&	_target			= ECS_INVALID_ENTITY,
+		const char		_subjectTag[32]	= "",
+		const char		_targetTag[32]	= "",
+		Vec2			_cV				= Vec2()
 	) :
 		// members
-		subject	(_subject),
-		target	(_target),
-		tag		(_tag),
-		cV		(_cV)
+		subject		(_subject),
+		target		(_target),
+		subjectTag	(_subjectTag),
+		targetTag	(_targetTag),
+		cV			(_cV)
 	{}
 };
 

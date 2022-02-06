@@ -84,11 +84,18 @@ public:
 			// get normalized UV for normal dir.
 			Vec2 normal(1.0f, 0.0f);
 
-			// get rotation from normal
-			float rTheta = acos(Vec2Math::dot(&trackUV, &normal));
+			// calculate dot product
+			float aDotB = Vec2Math::dot(&trackUV, &normal);
+
+			// get rotation from normal (clamp dot product to -1 <= n <= 1)
+			float rTheta = acos(aDotB < -1 ? -1 : aDotB > 1 ? 1 : aDotB);
+
+			// set angle to negative if tracked entity is above this entity
+			// (cw angle -> 0-180deg, acw angle -> 181-360deg (reflex))
+			bool reflex = pTrackPos->y < pThisPos->y;
 
 			// update direction rotation
-			pDir->rotation = rTheta;
+			pDir->rotation = reflex ? -rTheta : rTheta;
 		}
 	}
 

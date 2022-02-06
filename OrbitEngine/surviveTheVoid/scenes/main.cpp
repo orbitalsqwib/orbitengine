@@ -39,6 +39,9 @@ void MainScene::handleMenuSelection()
 			menu.setOption("Reset", 1);
 			menu.addOption("Return To Main Menu");
 
+			// setup game state
+			setupGameState();
+
 			// set game active to true
 			gameActive = true;
 
@@ -64,8 +67,9 @@ void MainScene::handleMenuSelection()
 		{
 			// RESET GAME
 
-			// reset game states
+			// refresh game state
 			resetGameState();
+			setupGameState();
 		}
 		// no breaks, case 1 is a superset of case 0 functionality
 		case 0:
@@ -88,10 +92,10 @@ void MainScene::handleMenuSelection()
 
 			// update menu
 			menu.setTitle("Survive The Void");
-			menu.setOption("Start", 0);
-			menu.setOption("Quit", 1);
-			menu.removeOption(2);
-			menu.setSelected(0);
+			menu.resetOptions();
+			menu.addOption("Start");
+			menu.addOption("Quit");
+			
 
 			// set game active to false
 			gameActive = false;
@@ -159,7 +163,7 @@ void MainScene::handleMenu()
 // ===========================================================================
 void MainScene::setupGameState()
 {
-	// create entities
+	// create player
 	player.create();
 }
 
@@ -171,14 +175,30 @@ void MainScene::resetGameState()
 	// reset timer to zero
 	timer.reset();
 
+	// reset enemy spawn cooldown timer to 0
+	enemySpawnTimer = 0;
+
+	// reset pickup spawn cooldown timer to max cooldown
+	pickupSpawnTimer = Config::PICKUP_SPAWN_COOLDOWN;
+
+
 	// destroy all tracked entities and their components
+
+	// destroy player
 	player.destroy();
+
+	// reset enemies
+	if (pEnemyResetSystem) pEnemyResetSystem->resetEntities();
+
+	// reset pickups
+	if (pPickupResetSystem) pPickupResetSystem->resetEntities();
+
+	// reset blasts
+	if (pBlastResetSystem) pBlastResetSystem->resetEntities();
+
 
 	// return title to normal pause menu
 	menu.setTitle("Paused");
-
-	// setup game state again
-	setupGameState();
 }
 
 // ===========================================================================
@@ -226,6 +246,84 @@ void MainScene::enforceGameBorder()
 	}
 }
 
+// ===========================================================================
+// adds tracking data to the specified entity to track another entity
+// ===========================================================================
+void MainScene::addTracking(
+	const Entity& entity,
+	const Entity& tracked
+) {
+	// add tracking component to entity
+	ecs.addComponent<TrackingData>(entity, TrackingData(tracked));
+}
+
+
+// subscriber methods
+
+// ===========================================================================
+// handles collision events
+// ===========================================================================
+void MainScene::handleMessage(
+	EntityCollided	message,
+	MessageBroker*	broker
+) {
+	// handle player->enemy collisions
+	if (message.subjectTag == "player" && message.targetTag == "enemy")
+	{
+		// if iframe component exists, ignore collision
+		if (IFrameData* pFrame = ecs.getComponent<IFrameData>(message.subject))
+		{
+			// exit early
+			return;
+		}
+
+		// player dies, handle gameover
+		gameOver("Void's Thrall");
+	}
+
+	// handle player->pickup collisions
+	else if (message.subjectTag == "player" && message.targetTag == "pickup")
+	{
+		// attempt to get pickup position
+		if (PositionData* pPos = ecs.getComponent<PositionData>(message.target))
+		{
+			// get center of pickup
+			float x = pPos->x + pPos->width / 2;
+			float y = pPos->y + pPos->height / 2;
+
+			// spawn blast at pickup center
+			blastArchetype.spawn(
+				x, 
+				y,
+				Config::PICKUP_BLAST_RADIUS,
+				Config::PICKUP_BLAST_DURATION
+			);
+		}
+		
+		// kill pickup
+		ecs.destroyEntity(message.target);
+	}
+
+	// handle blast->enemy collisions
+	else if (message.subjectTag == "blast" && message.targetTag == "enemy")
+	{
+		// kill enemy
+		ecs.destroyEntity(message.target);
+	}
+
+	// handle enemy->enemy collisions
+	else if (message.subjectTag == "enemy" && message.targetTag == "enemy")
+	{
+		// get velocity data for subject enemy
+		if (VelocityData* pV = ecs.getComponent<VelocityData>(message.subject))
+		{
+			// nudge enemy in direction of collision vector
+			pV->dx += message.cV.x;
+			pV->dy += message.cV.y;
+		}
+	}
+}
+
 
 // scene methods
 
@@ -260,7 +358,14 @@ void MainScene::setup()
 	// register and initialize collision system
 	pCollisionSystem = ecs.registerSystem<CollisionSystem>();
 	pCollisionSystem->setSignature(ecs);
-	pCollisionSystem->DEBUG_initializeRenderer(&engine->graphics());
+
+	// prepare to render colliders on debug
+	#if defined(DEBUG) | defined(_DEBUG)
+		pCollisionSystem->DEBUG_initializeRenderer(&engine->graphics());
+	#endif
+
+	// add collision listeners
+	pCollisionSystem->addCollisionHandler(*this);
 
 	// register thrust system
 	pThrustSystem = ecs.registerSystem<ThrustSystem>();
@@ -279,9 +384,17 @@ void MainScene::setup()
 	pBoostSystem->setSignature(ecs);
 
 	// register boost animation system
-	pBoostAnimSystem = ecs.registerSystem<BoostAnimSystem>();
-	pBoostAnimSystem->setSignature(ecs);
-	pBoostAnimSystem->initialize(engine->graphics());
+	pFuelAnimSystem = ecs.registerSystem<FuelAnimSystem>();
+	pFuelAnimSystem->setSignature(ecs);
+	pFuelAnimSystem->initialize(engine->graphics());
+
+	// register tracking system
+	pTrackingSystem = ecs.registerSystem<TrackingSystem>();
+	pTrackingSystem->setSignature(ecs);
+
+	// register spawning system
+	pSpawnSystem = ecs.registerSystem<SpawnSystem>();
+	pSpawnSystem->setSignature(ecs);
 
 
 	// ! setup managers
@@ -326,14 +439,56 @@ void MainScene::setup()
 
 
 	// ! setup border
-	border.initialize(32, 32, engine->graphics());
+	border.initialize(
+		Config::xBorderPadding, 
+		Config::yBorderPadding, 
+		engine->graphics()
+	);
 
 
 	// ! prepare player
+
+	// register player iframe system
+	pIFrameSystem = ecs.registerSystem<IFrameSystem>();
+	pIFrameSystem->setSignature(ecs);
+	pIFrameSystem->initalize(engine->graphics());
+
+	// register player entity group
 	player.initialize(ecs, engine->graphics(), pTextureManager.get());
 
+	
+	// ! prepare enemies
 
-	setupGameState();
+	// register enemy reset system
+	pEnemyResetSystem = ecs.registerSystem<ResetSystem<EnemyData>>();
+	pEnemyResetSystem->setSignature(ecs);
+
+	// register enemy archetype
+	enemyArchetype.initialize(ecs, engine->graphics(), pTextureManager.get());
+
+
+	// ! prepare pickups
+
+	// register pickup reset system
+	pPickupResetSystem = ecs.registerSystem<ResetSystem<PickupData>>();
+	pPickupResetSystem->setSignature(ecs);
+
+	// register pickup archetype
+	pickupArchetype.initialize(ecs, engine->graphics(), pTextureManager.get());
+
+
+	// ! prepare blasts
+
+	// register blast reset system
+	pBlastResetSystem = ecs.registerSystem<ResetSystem<BlastData>>();
+	pBlastResetSystem->setSignature(ecs);
+
+	// register blast despawn system
+	pBlastSystem = ecs.registerSystem<BlastSystem>();
+	pBlastSystem->setSignature(ecs);
+
+	// register blast archetype
+	blastArchetype.initialize(ecs, pTextureManager.get());
 }
 
 // ===========================================================================
@@ -353,11 +508,21 @@ void MainScene::update(
 	// handle game updates
 	if (gameActive)
 	{
-		// update timer
+		// ! timer
+
+		// update timers
 		timer.update(deltaTime);
+		enemySpawnTimer -= deltaTime;
+		pickupSpawnTimer -= deltaTime;
+
+
+		// ! velocity
 
 		// apply last frame's velocities
 		pVelocitySystem->applyVelocities(deltaTime);
+
+
+		// ! player
 
 		// enforce game boundary on player
 		enforceGameBorder();
@@ -369,14 +534,86 @@ void MainScene::update(
 		pBoostSystem->applyBoost(deltaTime);
 
 		// update player sprite to reflect boost fuel %
-		pBoostAnimSystem->updatePlayerSprite();
+		pFuelAnimSystem->updatePlayerSprite();
+
+		// ! handle iframes if iframes exist
+		pIFrameSystem->updateIFrames(deltaTime);
+
+
+		// ! enemy
+
+		// run enemy tracking
+		pTrackingSystem->updateDirection();
+
+		// attempt to spawn enemy
+		if (enemySpawnTimer <= 0)
+		{
+			// reset timer
+			enemySpawnTimer = enemySpawnCooldown;
+
+			// spawn enemy
+			Entity newEnemy = pSpawnSystem->spawn(
+				&enemyArchetype,
+				border.getCorners().getRECT(),
+				Config::SPAWN_PROTECT_RADIUS
+			);
+
+			// add tracking component to enemy
+			addTracking(newEnemy, player.getEntity());
+		}
+
+
+		// ! pickups
+
+		// attempt to spawn pickup
+		if (pickupSpawnTimer <= 0)
+		{
+			// reset timer
+			pickupSpawnTimer = pickupSpawnCooldown;
+
+			// spawn pickup
+			pSpawnSystem->spawn(
+				&pickupArchetype,
+				border.getCorners().getRECT(),
+				Config::SPAWN_PROTECT_RADIUS
+			);
+		}
+
+
+		// ! blasts
+
+		// update blast timers, despawn on expiry
+		pBlastSystem->updateBlasts(deltaTime);
+
+
+		// ! colliders
+
+		// check collisions between player and enemies
+		pCollisionSystem->checkCollisions(player.getEntity(), "enemy");
+
+		// check collisions between player and pickups
+		pCollisionSystem->checkCollisions(player.getEntity(), "pickup");
+
+		// check collisions between blasts and enemies
+		pCollisionSystem->checkAllCollisions("blast", "enemy");
+
+		// check collisions between enemies
+		pCollisionSystem->checkAllCollisions("enemy", "enemy");
+
+
+		// ! thrust
 
 		// run thrust system
 		pThrustSystem->applyThrust();
-
-		// render border
-		border.render();
 	}
+
+	// render colliders on debug
+	#if defined(DEBUG) | defined(_DEBUG)
+		pCollisionSystem->DEBUG_render();
+	#endif
+
+	// render border when not on main menu
+	if (!onMainMenu) border.render();
 
 	// render scene
 	renderSystems.render(deltaTime);

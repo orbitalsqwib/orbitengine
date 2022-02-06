@@ -156,16 +156,13 @@ public:
 		const Entity& entity
 	) {
 		// initialize iterator
-		COMPONENTARRAY_MAP::iterator it = componentArrays.begin();
+		COMPONENTARRAY_MAP::iterator it;
 
 		// iterate through map
-		while (it != componentArrays.end())
+		for (it = componentArrays.begin(); it != componentArrays.end(); it++)
 		{
 			// notify each component array that entity was destroyed
 			it->second->notifyEntityDestroyed(entity);
-
-			// increment iterator
-			it++;
 		}
 	}
 

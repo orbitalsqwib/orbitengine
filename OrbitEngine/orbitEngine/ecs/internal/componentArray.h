@@ -196,8 +196,8 @@ public:
 	ComponentType* getComponent(
 		const Entity&	entity
 	) {
-		// ensure that entity is valid
-		EntityUtils::guardIsValid(entity);
+		// if entity is invalid, return nullptr
+		if (!EntityUtils::isValid(entity)) return nullptr;
 
 		// get entity id from entity
 		EntityId id = EntityUtils::getId(entity);

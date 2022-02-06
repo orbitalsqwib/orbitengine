@@ -9,6 +9,8 @@
 // WinMain : Main Application Entry Point
 // ===========================================================================
 
+#define _CRT_SECURE_NO_WARNINGS
+
 // import windows headers
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>

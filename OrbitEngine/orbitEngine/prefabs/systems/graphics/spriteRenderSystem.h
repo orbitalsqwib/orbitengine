@@ -71,8 +71,12 @@ public:
 		ENTITY_SET::iterator it;
 		for (it = entities.begin(); it != entities.end(); it++)
 		{
-			// render sprite
-			spriteOp->render(*ecs->getComponent<SpriteData>(*it));
+			// attempt to get sprite for entity
+			if (SpriteData* pSprite = ecs->getComponent<SpriteData>(*it))
+			{
+				// render sprite
+				spriteOp->render(*pSprite);
+			}
 		}
 	}
 };

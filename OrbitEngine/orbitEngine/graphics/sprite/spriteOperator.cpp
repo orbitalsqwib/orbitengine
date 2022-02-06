@@ -32,8 +32,7 @@ SpriteOperator::SpriteOperator(
 // context's beginSpriteDraw()...endSpriteDraw() method calls.
 // ===========================================================================
 void SpriteOperator::render(
-	const SpriteData&	sprite,
-	COLOR_ARGB			color
+	const SpriteData&	sprite
 ) {
 	// ensure spriteData contains a valid texture resource, else exit early
 	if (!sprite.pTexture || !sprite.pTexture->resource) return;
@@ -130,6 +129,6 @@ void SpriteOperator::render(
 		&sprite.srcRect,
 		NULL,
 		NULL,
-		color
+		sprite.tint
 	);
 }

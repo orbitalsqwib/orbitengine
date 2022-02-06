@@ -63,64 +63,55 @@ public:
 	}
 
 	// general collision check method, targets all entities with tag - o(n!)
-	void checkAllCollisions(const char targetTag[32])
-	{
-		// copy entity set to collider set
-		ENTITY_SET colliderSet = entities;
+	void checkAllCollisions(
+		const char	subjectTag[32],
+		const char	targetTag[32]
+	) {
+		// initialize iterators for all entities
+		ENTITY_SET::iterator itAll;
 
-		// while collider set still has entities,
-		while (!colliderSet.empty())
+		// initialize iterators for uncollided entities
+		ENTITY_SET::iterator itSet;
+
+		// setup collision vector container
+		Vec2 cV;
+
+		// loop through all entities
+		for (itAll = entities.begin(); itAll != entities.end(); itAll++)
 		{
-			// let first entity in set be the collision subject
-			// let other entities in set be the collision target
-
-			// setup iterator
-			ENTITY_SET::iterator it = colliderSet.begin();
-
-			// cache entity id for subject
-			Entity subject = *it;
-
-			// setup collision vector container
-			Vec2 cV;
-
 			// get collider component for subject entity
-			ColliderData* cSub = ecs->getComponent<ColliderData>(*it);
-			
-			// ensure collider component for subject exists, else skip to next
+			ColliderData* cSub = ecs->getComponent<ColliderData>(*itAll);
+
+			// if no collider found, skip to next iteration
 			if (!cSub) continue;
 
+			// if tag does not match target tag, skip to next iteration
+			if (cSub->getTag() != subjectTag) continue;
+
 			// check collisions from each entity in the set after subject
-			for (it++; it != colliderSet.end(); it++)
+			for (itSet = entities.begin(); itSet != entities.end(); itSet++)
 			{
 				// get collider component for target entity
-				ColliderData* cTgt = ecs->getComponent<ColliderData>(*it);
+				ColliderData* cTgt = ecs->getComponent<ColliderData>(*itSet);
 
-				// ensure collider for target exists, else skip to next target
+				// if no collider found, skip to next iteration
 				if (!cTgt) continue;
-
-				// ensure target's tag matches targetTag, else skip target
+				
+				// if tag does not match target tag, skip to next iteration
 				if (cTgt->getTag() != targetTag) continue;
 
 				// check collision between both entities from subject's persp.
 				if (colliderOp.collide(*cSub, *cTgt, cV))
 				{
 					// entities did collide, send collision events to queue
-					collisionBroker.queue(
-						EntityCollided(subject, *it, targetTag, cV)
-					);
-					collisionBroker.queue(
-						EntityCollided(
-							*it, subject, cSub->getTag().c_str(), cV * -1
-						)
-					);
+					collisionBroker.queue(EntityCollided(
+						*itAll, *itSet, subjectTag, targetTag, cV * -1
+					));
+					collisionBroker.queue(EntityCollided(
+						*itSet, *itAll, targetTag, subjectTag, cV
+					));
 				}
-
-				// increment iterator
-				it++;
 			}
-
-			// once all collisions checked, remove subject from collider set
-			colliderSet.erase(subject);
 		}
 
 		// once all collisions processed, tell handlers to process events
@@ -136,6 +127,9 @@ public:
 		// ensure collider component for subject exists, else exit early
 		if (!cSub) return;
 
+		// get subject collider tag
+		std::string subjectTag = cSub->getTag();
+
 		// setup collision vector container
 		Vec2 cV;
 
@@ -143,7 +137,7 @@ public:
 		ENTITY_SET::iterator it;
 
 		// check collisions for each entity with the target tag
-		for (it++; it != entities.end(); it++)
+		for (it = entities.begin(); it != entities.end(); it++)
 		{
 			// check that entity at iterator is not subject, else skip to next
 			if (*it == subject) continue;
@@ -161,14 +155,12 @@ public:
 			if (colliderOp.collide(*cSub, *cTgt, cV))
 			{
 				// entities did collide, send collision events to queue
-				collisionBroker.queue(
-					EntityCollided(subject, *it, targetTag, cV)
-				);
-				collisionBroker.queue(
-					EntityCollided(EntityCollided(
-						*it, subject, cSub->getTag().c_str(), cV * -1
-					))
-				);
+				collisionBroker.queue(EntityCollided(
+					subject, *it, subjectTag.c_str(), targetTag, cV * -1
+				));
+				collisionBroker.queue(EntityCollided(
+					*it, subject, targetTag, subjectTag.c_str(), cV
+				));
 			}
 		}
 
@@ -197,11 +189,12 @@ public:
 		ENTITY_SET::iterator it;
 		for (it = entities.begin(); it != entities.end(); it++)
 		{
-			// render text
-			colliderOp.renderDebug(
-				*ecs->getComponent<ColliderData>(*it),
-				Colors::LIME
-			);
+			// attempt to get component data for entity
+			if (ColliderData* pCol = ecs->getComponent<ColliderData>(*it))
+			{
+				// render text
+				colliderOp.renderDebug(*pCol, Colors::LIME);
+			}
 		}
 	}
 };

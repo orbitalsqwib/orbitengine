@@ -18,9 +18,6 @@
 struct BoostData
 {
 	// members
-	float fuel;			// specifies the current amount of boost fuel
-	float maxFuel;		// specifies the maximum amount of boost fuel
-	float recovery;		// specifies how much fuel is recovered per second
 	float fwdBoost;		// specifies the bonus forward thrust from boost
 	float revBoost;		// specifies the bonus reverse thrust from boost
 	bool speedUp;		// if true, boost is used to speed up, else slow down
@@ -28,15 +25,10 @@ struct BoostData
 
 	// convenience constructor
 	BoostData(
-		const float& _maxFuel	= 2.5f,
-		const float& _recovery	= 0.35f,
 		const float& _fwdBoost	= 50.0f,
 		const float& _revBoost	= 15.0f
 	):
 		// members
-		fuel		(_maxFuel),
-		maxFuel		(_maxFuel),
-		recovery	(_recovery),
 		fwdBoost	(_fwdBoost),
 		revBoost	(_revBoost),
 		speedUp		(true),

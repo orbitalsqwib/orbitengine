@@ -89,7 +89,7 @@ struct EntityUtils
 
 		// throw exception
 		if (!isValid(e)) throw Error(
-			prefix + "Entity ID: " + std::to_string(e) + "is not valid!",
+			prefix + " Entity ID: " + std::to_string(e) + " is not valid!",
 			warnOnly ? ErrorType::WARNING : ErrorType::FATAL_ERROR
 		);
 	}

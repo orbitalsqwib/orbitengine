@@ -17,6 +17,7 @@
 #include "../../orbitEngine/imports/graphics.h"
 #include "../../orbitEngine/imports/components.h"
 #include "../components/boostData.h"
+#include "../components/fuelData.h"
 #include "../components/directionData.h"
 #include "../components/massData.h"
 #include "../components/playerData.h"
@@ -42,14 +43,13 @@ namespace {
 	// player stats
 
 	// thrust data
-	const float THRUST_BASE			= 75;
+	const float PLAYER_THRUST_BASE		= 75;
 
 	// boost data
-	const float BOOST_MAXFUEL		= 2.5f;
-	const float BOOST_RECOVERY		= 0.45f;
-	const float BOOST_FWDTHRUST		= 75;
-	const float BOOST_BCKTHRUST		= 45;
-
+	const float PLAYER_BOOST_MAXFUEL	= 2.5f;
+	const float PLAYER_BOOST_RECOVERY	= 0.45f;
+	const float PLAYER_BOOST_FWDTHRUST	= 75;
+	const float PLAYER_BOOST_BCKTHRUST	= 45;
 }
 
 
@@ -107,6 +107,9 @@ public:
 			TextureData(ASSET_PATH_PLAYER)
 		);
 
+		// register player data component
+		ecs->registerComponent<PlayerData>();
+
 		// update initialization flag
 		initialized = true;
 	}
@@ -149,7 +152,7 @@ public:
 
 		// select sprite frame
 		animOp.updateSpriteForAnimation(
-			AnimSpriteData(0, 0, 0, 0, 0, 5),
+			AnimSpriteData(0, 0, 4, 0, 0, 5),
 			shipSprite
 		);
 
@@ -157,7 +160,7 @@ public:
 		ecs->addComponent<SpriteData>(player, shipSprite);
 
 
-		// ! create player collider (circle)
+		// ! create player collider
 		ecs->addComponent<ColliderData>(player,
 			ColliderData("player", x, y, RADIUS_PLAYER)
 		);
@@ -177,7 +180,7 @@ public:
 		ecs->addComponent<MassData>(player, MassData());
 
 		// add thrust component
-		ecs->addComponent<ThrustData>(player, ThrustData(THRUST_BASE));
+		ecs->addComponent<ThrustData>(player, ThrustData(PLAYER_THRUST_BASE));
 
 		// add direction component (-90 from 0 (align to x-axis) is upwards)
 		ecs->addComponent<DirectionData>(player, 
@@ -186,10 +189,14 @@ public:
 
 		// add boost component
 		ecs->addComponent<BoostData>(player, BoostData(
-			BOOST_MAXFUEL, 
-			BOOST_RECOVERY, 
-			BOOST_FWDTHRUST,
-			BOOST_BCKTHRUST
+			PLAYER_BOOST_FWDTHRUST,
+			PLAYER_BOOST_BCKTHRUST
+		));
+
+		// add fuel component
+		ecs->addComponent<FuelData>(player, FuelData(
+			PLAYER_BOOST_MAXFUEL,
+			PLAYER_BOOST_RECOVERY
 		));
 
 

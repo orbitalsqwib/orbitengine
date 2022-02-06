@@ -13,6 +13,7 @@
 #define _STV_SCENES_MAIN_H
 
 // import necessary headers
+#include "../config.h"
 #include "../../orbitEngine/imports/commons.h"
 #include "../../orbitEngine/imports/scene.h"
 #include "../../orbitEngine/imports/systems.h"
@@ -21,39 +22,26 @@
 #include "../systems/thrustSystem.h"
 #include "../systems/trackingSystem.h"
 #include "../systems/boostSystem.h"
-#include "../systems/boostAnimSystem.h"
+#include "../systems/fuelAnimSystem.h"
+#include "../systems/resetSystem.h"
+#include "../systems/spawnSystem.h"
+#include "../systems/blastSystem.h"
+#include "../systems/iframeSystem.h"
 #include "../entityGroups/mainMenu.h"
 #include "../entityGroups/player.h"
 #include "../entityGroups/timer.h"
+#include "../archetypes/enemyArchetype.h"
+#include "../archetypes/pickupArchetype.h"
+#include "../archetypes/blastArchetype.h"
 #include "../handlers/border.h"
 #include <math.h>
-
-// local constants
-namespace {
-
-	// asset filepaths
-	const LPCWSTR ASSET_SHIP = L"./assets/ship.png";
-
-
-	// asset info
-
-	// ship
-	const int ASSET_SHIP_HEIGHT = 64;
-	const int ASSET_SHIP_WIDTH	= 64;
-
-
-	// entity info
-
-	// ship
-	const int HEIGHT_SHIP		= 32;
-	const int WIDTH_SHIP		= 32;
-
-}
 
 
 // main definition
 
-class MainScene : public Scene
+class MainScene : 
+	public Scene, 
+	public ISubscriber<EntityCollided>
 {
 private:
 
@@ -77,8 +65,29 @@ private:
 	// boost mechanic system
 	BoostSystem* pBoostSystem;
 
-	// boost animation system
-	BoostAnimSystem* pBoostAnimSystem;
+	// fuel animation system
+	FuelAnimSystem* pFuelAnimSystem;
+
+	// tracking system
+	TrackingSystem* pTrackingSystem;
+
+	// enemy reset system
+	ResetSystem<EnemyData>* pEnemyResetSystem;
+
+	// pickup reset system
+	ResetSystem<PickupData>* pPickupResetSystem;
+
+	// blast reset system
+	ResetSystem<BlastData>* pBlastResetSystem;
+
+	// entity spawning system
+	SpawnSystem* pSpawnSystem;
+
+	// blast despawn system
+	BlastSystem* pBlastSystem;
+
+	// player iframe system
+	IFrameSystem* pIFrameSystem;
 
 
 	// listeners
@@ -104,6 +113,18 @@ private:
 	// border handler
 	Border border;
 
+
+	// archetypes
+
+	// enemy archetype
+	EnemyArchetype enemyArchetype;
+
+	// pickup archetype
+	PickupArchetype pickupArchetype;
+
+	// blast archetype
+	BlastArchetype blastArchetype;
+
 	
 	// operators
 
@@ -119,10 +140,16 @@ private:
 	// specifies if the game is on the main menu
 	bool onMainMenu;
 
+	// enemy spawn timer
+	float enemySpawnCooldown, enemySpawnTimer;
+
+	// pickup spawn timer
+	float pickupSpawnCooldown, pickupSpawnTimer;
+
 
 	// key entities
 
-	// player entitiy
+	// player entity
 	Player player;
 
 
@@ -146,6 +173,9 @@ private:
 	// calls gameover if the player's collider is outside of the border
 	void enforceGameBorder();
 
+	// adds tracking data to the specified entity to track another entity
+	void addTracking(const Entity& entity, const Entity& tracked);
+
 public:
 
 	// constructor
@@ -158,7 +188,14 @@ public:
 		pThrustSystem		(nullptr),
 		pControlSystem		(nullptr),
 		pBoostSystem		(nullptr),
-		pBoostAnimSystem	(nullptr),
+		pFuelAnimSystem		(nullptr),
+		pTrackingSystem		(nullptr),
+		pEnemyResetSystem	(nullptr),
+		pPickupResetSystem	(nullptr),
+		pBlastResetSystem	(nullptr),
+		pSpawnSystem		(nullptr),
+		pBlastSystem		(nullptr),
+		pIFrameSystem		(nullptr),
 
 		// listeners
 		transformListener	(),
@@ -166,12 +203,35 @@ public:
 		// managers
 		pTextStyleManager	(nullptr),
 		menu				(),
+		timer				(),
+		border				(),
+
+		// archetypes
+		enemyArchetype		(),
+		pickupArchetype		(),
+
+		// operators
+		colliderOp			(),
+
+		// states
 		gameActive			(false),
 		onMainMenu			(true),
+		enemySpawnCooldown	(Config::ENEMY_SPAWN_COOLDOWN),
+		enemySpawnTimer		(0),
+		pickupSpawnCooldown	(Config::PICKUP_SPAWN_COOLDOWN),
+		pickupSpawnTimer	(Config::PICKUP_SPAWN_COOLDOWN),
 
 		// key entities
 		player				()
 	{}
+
+	// subscriber methods
+
+	// handles collision events
+	virtual void handleMessage(
+		EntityCollided	message,
+		MessageBroker*	broker
+	);
 
 	// scene methods
 

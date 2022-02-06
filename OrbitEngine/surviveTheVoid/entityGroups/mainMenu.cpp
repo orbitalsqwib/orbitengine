@@ -100,12 +100,6 @@ void MainMenu::createTitle()
 	// create title entity
 	title = ecs->createEntity();
 
-	// update title height
-	titleH = pTextStyleOp->calculateHeight(
-		titleString,
-		*pTextStyleMgr->getStyle(TEXTSTYLE_TITLE)
-	);
-
 	// add text component for title
 	ecs->addComponent<TextData>(title,
 		TextData(
@@ -163,18 +157,26 @@ void MainMenu::addOption(
 // ===========================================================================
 // removes the nth option (0-indexed) from the top of the menu
 // ===========================================================================
-void MainMenu::removeOption(
-	const size_t&	n
-) {
-	// ensure n is within options range
-	if (n < 0 || n >= options.size()) return;
+void MainMenu::resetOptions()
+{
+	// initialize iterator
+	std::vector<Entity>::iterator it = options.end();
 
-	// delete nth option entity
-	ecs->destroyEntity(options[n]);
+	// loop through options
+	while (it != options.begin())
+	{
+		// delete option entity
+		ecs->destroyEntity(*(it - 1));
 
-	// remove nth option entity and string from vectors
-	options.erase(options.begin() + n);
-	optionStrings.erase(optionStrings.begin() + n);
+		// erase entity from options
+		options.erase(it - 1);
+
+		// update it to last element in updated vector again
+		it = options.end();
+	}
+
+	// clear option strings
+	optionStrings.clear();
 }
 
 // ===========================================================================
@@ -275,6 +277,12 @@ void MainMenu::setTitle(
 ) {
 	// update title string
 	titleString = _newTitle;
+
+	// update title height
+	titleH = pTextStyleOp->calculateHeight(
+		titleString,
+		*pTextStyleMgr->getStyle(TEXTSTYLE_TITLE)
+	);
 
 	// if menu is hidden, skip text data update for title (doesn't exist)
 	if (!active) return;

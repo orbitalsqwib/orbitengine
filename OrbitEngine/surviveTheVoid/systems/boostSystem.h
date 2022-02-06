@@ -13,6 +13,7 @@
 #define _STV_SYSTEMS_BOOSTSYSTEM_H
 
 // import necessary headers
+#include "../components/fuelData.h"
 #include "../components/boostData.h"
 #include "../components/thrustData.h"
 #include "../../orbitEngine/imports/ecs.h"
@@ -32,11 +33,13 @@ public:
 	) {
 		// register components (if not already registered)
 		ecs.registerComponent<BoostData>();
+		ecs.registerComponent<FuelData>();
 		ecs.registerComponent<ThrustData>();
 
 		// set system signature
 		Signature s;
 		s.set(ecs.getTypeEnum<BoostData>(), true);
+		s.set(ecs.getTypeEnum<FuelData>(), true);
 		s.set(ecs.getTypeEnum<ThrustData>(), true);
 		ecs.setSignature<BoostSystem>(s);
 	}
@@ -53,18 +56,19 @@ public:
 			// get components for entity
 			BoostData* pBoost = ecs->getComponent<BoostData>(*it);
 			ThrustData* pThrust = ecs->getComponent<ThrustData>(*it);
+			FuelData* pFuel = ecs->getComponent<FuelData>(*it);
 
 			// ensure all components exist, else skip to next iteration
 			if (!pBoost || !pThrust) continue;
 
 			// recover fuel for frame up till maxFuel
-			pBoost->fuel = min(
-				pBoost->fuel + pBoost->recovery * _deltaTime,
-				pBoost->maxFuel
+			pFuel->fuel = min(
+				pFuel->fuel + pFuel->recovery * _deltaTime,
+				pFuel->maxFuel
 			);
 
 			// if boost is not active or out of fuel, skip to next iteration
-			if (!pBoost->active || pBoost->fuel <= 0) continue;
+			if (!pBoost->active || pFuel->fuel <= 0) continue;
 
 			// else, apply boost to thrust
 			pThrust->bonusThrust 
@@ -73,7 +77,7 @@ public:
 					: -pBoost->revBoost;
 
 			// consume fuel for frame
-			pBoost->fuel -= _deltaTime;
+			pFuel->fuel = max(pFuel->fuel - _deltaTime, 0);
 		}
 	}
 

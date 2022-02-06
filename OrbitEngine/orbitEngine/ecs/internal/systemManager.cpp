@@ -40,17 +40,14 @@ void SystemManager::notifyEntityDestroyed(
 	const Entity&	entity
 ) {
 	// initialize iterator
-	SYSTEM_MAP::iterator it = systems.begin();
+	SYSTEM_MAP::iterator it;
 
 	// iterate through systems map
-	while (it != systems.end())
+	for (it = systems.begin(); it != systems.end(); it++)
 	{
 		// erase entity from every system. no checks required since the entity
 		// container is a set, which does nothing if the entity doesn't exist.
 		it->second->entities.erase(entity);
-
-		// increment iterator
-		it++;
 	}
 }
 
@@ -64,10 +61,10 @@ void SystemManager::notifyEntitySignatureChanged(
 	const Signature&	newSignature
 ) {
 	// initialize iterator
-	SYSTEM_MAP::iterator it = systems.begin();
+	SYSTEM_MAP::iterator it;
 
 	// iterate through systems map
-	while (it != systems.end())
+		for (it = systems.begin(); it != systems.end(); it++)
 	{
 		// get system signatures from signature map
 		Signature standard = signatures[it->first].first;
@@ -89,8 +86,5 @@ void SystemManager::notifyEntitySignatureChanged(
 			// remove likewise; set does nothing if entity does not exist
 			it->second->entities.erase(entity);
 		}
-
-		// increment iterator
-		it++;
 	}
 }

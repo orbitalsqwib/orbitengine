@@ -458,7 +458,46 @@
     <ClInclude Include="orbitEngine\utils\floatRect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="surviveTheVoid\systems\boostAnimSystem.h">
+    <ClInclude Include="surviveTheVoid\systems\fuelAnimSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\archetypes\enemyArchetype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\systems\spawnSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\archetypes\IArchetype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\archetypes\pickupArchetype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\components\pickupData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\components\blastData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\systems\resetSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\archetypes\blastArchetype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\systems\blastSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\components\fuelData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\systems\iframeSystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\components\iframeData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="surviveTheVoid\config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

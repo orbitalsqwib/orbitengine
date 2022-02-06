@@ -6,14 +6,14 @@
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 // ===========================================================================
-// SurviveTheVoid : Boost Animation System Specification
+// SurviveTheVoid : Fuel Animation System Specification
 // ===========================================================================
 
-#ifndef _STV_SYSTEMS_BOOSTANIMSYSTEM_H
-#define _STV_SYSTEMS_BOOSTANIMSYSTEM_H
+#ifndef _STV_SYSTEMS_FUELANIMSYSTEM_H
+#define _STV_SYSTEMS_FUELANIMSYSTEM_H
 
 // import necessary headers
-#include "../components/boostData.h"
+#include "../components/fuelData.h"
 #include "../components/playerData.h"
 #include "../../orbitEngine/imports/ecs.h"
 #include "../../orbitEngine/imports/components.h"
@@ -22,8 +22,8 @@
 
 // main definition
 
-// handles the boost mechanic
-class BoostAnimSystem : public System
+// updates player sprite according to the amount of fuel they have
+class FuelAnimSystem : public System
 {
 private:
 
@@ -33,7 +33,7 @@ private:
 public:
 
 	// constructor
-	BoostAnimSystem() : pAnimOp(nullptr) {}
+	FuelAnimSystem() : pAnimOp(nullptr) {}
 
 	// initializer
 	void initialize(GraphicsContext& _graphics)
@@ -47,16 +47,16 @@ public:
 		ECSInstance& ecs
 	) {
 		// register components (if not already registered)
-		ecs.registerComponent<BoostData>();
+		ecs.registerComponent<FuelData>();
 		ecs.registerComponent<SpriteData>();
 		ecs.registerComponent<PlayerData>();
 
 		// set system signature
 		Signature s;
-		s.set(ecs.getTypeEnum<BoostData>(), true);
+		s.set(ecs.getTypeEnum<FuelData>(), true);
 		s.set(ecs.getTypeEnum<SpriteData>(), true);
 		s.set(ecs.getTypeEnum<PlayerData>(), true);
-		ecs.setSignature<BoostAnimSystem>(s);
+		ecs.setSignature<FuelAnimSystem>(s);
 	}
 
 	// synchronizes player sprite for current boost value
@@ -69,14 +69,14 @@ public:
 		for (it = entities.begin(); it != entities.end(); it++)
 		{
 			// get components for entity
-			BoostData* pBoost = ecs->getComponent<BoostData>(*it);
+			FuelData* pFuel = ecs->getComponent<FuelData>(*it);
 			SpriteData* pSprite = ecs->getComponent<SpriteData>(*it);
 
 			// ensure all components / operators exist, else skip iteration
-			if (!pBoost || !pSprite || !pAnimOp) continue;
+			if (!pFuel || !pSprite || !pAnimOp) continue;
 
 			// get current boost fuel percentage
-			float fuelP = pBoost->fuel / pBoost->maxFuel;
+			float fuelP = pFuel->fuel / pFuel->maxFuel;
 
 			// map fuel percentage to 0 <= fp <= 4
 			int frame = int(floor(fuelP * 4));
@@ -91,4 +91,4 @@ public:
 
 };
 
-#endif // !_STV_SYSTEMS_BOOSTANIMSYSTEM_H
+#endif // !_STV_SYSTEMS_FUELANIMSYSTEM_H

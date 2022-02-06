@@ -109,7 +109,7 @@ public:
 		ptsDirty	(true),
 		boxDirty	(true),
 		radius		(_radius),
-		edges		(_radius, _radius, _radius, _radius),
+		edges		(-_radius, -_radius, _radius, _radius),
 		corners		(),
 		edge1UV		(0, 0),
 		edge3UV		(0, 0),

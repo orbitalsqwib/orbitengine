@@ -43,20 +43,22 @@ struct SpriteData
 	TextureData*	pTexture;	// pointer to texture data source
 	bool			flipX;		// mirror sprite on the x-axis
 	bool			flipY;		// mirror sprite on the y-axis
+	COLOR_ARGB		tint;		// the tint applied to the sprite
 
 	// convenience constructor
 	SpriteData(
-		const float&	_x			= 0,
-		const float&	_y			= 0,
-		const float&	_z			= ZValues::FOREGROUND,
-		const int&		_width		= 0,
-		const int&		_height		= 0,
-		const float&	_angle		= 0,
-		const float&	_scale		= 1,
-		const RECT&		_srcRect	= {0, 0, 0, 0},
-		TextureData*	_pTexture	= nullptr,
-		const bool&		_flipX		= 0,
-		const bool&		_flipY		= 0
+		const float&		_x			= 0,
+		const float&		_y			= 0,
+		const float&		_z			= ZValues::FOREGROUND,
+		const int&			_width		= 0,
+		const int&			_height		= 0,
+		const float&		_angle		= 0,
+		const float&		_scale		= 1,
+		const RECT&			_srcRect	= {0, 0, 0, 0},
+		TextureData*		_pTexture	= nullptr,
+		const bool&			_flipX		= 0,
+		const bool&			_flipY		= 0,
+		const COLOR_ARGB&	_tint		= Colors::WHITE
 	):
 		x			(_x),
 		y			(_y),
@@ -70,7 +72,8 @@ struct SpriteData
 		srcRect		(_srcRect),
 		pTexture	(_pTexture),
 		flipX		(_flipX),
-		flipY		(_flipY)
+		flipY		(_flipY),
+		tint		(_tint)
 	{}
 };
 

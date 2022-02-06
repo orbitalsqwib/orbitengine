@@ -110,8 +110,8 @@ public:
 	// adds an option to the main menu
 	void addOption(const std::string& _optionString);
 
-	// removes the nth option (0-indexed) from the top of the menu
-	void removeOption(const size_t& n);
+	// removes all options from the menu
+	void resetOptions();
 
 	// toggles the visibility of the menu
 	void toggleMenu(const bool& show);

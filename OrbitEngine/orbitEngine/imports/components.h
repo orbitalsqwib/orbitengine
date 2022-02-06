@@ -16,5 +16,6 @@
 #include "../graphics/components.h"
 #include "../prefabs/components/positionData.h"
 #include "../prefabs/components/velocityData.h"
+#include "../collisions/colliderData.h"
 
 #endif // !_ORBIT_IMPORTS_COMPONENTS_H

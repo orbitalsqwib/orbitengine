@@ -40,10 +40,7 @@ public:
 	// queues a sprite to be drawn with the texture and transforms specified
 	// by a spriteData struct. should only be called between the graphics
 	// context's beginSpriteDraw()...endSpriteDraw() method calls.
-	void render(
-		const SpriteData&	sprite,
-		COLOR_ARGB			color		= Colors::WHITE
-	);
+	void render(const SpriteData& sprite);
 
 };
 
