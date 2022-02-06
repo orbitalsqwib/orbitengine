@@ -137,7 +137,6 @@
     <ClInclude Include="orbitEngine\macros.h" />
     <ClInclude Include="orbitEngine\!config.h" />
     <ClInclude Include="orbitEngine\common\windowStyle.h" />
-    <ClInclude Include="orbitEngine\messaging\command.h" />
     <ClInclude Include="orbitEngine\messaging\pubsub\messageBroker.h" />
     <ClInclude Include="orbitEngine\messaging\pubsub\messageBus.h" />
     <ClInclude Include="orbitEngine\messaging\pubsub\messageQueue.h" />
@@ -251,6 +250,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>

@@ -152,9 +152,6 @@
     <ClInclude Include="orbitEngine\utils\textQueue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="orbitEngine\messaging\command.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="orbitEngine\messaging\pubsub\messageQueue.h">
       <Filter>Header Files</Filter>
     </ClInclude>

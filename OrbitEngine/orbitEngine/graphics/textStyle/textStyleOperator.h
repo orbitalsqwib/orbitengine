@@ -49,7 +49,7 @@ public:
 	void resetResource(TextStyleData& textStyle);
 
 	// calculates textbox bounds required to fit text based on textStyle
-	RECT&& calculateBounds(
+	RECT calculateBounds(
 		const std::string&		text,
 		const TextStyleData&	textStyle
 	);

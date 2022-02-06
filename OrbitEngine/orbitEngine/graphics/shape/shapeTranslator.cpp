@@ -31,14 +31,14 @@
 // v   2---3        v   0,1---1,1
 // y                tv
 // ===========================================================================
-TranslatedShape<4>&& ShapeTranslator::translateRectangle(
+TranslatedShape<4> ShapeTranslator::translateRectangle(
 	const ShapeData&	shape
 ) {
 	// handle single color shapes
 	COLOR_ARGB endGrad = shape.endGradient ? shape.color : shape.endGradient;
 
 	// generate and return PrimitiveShape
-	return std::move(TranslatedShape<4>(
+	return TranslatedShape<4>(
 		std::array<Vertex, 4>{
 			Vertex(
 				shape.x + shape.relX,
@@ -71,5 +71,5 @@ TranslatedShape<4>&& ShapeTranslator::translateRectangle(
 		},
 		D3DPT_TRIANGLESTRIP,
 		2
-	));
+	);
 }

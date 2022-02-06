@@ -41,6 +41,9 @@ namespace Config
 	// player turn speed (deg/s)
 	const float PLAYER_TURN_SPEED = 135;
 
+	// invincibility frame fuel cost (%)
+	const float PLAYER_IFRAME_FUEL_COST = 0.9f;
+
 	// invincibility frame duration
 	const float PLAYER_IFRAME_DURATION = 1.5f;
 }

@@ -78,12 +78,12 @@ void TextStyleOperator::resetResource(
 // ===========================================================================
 // calculates textbox bounds required to fit text based on textStyle
 // ===========================================================================
-RECT&& TextStyleOperator::calculateBounds(
+RECT TextStyleOperator::calculateBounds(
 	const std::string&		text,
 	const TextStyleData&	textStyle
 ) {
 	// ensure font resource has been initialized
-	if (textStyle.fontResource == NULL) return std::move(RECT{ 0, 0, 0, 0 });
+	if (textStyle.fontResource == NULL) return RECT{ 0, 0, 0, 0 };
 
 	// temp rect obj that will be automatically resized
 	RECT resizeRect({ 0,0,0,0 });
@@ -99,7 +99,7 @@ RECT&& TextStyleOperator::calculateBounds(
 	);
 
 	// return resized bounds
-	return std::move(resizeRect);
+	return resizeRect;
 }
 
 // ===========================================================================

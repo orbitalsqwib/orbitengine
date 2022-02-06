@@ -505,8 +505,8 @@ void MainScene::update(
 	// handle menu controls
 	handleMenu();
 
-	// handle game updates
-	if (gameActive)
+	// handle game updates when game is active and player is alive
+	if (gameActive && player.isAlive())
 	{
 		// ! timer
 
@@ -520,24 +520,6 @@ void MainScene::update(
 
 		// apply last frame's velocities
 		pVelocitySystem->applyVelocities(deltaTime);
-
-
-		// ! player
-
-		// enforce game boundary on player
-		enforceGameBorder();
-
-		// handle player control
-		pControlSystem->handleUserInputs(deltaTime);
-
-		// apply boost mechanics
-		pBoostSystem->applyBoost(deltaTime);
-
-		// update player sprite to reflect boost fuel %
-		pFuelAnimSystem->updatePlayerSprite();
-
-		// ! handle iframes if iframes exist
-		pIFrameSystem->updateIFrames(deltaTime);
 
 
 		// ! enemy
@@ -561,6 +543,24 @@ void MainScene::update(
 			// add tracking component to enemy
 			addTracking(newEnemy, player.getEntity());
 		}
+
+
+		// ! player
+
+		// enforce game boundary on player
+		enforceGameBorder();
+
+		// handle player control
+		pControlSystem->handleUserInputs(deltaTime);
+
+		// apply boost mechanics
+		pBoostSystem->applyBoost(deltaTime);
+
+		// update player sprite to reflect boost fuel %
+		pFuelAnimSystem->updatePlayerSprite();
+
+		// ! handle iframes if iframes exist
+		pIFrameSystem->updateIFrames(deltaTime);
 
 
 		// ! pickups

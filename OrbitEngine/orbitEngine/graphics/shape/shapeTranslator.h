@@ -34,7 +34,7 @@ public:
 
 	// translates a shape of type rectangle to a triangle strip of vertices
 	// that render a rectangle with the specified position, color and size
-	static TranslatedShape<4>&& translateRectangle(const ShapeData&	shape);
+	static TranslatedShape<4> translateRectangle(const ShapeData&	shape);
 };
 
 

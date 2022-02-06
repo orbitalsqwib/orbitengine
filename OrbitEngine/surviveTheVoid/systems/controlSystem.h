@@ -107,11 +107,17 @@ private:
 			// attempt to convert 90% of fuel to an iframe
 			if (FuelData* pFuel = ecs->getComponent<FuelData>(*it))
 			{
-				// ensure enough fuel exists
-				if ((pFuel->fuel / pFuel->maxFuel) < 0.9) continue;
+				// ensure enough fuel exists, else skip iteration
+				if ((pFuel->fuel / pFuel->maxFuel) 
+					< Config::PLAYER_IFRAME_FUEL_COST)
+				continue;
 				
-				// convert fuel to iframe
-				pFuel->fuel = max(pFuel->fuel - pFuel->maxFuel * 0.9f, 0);
+				// consume fuel for iframe
+				pFuel->fuel = max(
+					pFuel->fuel - pFuel->maxFuel 
+						* Config::PLAYER_IFRAME_FUEL_COST,
+					0
+				);
 
 				// add iframe component
 				ecs->addComponent<IFrameData>(*it,
@@ -188,7 +194,8 @@ public:
 		// handle iframe cast
 		if (keyboard->wasKeyPressed(E_KEY))
 		{
-			// attempt to add iframes
+			// attempt to add iframes for controlled entities by consuming
+			// an appropriate percentage of their current fuel.
 			addIFrames();
 		}
 	}
