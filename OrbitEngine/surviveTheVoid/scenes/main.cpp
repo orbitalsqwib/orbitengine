@@ -605,6 +605,9 @@ void MainScene::update(
 
 		// run thrust system
 		pThrustSystem->applyThrust();
+
+		// process leftover scene messages
+		sceneBroker.processAllMessages();
 	}
 
 	// render colliders on debug
